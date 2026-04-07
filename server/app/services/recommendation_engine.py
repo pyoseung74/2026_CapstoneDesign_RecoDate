@@ -111,9 +111,11 @@ class RecommendationEngineService:
             "mixed": "\ubcf5\ud569",
             "unselected": "\uae30\ubcf8",
         }
+        time_label = time_labels.get(time_key, "\ucd94\ucc9c")
+        transport_label = transport_labels.get(transport, "\uae30\ubcf8")
         return (
-            f"\uac15\ub989\uc2dc {time_labels.get(time_key, '\ucd94\ucc9c')} "
-            f"{transport_labels.get(transport, '\uae30\ubcf8')} \ucf54\uc2a4 {suffix}"
+            f"\uac15\ub989\uc2dc {time_label} "
+            f"{transport_label} \ucf54\uc2a4 {suffix}"
         )
 
     def _resolve_time_key(self, scheduled_at: str | None) -> str:
