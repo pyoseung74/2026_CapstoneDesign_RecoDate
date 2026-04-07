@@ -8,7 +8,7 @@ Based on the capstone application form, the official role split is kept and expa
 | --- | --- | --- |
 | 김표승 | 발표 및 개발총괄 | project direction, scope control, recommendation logic coordination, integration check, presentation lead |
 | 박정우 | 기획·개발보조 및 PPT 제작 | planning docs, requirements cleanup, QA scenarios, report writing, presentation materials |
-| 이용근 | 백엔드 | NestJS server, PostgreSQL/PostGIS schema, recommendation API, save and feedback processing |
+| 이용근 | 백엔드 | FastAPI server, PostgreSQL/PostGIS schema, recommendation API, save and feedback processing |
 | 정의영 | 프론트엔드 | React Native UI, quick start flow, result and detail screens, open-swap UI |
 
 ## Key Dates
@@ -24,7 +24,7 @@ Based on the capstone application form, the official role split is kept and expa
 | Week | Date Range | Goal | Main Work |
 | --- | --- | --- | --- |
 | 4월 2주 | 2026-04-06 ~ 2026-04-12 | project setup | finalize MVP, roles, architecture, and document structure |
-| 4월 3주 | 2026-04-13 ~ 2026-04-19 | environment setup | set up Expo, NestJS, PostgreSQL, and repo conventions |
+| 4월 3주 | 2026-04-13 ~ 2026-04-19 | environment setup | set up Expo, FastAPI, PostgreSQL, and repo conventions |
 | 4월 4주 | 2026-04-20 ~ 2026-04-26 | data design | define place, course, save, and feedback schemas |
 | 4월 5주 | 2026-04-27 ~ 2026-05-03 | app skeleton | navigation, shared components, entry screens |
 | 5월 1주 | 2026-05-04 ~ 2026-05-10 | input flow | quick start input screens and anchor place selection |

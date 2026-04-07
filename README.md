@@ -23,7 +23,7 @@ RecoDate is a capstone project for building an intelligent, place-centered date 
 ## Planned Tech Stack
 
 - Frontend: React Native
-- Backend: NestJS
+- Backend: Python FastAPI
 - Database: PostgreSQL + PostGIS
 - APIs:
   - Kakao Local/Maps API
@@ -33,7 +33,7 @@ RecoDate is a capstone project for building an intelligent, place-centered date 
 ## Repository Structure
 
 - `app/`: React Native mobile application
-- `server/`: NestJS backend
+- `server/`: Python FastAPI backend
 - `docs/`: planning, user flow, roadmap, and working documents
 
 ## Planning Docs

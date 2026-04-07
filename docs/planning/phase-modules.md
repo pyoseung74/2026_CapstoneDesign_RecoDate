@@ -6,6 +6,12 @@ This document maps the final flowchart into implementation modules.
 
 The product should be split by phase first, with shared business logic extracted into common modules.
 
+Backend implementation target:
+
+- Python
+- FastAPI
+- service-oriented recommendation modules
+
 ## Phase Modules
 
 ### `phase1-initial-input`
