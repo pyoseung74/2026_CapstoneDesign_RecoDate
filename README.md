@@ -46,3 +46,4 @@ RecoDate is a capstone project for building an intelligent, place-centered date 
 - finish MVP by mid-June 2026 for capstone completion
 - submit interim result report in June 2026
 - improve quality and final documents for August 2026 submission and competition
+- keep the MVP region scope limited to `Gangneung-si` first, then expand later

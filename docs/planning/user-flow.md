@@ -32,6 +32,16 @@ Below the base input area, two actions exist:
 - `Quick Start`
 - `세부 카테고리 설정`
 
+### Current MVP Region Scope
+
+For the current MVP, the supported service area is limited to `Gangneung-si`.
+
+- the city selector should allow:
+  - `강릉시`
+  - `선택 안 함`
+- the flow should be designed to support `city / district` expansion later
+- but the current MVP should behave as a `Gangneung-only` service scope
+
 ### Quick Start
 
 Quick Start is the fast path.
@@ -92,7 +102,12 @@ Editing mode includes:
 The meaning of direct editing here is:
 
 - the user replaces parts they do not like from the recommended course
-- after edits are submitted, the system should review the modified course and reorganize it into a cleaner final result
+- after edits are submitted, the system should review the modified course, recalculate it, and overwrite the current course with the updated result
+
+After overwrite, the user should be asked for a simple reaction:
+
+- satisfied: continue to `Phase 4`
+- unsatisfied: re-search or continue editing
 
 This phase is the strongest differentiation point of the product.
 

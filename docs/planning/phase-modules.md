@@ -29,6 +29,7 @@ Submodules:
 - `base-info-form`
 - `quick-start-action`
 - `deep-dive-form`
+- `region-scope-selector`
 
 ### `phase2-selection-hub`
 
@@ -65,6 +66,8 @@ Owns:
 - reorder
 - element editing
 - confirm edited course
+- overwrite current recommendation with recalculated result
+- collect satisfaction or dissatisfaction after overwrite
 
 Submodules:
 
@@ -72,6 +75,7 @@ Submodules:
 - `open-swap-editor`
 - `reorder-editor`
 - `course-review-and-rebuild`
+- `post-edit-satisfaction-check`
 
 ### `phase4-execution`
 
@@ -137,3 +141,4 @@ The temporary interface zip is useful as a visual prototype, but its current scr
 - final flow requires `transport + region + time` first
 - current result/detail screens are reusable as references
 - community and mypage screens should be treated as secondary, not phase-core modules
+- current MVP should be implemented as `Gangneung-si only`, while keeping the region model extensible
