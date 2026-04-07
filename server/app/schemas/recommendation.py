@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 
 TransportMethod = Literal["walk", "public-transport", "car", "mixed", "unselected"]
 RecommendationMode = Literal["quick-start", "deep-dive", "simple-refresh", "deep-dive-research"]
-SupportedCity = Literal["강릉시"]
+SupportedCity = Literal["gangneung-si"]
 
 
 class RecommendationFilters(BaseModel):
@@ -31,6 +31,7 @@ class RecommendedCourse(BaseModel):
     estimated_budget: int
     total_duration_minutes: int
     place_ids: list[str]
+    tags: list[str] = []
 
 
 class RecommendationResponse(BaseModel):

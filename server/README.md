@@ -19,6 +19,7 @@ Expected local workflow:
 - `app/main.py`: FastAPI entrypoint
 - `app/api/`: routers and route registration
 - `app/core/`: application-level configuration
+- `app/data/`: Gangneung seed data for the MVP
 - `app/schemas/`: request and response contracts
 - `app/services/`: recommendation, place search, course rebuild, live replanning
 
