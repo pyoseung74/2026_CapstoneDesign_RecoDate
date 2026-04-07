@@ -1,23 +1,52 @@
-# RecoDate Updated User Flow
+# RecoDate Final User Flow
 
-Source: `데이트_코스_맞춤_추천_앱_Recodate_기획서_수정.pdf`
+Source:
 
-## 1. Quick Start
+- `데이트_코스_맞춤_추천_앱_Recodate_기획서_수정.pdf`
+- final flowchart confirmed on `2026-04-07`
 
-The user selects:
+## Flow Summary
 
-- transport method
-- anchor place
-- specific date time
+RecoDate now follows a 4-phase structure:
 
-This stage is designed to produce a recommendation with minimal input.
+1. `Initial Input`
+2. `Selection Hub`
+3. `Customizing`
+4. `Execution`
 
-## 2. Deep Dive (Optional)
+This flow separates fast recommendation from detailed editing more clearly than the previous draft.
 
-If the user wants finer control, they enter advanced settings:
+## Phase 1. Initial Input
 
-- place characteristics
-  - manually selected
+The user enters from the main dashboard.
+
+- tap the `Rec❤️Date` or course creation entry button
+- move to the initial input screen
+- set the minimum required information:
+  - transport method
+  - region
+  - time
+
+Below the base input area, two actions exist:
+
+- `Quick Start`
+- `세부 카테고리 설정`
+
+### Quick Start
+
+Quick Start is the fast path.
+
+- use the minimum inputs only
+- start recommendation immediately
+
+### Deep Dive
+
+Deep Dive is optional and supports users who want finer customization.
+
+Additional settings include:
+
+- place characteristic
+  - directly selected
   - random
   - food type
 - budget cap
@@ -25,43 +54,69 @@ If the user wants finer control, they enter advanced settings:
 - number of courses
 - date genre or category
 
-This stage exists for refinement, not as a required first step.
+## Phase 2. Selection Hub
 
-## 3. Full Course Generation And Selection
+The recommendation engine builds and returns the result list.
 
-The system generates multiple course options with all selected conditions reflected.
+- show `3 to 5` full-course cards
+- let the user compare and choose a course
 
-- the user reviews several full-course results
-- if the results are unsatisfying, they can:
-  - request a fresh search
-  - modify detailed categories and search again
-- after that, the user enters a course detail page
+If the user is not satisfied, there are two different retry paths:
 
-## 4. Direct Editing And Customization
+### 1. Simple Refresh
 
-Inside the selected course, the user can directly edit the plan.
+- pull to refresh
+- or use the refresh button
+- rerun search with the same Phase 1 input
 
-- all categories can be modified
-- individual places can be replaced through full-database search
-- course order can be rearranged
-- route and travel time are automatically recalculated after edits
+### 2. Re-search After Condition Change
 
-This is the key differentiation point of RecoDate.
+- return to detailed condition editing
+- modify Deep Dive conditions
+- run search again with updated filters
 
-## 5. Save, Share, And Execute
+If the user likes one of the results:
 
-After final confirmation:
+- open the selected course detail page
 
-- save the course
-- share the course
-- optionally use route guidance if time allows implementation
-- modify the course in real time during the date if needed
+## Phase 3. Customizing
+
+Inside the selected course detail page, the user can either confirm the course or edit it directly.
+
+Editing mode includes:
+
+- unlimited place swap based on the whole database
+- reorder course items
+- modify course elements
+
+The meaning of direct editing here is:
+
+- the user replaces parts they do not like from the recommended course
+- after edits are submitted, the system should review the modified course and reorganize it into a cleaner final result
+
+This phase is the strongest differentiation point of the product.
+
+## Phase 4. Execution
+
+After the user finalizes the course:
+
+- save or favorite the course
+- share it through SNS
+- start real-time route guidance
+
+If a real-world interruption happens during the date:
+
+- generate a real-time revised course based on the current location
+
+If not:
+
+- complete the date flow
 
 ## Product Interpretation
 
-The revised scenario makes the flow clearer:
+The final structure is now stable enough to modularize:
 
-- `Quick Start` now centers on `transport + place + time`
-- `Deep Dive` holds detailed customization such as genre, movement range, and course count
-- re-search is explicitly allowed before entering the detail page
-- editing remains fully interactive through `Open-Swap` and reordering
+- `Phase 1` is a dual-entry input module with fast and detailed paths
+- `Phase 2` is a result hub, not just a simple list page
+- `Phase 3` is a dedicated editing module for user-driven course repair
+- `Phase 4` is an execution and live-adjustment module
