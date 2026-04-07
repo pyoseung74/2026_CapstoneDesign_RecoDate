@@ -1,0 +1,14 @@
+.chrome-pdf-profile/
+node_modules/
+.expo/
+.expo-shared/
+dist/
+build/
+coverage/
+.env
+.env.*
+!.env.example
+*.pdf
+*.html
+Thumbs.db
+.DS_Store
