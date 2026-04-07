@@ -15,7 +15,8 @@ class RecommendationEngineService:
 
         candidates = self._build_course_candidates(request)
         filtered = self._apply_budget_filter(candidates, request)
-        return filtered[:max_courses]
+        ordered = self._order_courses(filtered, request.mode)
+        return ordered[:max_courses]
 
     def _build_course_candidates(
         self,
@@ -79,6 +80,22 @@ class RecommendationEngineService:
             course for course in courses if course.estimated_budget <= budget_limit
         ]
         return filtered or courses
+
+    def _order_courses(
+        self,
+        courses: list[RecommendedCourse],
+        mode: str,
+    ) -> list[RecommendedCourse]:
+        if len(courses) <= 1:
+            return courses
+
+        if mode == "simple-refresh":
+            return courses[1:] + courses[:1]
+
+        if mode == "deep-dive-research":
+            return courses[2:] + courses[:2]
+
+        return courses
 
     def _build_title(self, time_key: str, transport: str, suffix: str) -> str:
         time_labels = {

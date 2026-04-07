@@ -1,5 +1,6 @@
 import type { CourseCardSummary } from "../../modules/phase2-selection-hub/model/selection-hub.types";
 import type { InitialInputSubmission } from "../../modules/phase1-initial-input/model/initial-input.types";
+import type { SearchMode } from "../domain/course-flow.types";
 
 import { buildMockRecommendations } from "../mock/mock-recommendations";
 
@@ -56,7 +57,12 @@ function mapApiCoursesToCards(courses: Array<{
 
 export async function requestRecommendationPreview(
   submission: InitialInputSubmission,
+  searchMode?: SearchMode,
 ): Promise<RecommendationPreviewResult> {
+  const requestMode =
+    searchMode ??
+    (submission.type === "quick-start" ? "quick-start" : "deep-dive");
+
   if (!API_BASE_URL) {
     return {
       mode: submission.type,
@@ -71,7 +77,10 @@ export async function requestRecommendationPreview(
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(mapSubmissionToRequest(submission)),
+      body: JSON.stringify({
+        ...mapSubmissionToRequest(submission),
+        mode: requestMode,
+      }),
     });
 
     if (!response.ok) {
