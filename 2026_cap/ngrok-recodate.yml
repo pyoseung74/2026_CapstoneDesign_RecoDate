@@ -1,0 +1,10 @@
+version: "3"
+endpoints:
+  - name: recodate-api
+    url: https://
+    upstream:
+      url: 8010
+  - name: recodate-web
+    url: https://
+    upstream:
+      url: 5174

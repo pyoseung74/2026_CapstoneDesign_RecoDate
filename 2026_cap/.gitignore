@@ -1,0 +1,44 @@
+# Dependencies / virtual environments
+node_modules/
+backend/.venv*/
+__pycache__/
+*.py[cod]
+
+# Local secrets
+.env
+backend/.env
+*.pem
+*.key
+
+# Runtime data and generated databases
+backend/data/*.db
+!backend/data/recodate_users.sample.db
+backend/data/*.sqlite
+backend/data/*.sqlite3
+backend/data/uploads/
+backend/data/*.log
+*.osm.pbf
+
+# Generated mobile/web build output
+mobile/web/
+android/.gradle/
+android/local.properties
+android/**/build/
+ios/App/DerivedData/
+ios/**/build/
+
+# Local editor / assistant state
+.idea/
+.vscode/
+.claude/
+
+# Backups and local logs
+backups/
+logs/
+frontend/_backup_before_mobile_redesign/
+
+# Local archives / downloaded datasets
+*.tgz
+*.tar
+*.tar.gz
+*.zip

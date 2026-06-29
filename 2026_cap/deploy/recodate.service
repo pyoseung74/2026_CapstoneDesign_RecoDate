@@ -1,0 +1,15 @@
+[Unit]
+Description=RecoDate FastAPI backend
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/recodate
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/recodate/backend/.venv/bin/python -m uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 8010
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+

@@ -1,0 +1,8 @@
+{
+  "appId": "com.recodate.app",
+  "appName": "RecoDate",
+  "webDir": "mobile/web",
+  "server": {
+    "androidScheme": "http"
+  }
+}

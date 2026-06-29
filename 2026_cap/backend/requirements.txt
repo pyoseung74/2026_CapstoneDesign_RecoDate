@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+pywebpush
+google-auth
+osmium

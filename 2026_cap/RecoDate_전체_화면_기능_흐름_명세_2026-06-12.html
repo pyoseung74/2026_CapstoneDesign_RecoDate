@@ -1,0 +1,2092 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <title>RecoDate_전체_화면_기능_흐름_명세_2026-06-12</title>
+  <style>
+    @page { size: A4; margin: 17mm 15mm; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif;
+      color: #1f2430;
+      font-size: 10.2pt;
+      line-height: 1.58;
+      word-break: keep-all;
+    }
+    h1 {
+      margin: 0 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e45a86;
+      color: #151922;
+      font-size: 22pt;
+      line-height: 1.2;
+    }
+    h2 {
+      break-after: avoid;
+      margin: 22px 0 8px;
+      padding-top: 4px;
+      color: #b73564;
+      font-size: 15.5pt;
+      line-height: 1.25;
+    }
+    h3 {
+      break-after: avoid;
+      margin: 16px 0 6px;
+      color: #2f3441;
+      font-size: 12.5pt;
+    }
+    p { margin: 5px 0 8px; }
+    ul, ol { margin: 6px 0 10px 20px; padding: 0; }
+    li { margin: 2px 0; }
+    code {
+      font-family: Consolas, "Cascadia Mono", monospace;
+      background: #fff3f7;
+      color: #9a2f57;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-size: 9pt;
+    }
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #fbfcfe;
+      border: 1px solid #e6eaf0;
+      border-radius: 8px;
+      padding: 10px 12px;
+      overflow: hidden;
+      font-size: 8.5pt;
+      line-height: 1.45;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0 14px;
+      break-inside: auto;
+      font-size: 8.8pt;
+    }
+    tr { break-inside: avoid; break-after: auto; }
+    th, td {
+      border: 1px solid #e3e7ee;
+      padding: 5px 7px;
+      vertical-align: top;
+    }
+    th {
+      background: #fff0f5;
+      color: #8c254a;
+      font-weight: 700;
+    }
+    blockquote {
+      margin: 8px 0;
+      padding: 8px 12px;
+      border-left: 4px solid #e45a86;
+      background: #fff7fa;
+    }
+    .mermaid-block {
+      background: #f7f9fc;
+      border: 1px dashed #d4dbe6;
+    }
+    .mermaid-block::before {
+      content: "흐름도";
+      display: block;
+      margin-bottom: 6px;
+      color: #b73564;
+      font-weight: 700;
+      font-family: "Malgun Gothic", Arial, sans-serif;
+    }
+    a { color: #b73564; text-decoration: none; }
+  </style>
+</head>
+<body>
+<h1>RecoDate 전체 화면/기능/버튼/흐름 명세</h1>
+<p>작성일: 2026-06-12<br>기준 코드: <code>frontend/index.html</code>, <code>frontend/app.js</code>, <code>frontend/styles.css</code><br>목적: 앱의 모든 화면, 모달, 동적 카드, 버튼, 작은 보조 기능까지 빠짐없이 확인하기 위한 프론트 기능 명세서</p>
+<h2>0. 전체 구조</h2>
+<p>RecoDate는 하나의 정적 프론트 앱 안에서 여러 <code>portal-view</code> 화면을 숨김/표시하는 방식으로 동작한다. 화면 이동은 대부분 <code>data-show-view</code> 버튼이 담당하고, 모달은 <code>hidden</code> 속성을 켜고 끄는 방식이다.</p>
+<p>주요 화면:</p>
+<ul>
+<li>홈</li>
+<li>커뮤니티</li>
+<li>TripTI</li>
+<li>장소 둘러보기</li>
+<li>찜한 장소</li>
+<li>내 코스</li>
+<li>마이페이지</li>
+<li>로그인/회원가입</li>
+<li>코스 추천</li>
+</ul>
+<p>주요 모달/시트:</p>
+<ul>
+<li>사용자 프로필 모달</li>
+<li>친구 목록 모달</li>
+<li>친구에게 코스 공유 모달</li>
+<li>좋아요 누른 피드 모달</li>
+<li>계정 정보 모달</li>
+<li>댓글 바텀시트</li>
+<li>신고 모달</li>
+<li>차단 사용자 모달</li>
+<li>채팅 모달</li>
+<li>글·사진 올리기 모달</li>
+<li>커뮤니티 코스 공유 모달</li>
+<li>빠른 코스 조건 모달</li>
+<li>지역 선택 모달</li>
+<li>시작 장소 선택 모달</li>
+<li>장소 상세 모달</li>
+</ul>
+<h2>1. 앱 공통 디자인</h2>
+<h3>디자인 언어</h3>
+<ul>
+<li>전체 톤은 밝은 화이트/핑크 계열의 데이트 앱 분위기다.</li>
+<li>브랜드 로고는 <code>Rec♡Date</code> 형태이며 하트 SVG를 브랜드 심볼로 쓴다.</li>
+<li>주요 CTA는 핑크 계열 <code>primary-button</code>, 보조 버튼은 흰색/회색 계열 <code>secondary-button</code>을 사용한다.</li>
+<li>화면은 카드, 패널, 세그먼트 버튼, 리스트 카드, 바텀시트, 모달 카드로 구성된다.</li>
+<li>모바일 대응을 고려해 하단/중앙 모달, 카드형 리스트, 큰 터치 영역을 사용한다.</li>
+<li>일부 커뮤니티/댓글/채팅 UI는 인스타그램식 피드·댓글·DM 흐름을 참고한 형태다.</li>
+</ul>
+<h3>공통 이동 버튼</h3>
+<table>
+<thead>
+<tr>
+<th>버튼</th>
+<th>위치</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Rec♡Date</code> 로고</td>
+<td>상단 헤더</td>
+<td>홈 화면으로 이동</td>
+</tr>
+<tr>
+<td>홈</td>
+<td>상단 내비게이션</td>
+<td>홈 화면으로 이동</td>
+</tr>
+<tr>
+<td>커뮤니티</td>
+<td>상단 내비게이션</td>
+<td>커뮤니티 화면으로 이동</td>
+</tr>
+<tr>
+<td>코스 추천</td>
+<td>상단 내비게이션</td>
+<td>추천 조건 화면으로 이동</td>
+</tr>
+<tr>
+<td>TripTI</td>
+<td>상단 내비게이션</td>
+<td>TripTI 화면으로 이동</td>
+</tr>
+<tr>
+<td>찜</td>
+<td>상단 내비게이션</td>
+<td>찜한 장소 화면으로 이동</td>
+</tr>
+<tr>
+<td>내 코스</td>
+<td>상단 내비게이션/플로팅 버튼</td>
+<td>저장한 코스 화면으로 이동</td>
+</tr>
+<tr>
+<td>로그인</td>
+<td>상단 내비게이션</td>
+<td>로그인 화면으로 이동</td>
+</tr>
+<tr>
+<td>마이페이지</td>
+<td>로그인 후 상단 내비게이션</td>
+<td>마이페이지 화면으로 이동</td>
+</tr>
+<tr>
+<td><code>← 메인 화면으로 돌아가기</code></td>
+<td>각 주요 화면 상단</td>
+<td>홈 화면으로 이동</td>
+</tr>
+</tbody></table>
+<h3>공통 상태/보조 기능</h3>
+<ul>
+<li>로그인 토큰이 있으면 로그인 버튼 대신 마이페이지 버튼을 보여준다.</li>
+<li>비로그인 상태에서 인증이 필요한 기능을 누르면 로그인 화면으로 보낸다.</li>
+<li>하단/상단 커뮤니티 버튼에는 안 읽은 채팅 배지가 붙을 수 있다.</li>
+<li>모바일 앱 환경에서는 상태바 색상, 뒤로가기 버튼, 모달 닫기 흐름을 별도로 처리한다.</li>
+<li><code>Esc</code> 키로 댓글 시트가 열린 상태이면 닫을 수 있다.</li>
+</ul>
+<h2>2. 전체 사용자 흐름</h2>
+<pre class="mermaid-block"><code>flowchart TD
+  A[&quot;앱 진입&quot;] --&gt; B[&quot;홈&quot;]
+  B --&gt; C[&quot;도시/카테고리 선택&quot;]
+  C --&gt; D[&quot;장소 둘러보기&quot;]
+  D --&gt; E[&quot;장소 상세&quot;]
+  E --&gt; F[&quot;찜하기 / 장소 리뷰 / 이 장소로 추천&quot;]
+  F --&gt; G[&quot;빠른 조건 모달&quot;]
+  G --&gt; H[&quot;추천 결과&quot;]
+  B --&gt; I[&quot;RecoDate 추천받기&quot;]
+  I --&gt; J[&quot;추천 조건 입력&quot;]
+  J --&gt; H
+  H --&gt; K[&quot;코스 흐름 보기&quot;]
+  H --&gt; L[&quot;결과 저장&quot;]
+  H --&gt; M[&quot;공유 / 친구 공유 / 커뮤니티 공유&quot;]
+  L --&gt; N[&quot;내 코스&quot;]
+  N --&gt; H
+  B --&gt; O[&quot;TripTI&quot;]
+  O --&gt; P[&quot;15문항 답변&quot;]
+  P --&gt; Q[&quot;TripTI 결과&quot;]
+  Q --&gt; J
+  B --&gt; R[&quot;커뮤니티&quot;]
+  R --&gt; S[&quot;피드&quot;]
+  R --&gt; T[&quot;친구/채팅&quot;]
+  S --&gt; U[&quot;댓글/좋아요/담기/신고/차단&quot;]
+  T --&gt; V[&quot;친구 요청/채팅/코스 첨부&quot;]
+  B --&gt; W[&quot;마이페이지&quot;]
+  W --&gt; X[&quot;프로필 수정/계정 정보/좋아요 피드/차단 관리/내 피드&quot;]</code></pre>
+
+
+<h2>3. 홈 화면</h2>
+<h3>디자인</h3>
+<ul>
+<li>큰 히어로 영역에 <code>오늘의 데이트, 어느 도시에서 시작할까요?</code> 문구와 브랜드 CTA가 있다.</li>
+<li>TripTI 카드, 지역 선택 그리드, 카테고리 그리드, 홈 커뮤니티 피드가 이어진다.</li>
+<li>지역 버튼은 둥근 카드형 버튼이고, 선택된 지역은 강조된다.</li>
+</ul>
+<h3>기능</h3>
+<ul>
+<li>앱의 시작 허브 역할을 한다.</li>
+<li>도시/지역을 선택하면 해당 지역 기준으로 장소 카테고리 섹션이 열린다.</li>
+<li>카테고리를 누르면 장소 둘러보기 화면으로 이동한다.</li>
+<li>최근 커뮤니티 피드 일부를 홈에 노출한다.</li>
+</ul>
+<h3>버튼/컨트롤</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RecoDate 나만의 코스 추천받기</code></td>
+<td>코스 추천 화면으로 이동</td>
+</tr>
+<tr>
+<td><code>TripTI 여행 취향 테스트</code></td>
+<td>TripTI 화면으로 이동</td>
+</tr>
+<tr>
+<td>지역 버튼 <code>전국, 서울, 부산, 대구, 인천, 광주, 대전, 울산, 세종, 경기, 강원, 충청도, 전라도, 경상도, 제주</code></td>
+<td>둘러보기 기준 지역 선택</td>
+</tr>
+<tr>
+<td>카테고리 <code>전체</code></td>
+<td>선택 지역의 전체 장소 조회</td>
+</tr>
+<tr>
+<td>카테고리 <code>음식점</code></td>
+<td>음식점 장소 조회</td>
+</tr>
+<tr>
+<td>카테고리 <code>카페</code></td>
+<td>카페 장소 조회</td>
+</tr>
+<tr>
+<td>카테고리 <code>야외 액티비티</code></td>
+<td>야외 장소 조회</td>
+</tr>
+<tr>
+<td>카테고리 <code>실내 액티비티</code></td>
+<td>실내 활동 장소 조회</td>
+</tr>
+<tr>
+<td>카테고리 <code>문화/전시</code></td>
+<td>문화/전시 장소 조회</td>
+</tr>
+<tr>
+<td>카테고리 <code>마무리/산책</code></td>
+<td>산책/마무리 장소 조회</td>
+</tr>
+<tr>
+<td>카테고리 <code>술집</code></td>
+<td>술집 장소 조회</td>
+</tr>
+<tr>
+<td><code>전체 보기 ›</code></td>
+<td>커뮤니티 화면으로 이동</td>
+</tr>
+<tr>
+<td>홈 커뮤니티 피드 카드</td>
+<td>코스 게시물이면 코스 상세 열기, 일반 글이면 피드 동작 수행</td>
+</tr>
+</tbody></table>
+<h2>4. 커뮤니티 화면</h2>
+<h3>디자인</h3>
+<ul>
+<li>상단에 커뮤니티 제목과 설명이 있고, <code>친구 / 피드</code> 세그먼트 탭이 있다.</li>
+<li>피드는 카드형 게시물 리스트다.</li>
+<li>친구 탭은 검색창, 받은 요청, 친구 리스트로 구성된다.</li>
+</ul>
+<h3>흐름</h3>
+<pre class="mermaid-block"><code>flowchart TD
+  A[&quot;커뮤니티 진입&quot;] --&gt; B{&quot;탭 선택&quot;}
+  B --&gt; C[&quot;피드 탭&quot;]
+  B --&gt; D[&quot;친구 탭&quot;]
+  C --&gt; E[&quot;글·사진 올리기&quot;]
+  C --&gt; F[&quot;피드 카드 보기&quot;]
+  F --&gt; G[&quot;좋아요 / 댓글 / 담기 / 신고 / 차단&quot;]
+  F --&gt; H[&quot;코스 게시물 클릭&quot;]
+  H --&gt; I[&quot;추천 결과 화면에서 코스 열기&quot;]
+  D --&gt; J[&quot;닉네임 검색&quot;]
+  D --&gt; K[&quot;받은 요청 수락/거절&quot;]
+  D --&gt; L[&quot;친구 채팅 열기&quot;]</code></pre>
+
+
+<h3>피드 탭 버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>친구</code> 탭</td>
+<td>친구 검색/요청/채팅 패널 표시</td>
+</tr>
+<tr>
+<td><code>피드</code> 탭</td>
+<td>커뮤니티 피드 패널 표시</td>
+</tr>
+<tr>
+<td><code>+ 글·사진 올리기</code></td>
+<td>글·사진 올리기 모달 열기</td>
+</tr>
+<tr>
+<td>필터 <code>전체</code></td>
+<td>전체 공개 및 볼 수 있는 피드 조회</td>
+</tr>
+<tr>
+<td>필터 <code>친구</code></td>
+<td>친구 공개/친구 범위 피드 조회</td>
+</tr>
+<tr>
+<td>정렬 <code>최신순</code></td>
+<td>최신 게시물 기준 정렬</td>
+</tr>
+<tr>
+<td>정렬 <code>인기순</code></td>
+<td>좋아요/인기 기준 정렬</td>
+</tr>
+<tr>
+<td>코스 피드 카드</td>
+<td>코스 상세를 추천 결과 화면에서 열기</td>
+</tr>
+<tr>
+<td><code>내 코스로 담기</code></td>
+<td>해당 코스 JSON을 내 코스 localStorage에 저장</td>
+</tr>
+<tr>
+<td>좋아요 버튼</td>
+<td>게시물 좋아요 토글</td>
+</tr>
+<tr>
+<td>댓글 버튼</td>
+<td>댓글 바텀시트 열기</td>
+</tr>
+<tr>
+<td>삭제 버튼</td>
+<td>내 게시물 삭제</td>
+</tr>
+<tr>
+<td>신고 버튼</td>
+<td>신고 모달 열기</td>
+</tr>
+<tr>
+<td>차단 버튼</td>
+<td>작성자 차단 후 피드에서 숨김</td>
+</tr>
+<tr>
+<td>프로필/작성자 영역</td>
+<td>사용자 프로필 모달 열기</td>
+</tr>
+</tbody></table>
+<h3>친구 탭 버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>닉네임 검색 입력</td>
+<td>검색어 입력</td>
+</tr>
+<tr>
+<td><code>검색</code></td>
+<td>사용자 검색 API 호출</td>
+</tr>
+<tr>
+<td>검색 결과 사용자 행</td>
+<td>사용자 프로필 모달 열기</td>
+</tr>
+<tr>
+<td><code>친구 요청</code></td>
+<td>해당 사용자에게 친구 요청</td>
+</tr>
+<tr>
+<td><code>수락</code></td>
+<td>받은 친구 요청 수락</td>
+</tr>
+<tr>
+<td><code>거절</code></td>
+<td>받은 친구 요청 거절</td>
+</tr>
+<tr>
+<td>친구 행 채팅 버튼</td>
+<td>해당 친구와 채팅 모달 열기</td>
+</tr>
+<tr>
+<td>친구 행 프로필 영역</td>
+<td>사용자 프로필 모달 열기</td>
+</tr>
+<tr>
+<td>안 읽음 배지</td>
+<td>친구별 안 읽은 채팅 수 표시</td>
+</tr>
+</tbody></table>
+<h2>5. 글·사진 올리기 모달</h2>
+<h3>디자인</h3>
+<ul>
+<li>중앙 카드형 모달.</li>
+<li>텍스트 입력, 사진 첨부 버튼, 공개 범위 세그먼트, 하단 액션 버튼으로 구성된다.</li>
+</ul>
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>내용 입력창</td>
+<td>글 본문 입력, 최대 500자</td>
+</tr>
+<tr>
+<td><code>사진 찍기</code></td>
+<td>카메라 파일 입력 열기</td>
+</tr>
+<tr>
+<td><code>갤러리에서 선택</code></td>
+<td>사진 파일 선택 열기</td>
+</tr>
+<tr>
+<td>사진 미리보기 <code>×</code></td>
+<td>선택한 사진 제거</td>
+</tr>
+<tr>
+<td>공개 범위 <code>전체 공개</code></td>
+<td>public 피드로 게시</td>
+</tr>
+<tr>
+<td>공개 범위 <code>친구만</code></td>
+<td>friends 피드로 게시</td>
+</tr>
+<tr>
+<td><code>취소</code></td>
+<td>모달 닫기</td>
+</tr>
+<tr>
+<td><code>올리기</code></td>
+<td>글/사진 게시물 생성</td>
+</tr>
+<tr>
+<td>우상단 <code>×</code></td>
+<td>모달 닫기</td>
+</tr>
+<tr>
+<td>바깥 배경 클릭</td>
+<td>모달 닫기</td>
+</tr>
+</tbody></table>
+<h2>6. 댓글 바텀시트</h2>
+<h3>디자인</h3>
+<ul>
+<li>모바일 댓글창처럼 아래에서 올라오는 시트 형태다.</li>
+<li>상단 그립, 제목, 닫기 버튼, 댓글 목록, 빠른 이모지 바, 입력창으로 구성된다.</li>
+</ul>
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>상단 그립</td>
+<td>댓글 시트 닫기</td>
+</tr>
+<tr>
+<td>우상단 <code>×</code></td>
+<td>댓글 시트 닫기</td>
+</tr>
+<tr>
+<td>댓글 목록</td>
+<td>댓글과 작성자, 시간, 삭제/신고/답글 동작 표시</td>
+</tr>
+<tr>
+<td><code>답글 달기</code></td>
+<td>입력창에 <code>@닉네임</code> 멘션 삽입</td>
+</tr>
+<tr>
+<td>댓글 안의 <code>@아이디/닉네임</code></td>
+<td>해당 사용자 프로필 열기</td>
+</tr>
+<tr>
+<td>내 댓글 삭제</td>
+<td>내 댓글 삭제</td>
+</tr>
+<tr>
+<td>댓글 신고</td>
+<td>신고 모달 열기</td>
+</tr>
+<tr>
+<td>빠른 반응 <code>💗 🙌 🔥 👏 🥹 😍 😮 😂</code></td>
+<td>입력창에 이모지 삽입</td>
+</tr>
+<tr>
+<td>댓글 입력창</td>
+<td>최대 300자 댓글 작성</td>
+</tr>
+<tr>
+<td>종이비행기 버튼</td>
+<td>댓글 등록</td>
+</tr>
+<tr>
+<td>바깥 배경 클릭</td>
+<td>댓글 시트 닫기</td>
+</tr>
+<tr>
+<td><code>Esc</code></td>
+<td>댓글 시트 닫기</td>
+</tr>
+</tbody></table>
+<h2>7. 사용자 프로필 모달</h2>
+<h3>디자인</h3>
+<ul>
+<li>사용자 아바타, 닉네임, TripTI, 통계, 액션 버튼, 공유한 피드 목록을 보여주는 모달이다.</li>
+</ul>
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>우상단 <code>×</code></td>
+<td>모달 닫기</td>
+</tr>
+<tr>
+<td>통계 <code>피드</code></td>
+<td>작성 게시물 수 표시</td>
+</tr>
+<tr>
+<td>통계 <code>친구</code></td>
+<td>친구 수 표시</td>
+</tr>
+<tr>
+<td>통계 <code>받은 하트</code></td>
+<td>받은 좋아요 수 표시</td>
+</tr>
+<tr>
+<td><code>친구 요청</code></td>
+<td>상대에게 친구 요청</td>
+</tr>
+<tr>
+<td><code>수락</code></td>
+<td>상대 요청 수락</td>
+</tr>
+<tr>
+<td><code>거절</code></td>
+<td>상대 요청 거절</td>
+</tr>
+<tr>
+<td><code>채팅하기</code></td>
+<td>채팅 모달 열기</td>
+</tr>
+<tr>
+<td><code>친구 끊기</code></td>
+<td>친구 관계 삭제</td>
+</tr>
+<tr>
+<td><code>차단</code></td>
+<td>사용자 차단</td>
+</tr>
+<tr>
+<td><code>차단 해제</code></td>
+<td>차단 해제</td>
+</tr>
+<tr>
+<td><code>신고</code></td>
+<td>사용자 신고 모달 열기</td>
+</tr>
+<tr>
+<td>공유한 피드 카드</td>
+<td>코스 게시물인 경우 코스 상세 열기</td>
+</tr>
+</tbody></table>
+<h2>8. 채팅 모달</h2>
+<h3>디자인</h3>
+<ul>
+<li>DM 형태의 대화창.</li>
+<li>상단 친구 아바타/닉네임, 메시지 영역, 코스 선택 패널, 사진 메뉴, 첨부 미리보기, 입력창으로 구성된다.</li>
+</ul>
+<h3>흐름</h3>
+<pre class="mermaid-block"><code>flowchart TD
+  A[&quot;친구 채팅 열기&quot;] --&gt; B[&quot;기존 메시지 조회&quot;]
+  B --&gt; C[&quot;3초마다 새 메시지 폴링&quot;]
+  C --&gt; D{&quot;메시지 작성&quot;}
+  D --&gt; E[&quot;텍스트 전송&quot;]
+  D --&gt; F[&quot;내 코스 첨부&quot;]
+  D --&gt; G[&quot;사진 첨부&quot;]
+  F --&gt; H[&quot;코스 카드 메시지&quot;]
+  G --&gt; I[&quot;이미지 메시지&quot;]
+  H --&gt; J[&quot;코스 카드 클릭 시 추천 결과 화면에서 열기&quot;]</code></pre>
+
+
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>친구 아바타</td>
+<td>채팅 닫고 사용자 프로필 모달 열기</td>
+</tr>
+<tr>
+<td>코스 첨부 아이콘</td>
+<td>저장한 내 코스 목록 열기/닫기</td>
+</tr>
+<tr>
+<td>코스 선택 항목</td>
+<td>채팅 첨부 코스로 선택</td>
+</tr>
+<tr>
+<td>사진 아이콘</td>
+<td>사진 메뉴 열기/닫기</td>
+</tr>
+<tr>
+<td><code>사진 찍기</code></td>
+<td>카메라 입력 열기</td>
+</tr>
+<tr>
+<td><code>사진 보내기</code></td>
+<td>갤러리 파일 선택 열기</td>
+</tr>
+<tr>
+<td>첨부 코스 <code>×</code></td>
+<td>코스 첨부 제거</td>
+</tr>
+<tr>
+<td>첨부 사진 <code>×</code></td>
+<td>사진 첨부 제거</td>
+</tr>
+<tr>
+<td>메시지 입력창</td>
+<td>최대 500자 메시지 입력</td>
+</tr>
+<tr>
+<td><code>전송</code></td>
+<td>텍스트/코스/사진 메시지 전송</td>
+</tr>
+<tr>
+<td>코스 카드 메시지</td>
+<td>추천 결과 화면에서 해당 코스 열기</td>
+</tr>
+<tr>
+<td>우상단 <code>×</code></td>
+<td>채팅 모달 닫기</td>
+</tr>
+<tr>
+<td>바깥 배경 클릭</td>
+<td>채팅 모달 닫기</td>
+</tr>
+</tbody></table>
+<h2>9. 친구에게 코스 공유 모달</h2>
+<h3>디자인</h3>
+<ul>
+<li>코스 공유용 친구 선택 모달이다.</li>
+<li>공유할 코스 요약과 친구 목록, 보내기 버튼을 보여준다.</li>
+</ul>
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>친구 행</td>
+<td>해당 친구에게 코스를 채팅 메시지로 전송</td>
+</tr>
+<tr>
+<td><code>보내기</code></td>
+<td><code>이 코스 어때?</code> 텍스트와 코스 JSON을 채팅으로 전송</td>
+</tr>
+<tr>
+<td><code>취소</code></td>
+<td>모달 닫기</td>
+</tr>
+<tr>
+<td>우상단 <code>×</code></td>
+<td>모달 닫기</td>
+</tr>
+<tr>
+<td>바깥 배경 클릭</td>
+<td>모달 닫기</td>
+</tr>
+</tbody></table>
+<p>저장 위치:</p>
+<ul>
+<li>친구에게 공유한 코스는 <code>chat_messages.course_json</code>에 저장된다.</li>
+</ul>
+<h2>10. 커뮤니티 코스 공유 모달</h2>
+<h3>디자인</h3>
+<ul>
+<li>코스 제목, 한 줄 소개, 공개 범위를 입력하는 카드형 모달이다.</li>
+</ul>
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>제목 입력</td>
+<td>공유 게시물 제목 입력, 최대 60자</td>
+</tr>
+<tr>
+<td>한 줄 소개 입력</td>
+<td>코스 설명/후기 입력, 최대 200자</td>
+</tr>
+<tr>
+<td><code>전체 공개</code></td>
+<td>모든 사용자 피드에 노출</td>
+</tr>
+<tr>
+<td><code>친구만</code></td>
+<td>친구 범위 피드에 노출</td>
+</tr>
+<tr>
+<td><code>취소</code></td>
+<td>모달 닫기</td>
+</tr>
+<tr>
+<td><code>공유하기</code></td>
+<td>커뮤니티 코스 게시물 생성</td>
+</tr>
+<tr>
+<td>우상단 <code>×</code></td>
+<td>모달 닫기</td>
+</tr>
+<tr>
+<td>바깥 배경 클릭</td>
+<td>모달 닫기</td>
+</tr>
+</tbody></table>
+<p>저장 위치:</p>
+<ul>
+<li>게시물은 <code>community_posts</code>에 저장된다.</li>
+<li>코스 스냅샷은 <code>community_posts.course_json</code>에 저장된다.</li>
+</ul>
+<h2>11. TripTI 화면</h2>
+<h3>디자인</h3>
+<ul>
+<li>상단 진행률 <code>0 / 15</code>와 진행 바가 있다.</li>
+<li>히어로 설명 아래에 질문 카드들이 렌더링된다.</li>
+<li>결과는 별도 결과 카드로 표시된다.</li>
+</ul>
+<h3>흐름</h3>
+<pre class="mermaid-block"><code>flowchart TD
+  A[&quot;TripTI 시작&quot;] --&gt; B[&quot;15개 질문 표시&quot;]
+  B --&gt; C[&quot;각 질문 A/B 선택&quot;]
+  C --&gt; D[&quot;결과 보기&quot;]
+  D --&gt; E[&quot;TripTI 유형 산출&quot;]
+  E --&gt; F[&quot;결과 저장&quot;]
+  F --&gt; G[&quot;TripTI로 코스 추천받기&quot;]
+  D --&gt; H[&quot;다시 하기&quot;]</code></pre>
+
+
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>각 질문 A/B 라디오</td>
+<td>여행 취향 선택</td>
+</tr>
+<tr>
+<td>결과 보기 버튼</td>
+<td>모든 답변을 바탕으로 TripTI 결과 산출</td>
+</tr>
+<tr>
+<td><code>TripTI로 코스 추천받기</code></td>
+<td>추천 화면으로 이동하고 TripTI 선호 조건 반영</td>
+</tr>
+<tr>
+<td><code>다시 하기</code></td>
+<td>기존 TripTI 결과 초기화 후 문항 다시 표시</td>
+</tr>
+<tr>
+<td><code>← 메인 화면으로 돌아가기</code></td>
+<td>홈으로 이동</td>
+</tr>
+</tbody></table>
+<h3>TripTI 결과 활용</h3>
+<ul>
+<li>결과는 로그인 사용자의 서버 TripTI 결과로 저장될 수 있다.</li>
+<li>로컬 캐시에도 저장된다.</li>
+<li>추천 조건 화면의 <code>TripTI 결과 적용</code> 체크박스와 연결된다.</li>
+</ul>
+<h2>12. 장소 둘러보기 화면</h2>
+<h3>디자인</h3>
+<ul>
+<li>상단에 선택 카테고리 제목과 설명, <code>RecoDate 코스 추천받기</code> 버튼이 있다.</li>
+<li>찜한 장소 트레이가 조건부로 표시된다.</li>
+<li>장소 카드는 사진, 이름, 카테고리, 주소/리뷰/영업 상태/검색/찜 버튼을 포함한다.</li>
+</ul>
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RecoDate 코스 추천받기</code></td>
+<td>추천 화면으로 이동</td>
+</tr>
+<tr>
+<td>장소 카드</td>
+<td>장소 상세 모달 열기</td>
+</tr>
+<tr>
+<td>네이버 검색 버튼</td>
+<td>새 탭에서 네이버 장소 검색</td>
+</tr>
+<tr>
+<td>Google 리뷰/지도 링크</td>
+<td>외부 Google Maps 링크 열기</td>
+</tr>
+<tr>
+<td>찜 <code>♡/♥</code></td>
+<td>장소 찜 추가/해제</td>
+</tr>
+<tr>
+<td><code>더 보기</code></td>
+<td>다음 장소 목록 추가 로드</td>
+</tr>
+<tr>
+<td><code>선택 도시로 다시 보기</code></td>
+<td>세부 지역 결과가 부족할 때 상위 도시 기준으로 재조회</td>
+</tr>
+<tr>
+<td>찜 트레이 체크박스</td>
+<td>코스 추천에 포함할 찜 장소 선택/해제</td>
+</tr>
+<tr>
+<td>찜 트레이 삭제 <code>×</code></td>
+<td>찜 목록에서 제거</td>
+</tr>
+<tr>
+<td><code>선택한 장소로 코스 추천받기</code></td>
+<td>선택한 찜 장소를 필수 방문 장소로 넣고 빠른 조건 모달 열기</td>
+</tr>
+</tbody></table>
+<h3>보조 기능</h3>
+<ul>
+<li>장소 사진은 Google/Naver 사진 메타데이터를 사용하고 실패 시 대체 이미지를 시도한다.</li>
+<li>장소 목록은 브라우저 캐시에 저장되어 같은 지역/카테고리 조회가 빨라진다.</li>
+<li>영업 상태는 가능한 경우 운영시간을 해석해 현재 영업 여부를 보여준다.</li>
+</ul>
+<h2>13. 장소 상세 모달</h2>
+<h3>디자인</h3>
+<ul>
+<li>큰 장소 사진/대체 이미지, 장소명, 주소/카테고리/리뷰/영업시간, 찜 버튼, 추천 버튼, RecoDate 리뷰 패널이 있다.</li>
+</ul>
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>우상단 <code>×</code></td>
+<td>모달 닫기</td>
+</tr>
+<tr>
+<td>찜 <code>♡/♥</code></td>
+<td>장소 찜 추가/해제</td>
+</tr>
+<tr>
+<td><code>이 장소로 코스 추천받기</code></td>
+<td>해당 장소를 필수 방문 장소로 넣고 빠른 조건 모달 열기</td>
+</tr>
+<tr>
+<td>Google Maps 링크</td>
+<td>외부 지도/리뷰 페이지 열기</td>
+</tr>
+<tr>
+<td>네이버 이미지 출처 링크</td>
+<td>외부 출처 페이지 열기</td>
+</tr>
+<tr>
+<td>RecoDate 별점 1~5</td>
+<td>내부 리뷰 별점 선택</td>
+</tr>
+<tr>
+<td>리뷰 입력창</td>
+<td>최대 500자 장소 리뷰 작성</td>
+</tr>
+<tr>
+<td><code>리뷰 등록</code></td>
+<td>장소 리뷰 작성 또는 기존 내 리뷰 수정</td>
+</tr>
+<tr>
+<td><code>내 리뷰 삭제</code></td>
+<td>내가 작성한 장소 리뷰 삭제</td>
+</tr>
+</tbody></table>
+<h3>RecoDate 리뷰 표시</h3>
+<ul>
+<li>평균 별점, 리뷰 수, 리뷰 목록을 표시한다.</li>
+<li>별점 버튼은 별 5개가 하나의 둥근 컨테이너 안에 들어간 형태다.</li>
+<li>본인 리뷰가 있으면 새로 쓰는 대신 수정 흐름으로 안내한다.</li>
+<li>차단 관계 사용자의 리뷰는 목록/평균에서 제외된다.</li>
+</ul>
+<h2>14. 찜한 장소 화면</h2>
+<h3>디자인</h3>
+<ul>
+<li><code>My Favorites</code> 헤더와 저장한 장소 카드 그리드로 구성된다.</li>
+<li>상단 CTA는 선택 상태에 따라 <code>장소를 선택해 주세요</code> 또는 선택 개수 기반 문구로 바뀐다.</li>
+</ul>
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>장소 체크박스</td>
+<td>코스 추천에 사용할 장소 선택/해제</td>
+</tr>
+<tr>
+<td>장소 카드</td>
+<td>장소 상세 모달 열기</td>
+</tr>
+<tr>
+<td>삭제</td>
+<td>찜 목록에서 제거</td>
+</tr>
+<tr>
+<td><code>장소를 선택해 주세요</code> / <code>선택한 장소로 코스 추천받기</code></td>
+<td>선택 장소가 있으면 빠른 조건 모달 열기</td>
+</tr>
+<tr>
+<td><code>← 메인 화면으로 돌아가기</code></td>
+<td>홈으로 이동</td>
+</tr>
+</tbody></table>
+<p>저장 위치:</p>
+<ul>
+<li>찜한 장소는 현재 브라우저 <code>localStorage</code>의 <code>recodate_bookmarked_places</code>에 저장된다.</li>
+</ul>
+<h2>15. 내 코스 화면</h2>
+<h3>디자인</h3>
+<ul>
+<li>저장한 코스를 카드 리스트로 보여준다.</li>
+<li>각 코스 카드에는 제목, 거리, 예산, 장소 순서, 액션 버튼이 있다.</li>
+</ul>
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>코스 카드</td>
+<td>추천 결과 화면에서 해당 코스 다시 열기</td>
+</tr>
+<tr>
+<td><code>공유</code></td>
+<td>Web Share API 또는 클립보드로 텍스트 공유</td>
+</tr>
+<tr>
+<td><code>친구에게 공유</code></td>
+<td>친구에게 코스 공유 모달 열기</td>
+</tr>
+<tr>
+<td><code>커뮤니티 공유</code></td>
+<td>커뮤니티 코스 공유 모달 열기</td>
+</tr>
+<tr>
+<td><code>삭제</code></td>
+<td>저장한 코스 삭제</td>
+</tr>
+<tr>
+<td>플로팅 <code>내 코스</code></td>
+<td>내 코스 화면으로 이동</td>
+</tr>
+<tr>
+<td>플로팅 숫자</td>
+<td>저장한 코스 개수 표시</td>
+</tr>
+</tbody></table>
+<p>저장 위치:</p>
+<ul>
+<li>내 코스는 현재 브라우저 <code>localStorage</code>의 <code>recodate_saved_courses</code>에 저장된다.</li>
+</ul>
+<h2>16. 마이페이지</h2>
+<h3>디자인</h3>
+<ul>
+<li>우상단 가로선 3개 계정 메뉴 버튼이 있다.</li>
+<li>프로필 사진, 닉네임, 닉네임 편집 아이콘, 커뮤니티 통계, 빠른 액션, 내가 올린 피드로 구성된다.</li>
+</ul>
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>우상단 더보기/가로선 3개</td>
+<td>계정 정보 모달 열기</td>
+</tr>
+<tr>
+<td>프로필 사진 버튼</td>
+<td>이미지 파일 선택으로 프로필 사진 변경</td>
+</tr>
+<tr>
+<td>닉네임 옆 볼펜 아이콘</td>
+<td>닉네임 수정 폼 표시</td>
+</tr>
+<tr>
+<td>닉네임 저장</td>
+<td>닉네임 변경 API 호출</td>
+</tr>
+<tr>
+<td>닉네임 취소</td>
+<td>편집 폼 닫기</td>
+</tr>
+<tr>
+<td>통계 <code>내 피드</code></td>
+<td>내가 올린 피드 수 표시</td>
+</tr>
+<tr>
+<td>통계 <code>친구</code></td>
+<td>친구 목록 모달 열기</td>
+</tr>
+<tr>
+<td>통계 <code>받은 하트</code></td>
+<td>받은 좋아요 수 표시</td>
+</tr>
+<tr>
+<td><code>좋아요 누른 피드</code></td>
+<td>좋아요 누른 피드 모달 열기</td>
+</tr>
+<tr>
+<td><code>차단한 사용자 관리 ›</code></td>
+<td>차단 사용자 모달 열기</td>
+</tr>
+<tr>
+<td>내가 올린 피드 카드</td>
+<td>피드 카드와 동일한 동작</td>
+</tr>
+<tr>
+<td><code>← 메인 화면으로 돌아가기</code></td>
+<td>홈으로 이동</td>
+</tr>
+</tbody></table>
+<h2>17. 계정 정보 모달</h2>
+<h3>디자인</h3>
+<ul>
+<li>마이페이지에서 제거된 계정 세부정보를 별도 모달로 보여준다.</li>
+</ul>
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>아이디</td>
+<td>로그인 ID 표시</td>
+</tr>
+<tr>
+<td>이메일</td>
+<td>이메일 표시</td>
+</tr>
+<tr>
+<td>전화번호</td>
+<td>전화번호 또는 미등록 표시</td>
+</tr>
+<tr>
+<td><code>로그아웃</code></td>
+<td>로그아웃 처리 후 모달 닫기</td>
+</tr>
+<tr>
+<td>우상단 <code>×</code></td>
+<td>모달 닫기</td>
+</tr>
+<tr>
+<td>바깥 배경 클릭</td>
+<td>모달 닫기</td>
+</tr>
+</tbody></table>
+<h2>18. 좋아요 누른 피드 모달</h2>
+<h3>디자인</h3>
+<ul>
+<li>좋아요한 피드를 카드 리스트로 보여주는 모달이다.</li>
+</ul>
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>피드 카드</td>
+<td>커뮤니티 피드 카드와 동일한 동작</td>
+</tr>
+<tr>
+<td>좋아요 버튼</td>
+<td>좋아요 토글</td>
+</tr>
+<tr>
+<td>댓글 버튼</td>
+<td>댓글 시트 열기</td>
+</tr>
+<tr>
+<td><code>내 코스로 담기</code></td>
+<td>코스 게시물을 내 코스로 저장</td>
+</tr>
+<tr>
+<td>우상단 <code>×</code></td>
+<td>모달 닫기</td>
+</tr>
+<tr>
+<td>바깥 배경 클릭</td>
+<td>모달 닫기</td>
+</tr>
+</tbody></table>
+<h2>19. 차단한 사용자 모달</h2>
+<h3>디자인</h3>
+<ul>
+<li>차단한 사용자 목록을 행 단위로 보여준다.</li>
+</ul>
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>차단 해제</code></td>
+<td>해당 사용자 차단 해제</td>
+</tr>
+<tr>
+<td>우상단 <code>×</code></td>
+<td>모달 닫기</td>
+</tr>
+<tr>
+<td>바깥 배경 클릭</td>
+<td>모달 닫기</td>
+</tr>
+</tbody></table>
+<h2>20. 로그인/회원가입 화면</h2>
+<h3>디자인</h3>
+<ul>
+<li>브랜드 로고가 있는 로그인 카드와, 숨겨진 회원가입 카드가 같은 화면 안에 있다.</li>
+<li>비밀번호 입력에는 눈 아이콘 버튼이 붙는다.</li>
+</ul>
+<h3>로그인 버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>이메일 입력</td>
+<td>로그인 이메일 입력</td>
+</tr>
+<tr>
+<td>비밀번호 입력</td>
+<td>로그인 비밀번호 입력</td>
+</tr>
+<tr>
+<td>비밀번호 보기 버튼</td>
+<td>password/text 타입 토글</td>
+</tr>
+<tr>
+<td><code>로그인 상태 유지하기</code></td>
+<td>localStorage 기반 장기 토큰 저장 여부 선택</td>
+</tr>
+<tr>
+<td><code>로그인</code></td>
+<td>로그인 API 호출</td>
+</tr>
+<tr>
+<td><code>회원가입</code></td>
+<td>회원가입 카드 표시</td>
+</tr>
+</tbody></table>
+<h3>회원가입 버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>이메일 입력</td>
+<td>가입 이메일</td>
+</tr>
+<tr>
+<td>비밀번호 입력</td>
+<td>8자 이상/특수문자 포함 조건 검증</td>
+</tr>
+<tr>
+<td>비밀번호 확인</td>
+<td>비밀번호 일치 검증</td>
+</tr>
+<tr>
+<td>각 비밀번호 보기 버튼</td>
+<td>password/text 타입 토글</td>
+</tr>
+<tr>
+<td>닉네임 입력</td>
+<td>표시 닉네임</td>
+</tr>
+<tr>
+<td>전화번호 입력</td>
+<td>숫자 입력 기반 전화번호</td>
+</tr>
+<tr>
+<td>서비스 이용약관 동의</td>
+<td>필수 체크</td>
+</tr>
+<tr>
+<td>개인정보 처리방침 동의</td>
+<td>필수 체크</td>
+</tr>
+<tr>
+<td>위치기반 서비스 이용 동의</td>
+<td>필수 체크</td>
+</tr>
+<tr>
+<td>만 14세 이상</td>
+<td>필수 체크</td>
+</tr>
+<tr>
+<td><code>가입하기</code></td>
+<td>회원가입 API 호출</td>
+</tr>
+</tbody></table>
+<h2>21. 코스 추천 화면</h2>
+<h3>디자인</h3>
+<ul>
+<li>추천 조건 패널, 추천 결과 패널, 코스 흐름/지도 패널을 단계별로 보여준다.</li>
+<li>결과는 카드 캐러셀처럼 한 번에 하나의 코스를 크게 보여주고 좌우 이동 버튼/스와이프를 지원한다.</li>
+</ul>
+<h3>추천 조건 흐름</h3>
+<pre class="mermaid-block"><code>flowchart TD
+  A[&quot;추천 화면&quot;] --&gt; B[&quot;시작 장소 선택&quot;]
+  B --&gt; C[&quot;지역 선택&quot;]
+  C --&gt; D[&quot;이동수단 선택&quot;]
+  D --&gt; E{&quot;빠른 추천 / 상세 설정&quot;}
+  E --&gt; F[&quot;빠른 추천&quot;]
+  E --&gt; G[&quot;상세 조건&quot;]
+  G --&gt; H[&quot;날짜/날씨/숙박/식사/필수장소/숙소/반경/경유지&quot;]
+  F --&gt; I[&quot;추천 코스 만들기&quot;]
+  H --&gt; I
+  I --&gt; J[&quot;추천 결과 카드&quot;]</code></pre>
+
+
+<h3>조건 입력 버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>시작 장소 입력창</td>
+<td>시작 장소 선택 모달 열기</td>
+</tr>
+<tr>
+<td>시작 장소 <code>검색</code></td>
+<td>시작 장소 선택 모달 열기</td>
+</tr>
+<tr>
+<td><code>시작 장소 없이 추천받기</code></td>
+<td>선택한 시작 장소 제거</td>
+</tr>
+<tr>
+<td>추천 지역 버튼</td>
+<td>지역 선택 모달 열기</td>
+</tr>
+<tr>
+<td>이동수단 <code>도보</code></td>
+<td>도보 경로 기준 추천</td>
+</tr>
+<tr>
+<td>이동수단 <code>대중교통</code></td>
+<td>대중교통 기준 추천</td>
+</tr>
+<tr>
+<td>이동수단 <code>자차</code></td>
+<td>자동차 기준 추천</td>
+</tr>
+<tr>
+<td><code>TripTI 결과 적용</code></td>
+<td>TripTI 선호 카테고리를 추천 조건에 반영</td>
+</tr>
+<tr>
+<td><code>현재 운영 중인 장소만 추천받기</code></td>
+<td>영업 중 장소 필터 적용</td>
+</tr>
+<tr>
+<td><code>근처 동까지 코스에 포함시키기</code></td>
+<td>동 단위 선택 시 주변 동 후보 포함</td>
+</tr>
+<tr>
+<td>추천 방식 <code>빠른 추천</code></td>
+<td>기본 조건으로 빠르게 추천</td>
+</tr>
+<tr>
+<td>추천 방식 <code>상세 설정</code></td>
+<td>상세 조건 영역 표시</td>
+</tr>
+<tr>
+<td><code>추천 코스 만들기</code></td>
+<td>추천 API 호출</td>
+</tr>
+</tbody></table>
+<h3>상세 설정 버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>날짜 선택</code></td>
+<td>달력 열기/닫기</td>
+</tr>
+<tr>
+<td>달력 날짜 버튼</td>
+<td>여행 날짜 선택</td>
+</tr>
+<tr>
+<td><code>날씨 추천코스에 반영하기</code></td>
+<td>선택 날짜의 예보를 추천에 반영</td>
+</tr>
+<tr>
+<td><code>선택한 도시에서 숙박함</code></td>
+<td>숙박/저녁/술집/숙소 흐름에 영향</td>
+</tr>
+<tr>
+<td><code>점심 추천</code></td>
+<td>점심 장소 포함</td>
+</tr>
+<tr>
+<td><code>카페 추천</code></td>
+<td>카페 포함</td>
+</tr>
+<tr>
+<td><code>저녁 추천</code></td>
+<td>저녁 장소 포함</td>
+</tr>
+<tr>
+<td><code>음주함</code></td>
+<td>마지막에 술집 포함</td>
+</tr>
+<tr>
+<td><code>프랜차이즈 제외</code></td>
+<td>음식점 후보에서 프랜차이즈 제외</td>
+</tr>
+<tr>
+<td>여행 시작 시간 입력</td>
+<td>일정 길이/구성에 반영</td>
+</tr>
+<tr>
+<td><code>무관</code></td>
+<td>시작 시간 조건 비활성화</td>
+</tr>
+<tr>
+<td>꼭 들를 장소 검색 입력</td>
+<td>필수 방문 장소 검색어</td>
+</tr>
+<tr>
+<td>꼭 들를 장소 <code>검색</code></td>
+<td>필수 장소 후보 조회</td>
+</tr>
+<tr>
+<td>필수 장소 후보 선택</td>
+<td>선택 장소 목록에 추가</td>
+</tr>
+<tr>
+<td>필수 장소 제거</td>
+<td>필수 장소 목록에서 삭제</td>
+</tr>
+<tr>
+<td>숙소 검색 입력</td>
+<td>숙소/종료 장소 검색어</td>
+</tr>
+<tr>
+<td>숙소 <code>검색</code></td>
+<td>숙소 후보 조회</td>
+</tr>
+<tr>
+<td>숙소 후보 선택</td>
+<td>숙소/종료 장소로 설정</td>
+</tr>
+<tr>
+<td>숙소 제거</td>
+<td>선택 숙소 해제</td>
+</tr>
+<tr>
+<td>음식 종류 선택</td>
+<td>점심 음식 카테고리</td>
+</tr>
+<tr>
+<td>저녁 음식 종류 선택</td>
+<td>저녁 음식 카테고리</td>
+</tr>
+<tr>
+<td>반경 슬라이더</td>
+<td>장소 탐색 반경 조정</td>
+</tr>
+<tr>
+<td>경유지 수 선택</td>
+<td>코스에 포함할 장소 수 조정</td>
+</tr>
+<tr>
+<td><code>음식점 포함</code></td>
+<td>음식점 포함 여부</td>
+</tr>
+</tbody></table>
+<h2>22. 시작 장소 선택 모달</h2>
+<h3>디자인</h3>
+<ul>
+<li>검색창, 후보 지도형 영역, 후보 장소 목록으로 구성된다.</li>
+</ul>
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>검색 입력</td>
+<td>시작 장소 검색어 입력</td>
+</tr>
+<tr>
+<td><code>검색</code></td>
+<td>장소 검색 API 호출</td>
+</tr>
+<tr>
+<td>후보 장소</td>
+<td>시작 장소로 선택</td>
+</tr>
+<tr>
+<td>후보 지도 마커/표시</td>
+<td>후보 위치 흐름 시각화</td>
+</tr>
+<tr>
+<td>우상단 <code>×</code></td>
+<td>모달 닫기</td>
+</tr>
+<tr>
+<td>바깥 배경 클릭</td>
+<td>모달 닫기</td>
+</tr>
+</tbody></table>
+<h2>23. 지역 선택 모달</h2>
+<h3>디자인</h3>
+<ul>
+<li>좌측 시도/권역 리스트, 우측 상세 지역 리스트로 구성된다.</li>
+<li>동 단위까지 있는 지역은 시군구 선택 후 동 목록으로 내려간다.</li>
+</ul>
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>좌측 시도/권역 버튼</td>
+<td>해당 지역 그룹 선택</td>
+</tr>
+<tr>
+<td><code>서울 전체</code> 등 전체 버튼</td>
+<td>해당 시도 전체 선택</td>
+</tr>
+<tr>
+<td>시군구 버튼</td>
+<td>시군구 선택 또는 동 목록 진입</td>
+</tr>
+<tr>
+<td>동 버튼</td>
+<td>동 단위 추천 지역 선택</td>
+</tr>
+<tr>
+<td><code>← 시군구 목록</code></td>
+<td>동 목록에서 시군구 목록으로 돌아감</td>
+</tr>
+<tr>
+<td>우상단 <code>×</code></td>
+<td>지역 모달 닫기</td>
+</tr>
+<tr>
+<td>바깥 배경 클릭</td>
+<td>지역 모달 닫기</td>
+</tr>
+</tbody></table>
+<h2>24. 추천 결과 코스 카드</h2>
+<h3>디자인</h3>
+<ul>
+<li>상단 장소 사진 스트립, 코스 제목, 거리/예산/점수, 장소 순서 리스트, 액션 버튼으로 구성된다.</li>
+<li>좌우 버튼과 카드 스와이프로 추천 코스를 넘길 수 있다.</li>
+</ul>
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>이전 <code>←</code></td>
+<td>이전 추천 코스 보기</td>
+</tr>
+<tr>
+<td>다음 <code>→</code></td>
+<td>다음 추천 코스 보기</td>
+</tr>
+<tr>
+<td>카드 스와이프</td>
+<td>이전/다음 코스로 이동</td>
+</tr>
+<tr>
+<td><code>코스 흐름 보기</code></td>
+<td>선택 코스의 상세 흐름/지도 단계로 이동</td>
+</tr>
+<tr>
+<td><code>+ 일정 추가</code></td>
+<td>코스에 새 장소 추가 검색 UI 열기</td>
+</tr>
+<tr>
+<td><code>결과 저장하기</code></td>
+<td>내 코스 localStorage에 저장 후 내 코스 화면 이동</td>
+</tr>
+<tr>
+<td><code>공유</code></td>
+<td>Web Share API 또는 클립보드 복사</td>
+</tr>
+<tr>
+<td><code>친구에게 공유</code></td>
+<td>친구에게 코스 공유 모달 열기</td>
+</tr>
+<tr>
+<td><code>커뮤니티 공유</code></td>
+<td>커뮤니티 코스 공유 모달 열기</td>
+</tr>
+<tr>
+<td>장소 <code>정보</code></td>
+<td>장소 상세 모달 열기</td>
+</tr>
+<tr>
+<td>장소 <code>변경</code></td>
+<td>대체 장소 검색/자동 추천 에디터 열기</td>
+</tr>
+<tr>
+<td>장소 <code>삭제</code></td>
+<td>해당 장소를 코스에서 제거 후 재계산</td>
+</tr>
+<tr>
+<td>장소 더보기/점 3개</td>
+<td>모바일 장소 액션 열기/닫기</td>
+</tr>
+<tr>
+<td>장소 드래그/길게 누르기</td>
+<td>코스 순서 변경 후 재계산</td>
+</tr>
+<tr>
+<td>Google 리뷰 링크</td>
+<td>외부 지도/리뷰 열기</td>
+</tr>
+</tbody></table>
+<h3>일정 추가/변경 에디터 버튼</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>자동 추천</td>
+<td>현재 장소와 비슷한 대체 장소 자동 선택</td>
+</tr>
+<tr>
+<td>대체 장소 검색 입력</td>
+<td>직접 대체 장소 검색어 입력</td>
+</tr>
+<tr>
+<td>대체 장소 <code>검색</code></td>
+<td>장소 검색 API 호출</td>
+</tr>
+<tr>
+<td>대체 장소 후보</td>
+<td>해당 장소로 교체 후 코스 재계산</td>
+</tr>
+<tr>
+<td>가까운 유사 장소 후보</td>
+<td>주변 유사 장소로 교체</td>
+</tr>
+<tr>
+<td>새 일정 카테고리 선택</td>
+<td>추가할 장소 카테고리 선택</td>
+</tr>
+<tr>
+<td>새 일정 검색</td>
+<td>추가할 장소 검색</td>
+</tr>
+<tr>
+<td>새 일정 후보</td>
+<td>코스에 장소 추가 후 재계산</td>
+</tr>
+</tbody></table>
+<h2>25. 코스 흐름/지도 화면</h2>
+<h3>디자인</h3>
+<ul>
+<li>선택한 코스의 흐름을 지도/타임라인 카드로 보여준다.</li>
+<li>TMAP JS 지도가 가능하면 인터랙티브 지도, 실패하면 정적 지도/흐름 카드로 대체한다.</li>
+<li>이동 시간, 거리, 비용 요약과 길찾기 버튼을 제공한다.</li>
+</ul>
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>← 추천 결과</code></td>
+<td>추천 결과 카드 단계로 돌아가기</td>
+</tr>
+<tr>
+<td><code>코스 저장</code></td>
+<td>현재 선택 코스를 내 코스에 저장</td>
+</tr>
+<tr>
+<td>장소 카드 <code>정보</code></td>
+<td>장소 상세 모달 열기</td>
+</tr>
+<tr>
+<td>장소 카드 <code>찜</code></td>
+<td>장소 찜 추가/해제</td>
+</tr>
+<tr>
+<td>장소 순서 드래그</td>
+<td>흐름 화면에서 코스 순서 변경</td>
+</tr>
+<tr>
+<td><code>전체 코스 길안내</code></td>
+<td>네이버 지도 길찾기 링크 열기</td>
+</tr>
+<tr>
+<td>구간별 길찾기</td>
+<td>각 구간 지도 링크 열기</td>
+</tr>
+<tr>
+<td>상세 코스 보기 그립</td>
+<td>코스 상세 패널 열기/접기</td>
+</tr>
+</tbody></table>
+<h2>26. 빠른 코스 조건 모달</h2>
+<h3>사용 위치</h3>
+<ul>
+<li>홈 미리보기 코스에서 추천받기</li>
+<li>장소 상세의 <code>이 장소로 코스 추천받기</code></li>
+<li>찜한 장소/선택 장소 기반 추천</li>
+</ul>
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>이동수단 <code>도보/대중교통/자차</code></td>
+<td>빠른 추천 이동수단 선택</td>
+</tr>
+<tr>
+<td><code>숙박함</code></td>
+<td>숙박 코스 여부</td>
+</tr>
+<tr>
+<td><code>점심 추천</code></td>
+<td>점심 포함</td>
+</tr>
+<tr>
+<td><code>카페 추천</code></td>
+<td>카페 포함</td>
+</tr>
+<tr>
+<td><code>저녁 추천</code></td>
+<td>저녁 포함</td>
+</tr>
+<tr>
+<td><code>음주함</code></td>
+<td>숙박 시 술집 포함</td>
+</tr>
+<tr>
+<td><code>취소</code></td>
+<td>모달 닫기</td>
+</tr>
+<tr>
+<td><code>이 조건으로 추천</code></td>
+<td>선택한 빠른 조건으로 추천 생성</td>
+</tr>
+</tbody></table>
+<h2>27. 홈 미리보기 코스</h2>
+<h3>디자인/기능</h3>
+<ul>
+<li>홈 또는 미리보기 영역에서 특정 테마 코스를 소개한다.</li>
+<li>코스 흐름, 설명, 액션 버튼을 표시한다.</li>
+</ul>
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>미리보기 코스 버튼</td>
+<td>해당 미리보기 상세 렌더링</td>
+</tr>
+<tr>
+<td><code>이 흐름으로 RecoDate 추천받기</code></td>
+<td>빠른 조건 모달을 거쳐 실제 추천 생성</td>
+</tr>
+<tr>
+<td><code>코스 저장</code></td>
+<td>미리보기 코스를 내 코스에 저장</td>
+</tr>
+</tbody></table>
+<h2>28. 신고 모달</h2>
+<h3>디자인</h3>
+<ul>
+<li>신고 대상 라벨, 사유 라디오, 취소/신고 버튼으로 구성된다.</li>
+</ul>
+<h3>버튼/기능</h3>
+<table>
+<thead>
+<tr>
+<th>버튼/컨트롤</th>
+<th>기능</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>스팸·홍보</code></td>
+<td>신고 사유 선택</td>
+</tr>
+<tr>
+<td><code>욕설·혐오</code></td>
+<td>신고 사유 선택</td>
+</tr>
+<tr>
+<td><code>음란물</code></td>
+<td>신고 사유 선택</td>
+</tr>
+<tr>
+<td><code>기타</code></td>
+<td>신고 사유 선택</td>
+</tr>
+<tr>
+<td><code>취소</code></td>
+<td>신고 모달 닫기</td>
+</tr>
+<tr>
+<td><code>신고하기</code></td>
+<td>신고 API 호출</td>
+</tr>
+<tr>
+<td>우상단 <code>×</code></td>
+<td>모달 닫기</td>
+</tr>
+<tr>
+<td>바깥 배경 클릭</td>
+<td>모달 닫기</td>
+</tr>
+</tbody></table>
+<h2>29. 전체 데이터 저장 흐름 요약</h2>
+<table>
+<thead>
+<tr>
+<th>기능</th>
+<th>저장 위치</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>로그인 토큰</td>
+<td><code>localStorage</code> 또는 <code>sessionStorage</code></td>
+</tr>
+<tr>
+<td>찜한 장소</td>
+<td>브라우저 <code>localStorage</code></td>
+</tr>
+<tr>
+<td>내 코스</td>
+<td>브라우저 <code>localStorage</code></td>
+</tr>
+<tr>
+<td>최근 본 장소</td>
+<td>브라우저 <code>localStorage</code></td>
+</tr>
+<tr>
+<td>장소 둘러보기 캐시</td>
+<td>브라우저 <code>localStorage</code></td>
+</tr>
+<tr>
+<td>TripTI 로컬 캐시</td>
+<td>브라우저 <code>localStorage</code></td>
+</tr>
+<tr>
+<td>회원 정보</td>
+<td><code>recodate_users.db.users</code></td>
+</tr>
+<tr>
+<td>세션</td>
+<td><code>recodate_users.db.sessions</code></td>
+</tr>
+<tr>
+<td>프로필 이미지/닉네임</td>
+<td><code>recodate_users.db.users</code></td>
+</tr>
+<tr>
+<td>커뮤니티 게시물</td>
+<td><code>recodate_users.db.community_posts</code></td>
+</tr>
+<tr>
+<td>커뮤니티 코스 스냅샷</td>
+<td><code>community_posts.course_json</code></td>
+</tr>
+<tr>
+<td>게시물 좋아요</td>
+<td><code>recodate_users.db.post_likes</code></td>
+</tr>
+<tr>
+<td>댓글</td>
+<td><code>recodate_users.db.post_comments</code></td>
+</tr>
+<tr>
+<td>친구 관계</td>
+<td><code>recodate_users.db.friendships</code></td>
+</tr>
+<tr>
+<td>채팅 메시지</td>
+<td><code>recodate_users.db.chat_messages</code></td>
+</tr>
+<tr>
+<td>친구에게 공유한 코스</td>
+<td><code>chat_messages.course_json</code></td>
+</tr>
+<tr>
+<td>신고</td>
+<td><code>recodate_users.db.reports</code></td>
+</tr>
+<tr>
+<td>차단</td>
+<td><code>recodate_users.db.user_blocks</code></td>
+</tr>
+<tr>
+<td>RecoDate 장소 리뷰</td>
+<td><code>recodate_users.db.place_reviews</code></td>
+</tr>
+<tr>
+<td>커뮤니티/채팅 이미지 파일</td>
+<td><code>backend/data/uploads</code></td>
+</tr>
+</tbody></table>
+<h2>30. 모든 주요 API 호출 흐름</h2>
+<table>
+<thead>
+<tr>
+<th>화면/기능</th>
+<th>API</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>회원가입</td>
+<td><code>POST /api/auth/register</code></td>
+</tr>
+<tr>
+<td>로그인</td>
+<td><code>POST /api/auth/login</code></td>
+</tr>
+<tr>
+<td>로그아웃</td>
+<td><code>POST /api/auth/logout</code></td>
+</tr>
+<tr>
+<td>내 정보 조회</td>
+<td><code>GET /api/auth/me</code></td>
+</tr>
+<tr>
+<td>프로필 수정</td>
+<td><code>PATCH /api/auth/profile</code></td>
+</tr>
+<tr>
+<td>TripTI 결과 조회/저장</td>
+<td><code>GET/POST /api/auth/tripti-result</code></td>
+</tr>
+<tr>
+<td>장소 검색</td>
+<td><code>GET /api/places/search</code></td>
+</tr>
+<tr>
+<td>장소 둘러보기</td>
+<td><code>GET /api/places/browse</code></td>
+</tr>
+<tr>
+<td>장소 대체 후보</td>
+<td><code>GET /api/places/replacements</code></td>
+</tr>
+<tr>
+<td>장소 사진</td>
+<td><code>GET /api/places/google-photo-search</code>, <code>GET /api/places/google-photo</code>, <code>GET /api/places/naver-image</code></td>
+</tr>
+<tr>
+<td>장소 리뷰</td>
+<td><code>GET/POST/DELETE /api/places/reviews</code></td>
+</tr>
+<tr>
+<td>추천 생성</td>
+<td><code>POST /api/recommendations</code></td>
+</tr>
+<tr>
+<td>선택 코스 경로 계산</td>
+<td><code>POST /api/routes/selected-course</code></td>
+</tr>
+<tr>
+<td>코스 재계산</td>
+<td><code>POST /api/courses/recalculate</code></td>
+</tr>
+<tr>
+<td>미리보기 코스</td>
+<td><code>GET /api/courses/preview/{course_id}</code></td>
+</tr>
+<tr>
+<td>피드 조회/작성/삭제</td>
+<td><code>GET/POST/DELETE /api/community/posts</code></td>
+</tr>
+<tr>
+<td>좋아요</td>
+<td><code>POST /api/community/posts/{post_id}/like</code></td>
+</tr>
+<tr>
+<td>댓글</td>
+<td><code>GET/POST /api/community/posts/{post_id}/comments</code>, <code>DELETE /api/community/comments/{comment_id}</code></td>
+</tr>
+<tr>
+<td>친구</td>
+<td><code>GET /api/community/friends</code>, <code>POST /api/community/friends/request</code>, <code>GET /api/community/friends/requests</code>, <code>POST /api/community/friends/respond</code>, <code>DELETE /api/community/friends/{friend_id}</code></td>
+</tr>
+<tr>
+<td>사용자 검색/프로필</td>
+<td><code>GET /api/community/users/search</code>, <code>GET /api/community/users/{user_id}/profile</code></td>
+</tr>
+<tr>
+<td>채팅</td>
+<td><code>POST/GET /api/community/chats/{friend_id}/messages</code>, <code>GET /api/community/chats/unread</code></td>
+</tr>
+<tr>
+<td>신고</td>
+<td><code>POST /api/community/reports</code></td>
+</tr>
+<tr>
+<td>차단</td>
+<td><code>POST/GET/DELETE /api/community/blocks</code></td>
+</tr>
+</tbody></table>
+<h2>31. 놓치기 쉬운 작은 기능 체크리스트</h2>
+<ul>
+<li>비밀번호 보기 버튼은 로그인/회원가입 비밀번호 입력 모두에 있다.</li>
+<li>로그인 유지 체크 여부에 따라 토큰 저장소가 달라진다.</li>
+<li>비영구 로그인은 유휴 시간 체크로 자동 로그아웃될 수 있다.</li>
+<li>지역 선택은 추천 화면과 둘러보기 흐름에서 공통 모달을 재사용한다.</li>
+<li>장소 검색 결과/카드의 외부 링크 클릭은 카드 클릭 전파를 막는다.</li>
+<li>코스 카드의 장소 액션 버튼도 카드 스와이프/클릭과 충돌하지 않도록 전파를 막는다.</li>
+<li>코스 카드 스와이프 후 바로 버튼 클릭이 잘못 먹지 않게 클릭 억제 플래그가 있다.</li>
+<li>모바일에서 장소 순서 변경은 길게 누르기 0.6초 후 시작된다.</li>
+<li>드래그 중에는 스크롤 잠금을 걸고 종료 시 해제한다.</li>
+<li>채팅 모달은 열려 있는 동안 3초마다 새 메시지를 가져온다.</li>
+<li>채팅을 닫으면 안 읽음 배지를 다시 계산한다.</li>
+<li>댓글 답글은 <code>@닉네임</code>을 입력창에 넣고, 등록된 댓글의 멘션은 프로필 이동 대상이 된다.</li>
+<li>커뮤니티 피드의 차단 사용자는 피드/댓글/리뷰 노출에서 제외된다.</li>
+<li>장소 리뷰는 같은 장소에 사용자당 1개만 유지되고 재등록 시 수정된다.</li>
+<li>장소 리뷰 별점은 별 5개가 하나의 둥근 박스 안에 묶여 있다.</li>
+<li>내 코스와 찜은 서버가 아닌 브라우저 저장이라 기기 간 동기화되지 않는다.</li>
+<li>커뮤니티 공유와 친구 공유는 서버에 저장되지만, 일반 <code>공유</code>는 Web Share/클립보드 기능이다.</li>
+<li>사진 업로드는 선택 즉시 클라이언트에서 리사이즈 후 data URL로 전송된다.</li>
+<li>추천 결과에서 실제 경로는 코스를 선택한 뒤 별도 API로 계산된다.</li>
+<li>TMAP 인터랙티브 지도 실패 시 정적 지도/흐름도로 대체한다.</li>
+<li>날씨 반영은 날짜 선택 후 체크 가능하며 추천 요청에 반영된다.</li>
+<li><code>내 코스</code> 플로팅 버튼은 저장 코스 개수를 항상 보여준다.</li>
+</ul>
+
+</body>
+</html>
