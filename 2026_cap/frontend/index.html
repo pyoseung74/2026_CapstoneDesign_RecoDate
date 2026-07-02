@@ -5,1123 +5,1364 @@
   app.js가 백엔드 API를 호출하고 styles.css가 화면 디자인을 담당한다.
 -->
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#ffffff" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="RecoDate" />
-    <title>RecoDate - 데이트 코스 추천</title>
-    <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="icon" type="image/webp" href="./icons/icon-192.webp" />
-    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="RecoDate" />
+  <title>RecoDate - 데이트 코스 추천</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" type="image/webp" href="./icons/icon-192.webp" />
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
   <link rel="stylesheet" href="./styles.css?v=design-polish-v55" />
   <link rel="stylesheet" href="./styles.mobile-redesign.css?v=design-polish-v55" />
-  </head>
-  <body>
-    <header id="portalHeader" class="portal-header">
-      <button class="portal-logo" type="button" data-show-view="home">Rec<span class="brand-heart" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" /></svg></span><span class="sr-only">♡</span>Date</button>
-      <nav class="portal-nav">
-        <button type="button" data-show-view="home">홈</button>
-        <button id="chatHubNavButton" type="button" data-show-view="chatHub">채팅</button>
-        <button type="button" data-show-view="community">커뮤니티</button>
-        <button type="button" data-show-view="recommendation">코스 추천</button>
-        <button type="button" data-show-view="tripti">TripTI</button>
-        <button type="button" data-show-view="bookmarks">찜</button>
-        <button type="button" data-show-view="myCourses">내 코스</button>
-        <button id="loginNavButton" type="button" data-show-view="login">로그인</button>
-        <button id="profileNavButton" type="button" data-show-view="profile" hidden>마이페이지</button>
-      </nav>
-    </header>
+</head>
 
-    <main id="homeView" class="portal-view home-view">
-      <button id="homeProfileChip" class="home-profile-chip" type="button" hidden aria-label="마이페이지로 이동">
-        <span id="homeProfileAvatar" class="community-avatar home-profile-avatar"></span>
-        <span id="homeProfileNickname" class="home-profile-nickname"></span>
-      </button>
-      <button id="homeNotifButton" class="home-notif-button" type="button" aria-label="알림 보기">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        <span id="homeNotifDot" class="home-notif-dot" hidden></span>
-      </button>
-      <section class="home-hero">
+<body>
+  <header id="portalHeader" class="portal-header">
+    <button class="portal-logo" type="button" data-show-view="home">Rec<span class="brand-heart" aria-hidden="true"><svg
+          viewBox="0 0 24 24">
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+        </svg></span><span class="sr-only">♡</span>Date</button>
+    <nav class="portal-nav">
+      <button type="button" data-show-view="home">홈</button>
+      <button id="chatHubNavButton" type="button" data-show-view="chatHub">채팅</button>
+      <button type="button" data-show-view="community">커뮤니티</button>
+      <button type="button" data-show-view="recommendation">코스 추천</button>
+      <button type="button" data-show-view="tripti">TripTI</button>
+      <button type="button" data-show-view="bookmarks">찜</button>
+      <button type="button" data-show-view="myCourses">내 코스</button>
+      <button id="loginNavButton" type="button" data-show-view="login">로그인</button>
+      <button id="profileNavButton" type="button" data-show-view="profile" hidden>마이페이지</button>
+    </nav>
+  </header>
+
+  <main id="homeView" class="portal-view home-view">
+    <button id="homeProfileChip" class="home-profile-chip" type="button" hidden aria-label="마이페이지로 이동">
+      <span id="homeProfileAvatar" class="community-avatar home-profile-avatar"></span>
+      <span id="homeProfileNickname" class="home-profile-nickname"></span>
+    </button>
+    <button id="homeNotifButton" class="home-notif-button" type="button" aria-label="알림 보기">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+      </svg>
+      <span id="homeNotifDot" class="home-notif-dot" hidden></span>
+    </button>
+    <section class="home-hero">
+      <div class="home-hero-text">
         <p class="home-kicker">Korea Date Curator</p>
         <h1>오늘의 데이트,<br />어느 도시에서 시작할까요?</h1>
         <p>장소와 이동 방법을 고르면 하루의 흐름까지 이어서 추천해 드립니다.</p>
         <button id="openRecoDateButton" class="recodate-cta" type="button">
-          <span>Rec<span class="brand-heart" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" /></svg></span><span class="sr-only">♡</span>Date</span>
+          <span>Rec<span class="brand-heart" aria-hidden="true"><svg viewBox="0 0 24 24">
+                <path
+                  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              </svg></span><span class="sr-only">♡</span>Date</span>
           <small>나만의 코스 추천받기</small>
         </button>
-      </section>
-
-      <section class="home-tripti-card">
-        <div>
-          <p class="home-kicker">TripTI</p>
-          <h2>내 여행 유형 확인하기</h2>
-          <p>15개 질문으로 힐링/관광, 여유/액티브, 계획/즉흥, 실속/감성, 핫플/로컬 취향을 확인해보세요.</p>
-        </div>
-        <button class="tripti-home-button" type="button" data-show-view="tripti">
-          <span>TripTI</span>
-          <small>여행 취향 테스트</small>
-        </button>
-      </section>
-
-      <section class="home-map-explore-card">
-        <div>
-          <p class="home-kicker">Map Explore</p>
-          <h2>지도로 주변 장소 둘러보기</h2>
-          <p>가고 싶은 장소를 검색하고 주변 음식점, 카페, 액티비티, 문화/전시, 관광지를 한눈에 확인해보세요.</p>
-        </div>
-        <button id="openMapExploreButton" class="map-explore-open-button" type="button" data-show-view="mapExplore">
-          지도 열기
-        </button>
-      </section>
-
-      <section class="home-section">
-        <div class="home-section-heading">
-          <div>
-            <p class="home-kicker">Explore Korea</p>
-            <h2>어느 도시를 둘러볼까요?</h2>
-          </div>
-        </div>
-        <div class="region-grid">
-          <button class="region-button selected" type="button" data-region="national"><span>전국</span><small>대한민국 Top 100</small></button>
-          <button class="region-button" type="button" data-region="sido_11"><span>서울</span><small>구·동 선택</small></button>
-          <button class="region-button" type="button" data-region="sido_26"><span>부산</span><small>구·동 선택</small></button>
-          <button class="region-button" type="button" data-region="sido_27"><span>대구</span><small>구·동 선택</small></button>
-          <button class="region-button" type="button" data-region="sido_28"><span>인천</span><small>구·동 선택</small></button>
-          <button class="region-button" type="button" data-region="sido_29"><span>광주</span><small>구·동 선택</small></button>
-          <button class="region-button" type="button" data-region="sido_30"><span>대전</span><small>구·동 선택</small></button>
-          <button class="region-button" type="button" data-region="sido_31"><span>울산</span><small>구·동 선택</small></button>
-          <button class="region-button" type="button" data-region="sido_36"><span>세종</span><small>동 선택</small></button>
-          <button class="region-button" type="button" data-region="sido_41"><span>경기</span><small>시·동 선택</small></button>
-          <button class="region-button" type="button" data-region="sido_51"><span>강원</span><small>시·군 선택</small></button>
-          <button class="region-button" type="button" data-region="chungcheong"><span>충청도</span><small>시·군 선택</small></button>
-          <button class="region-button" type="button" data-region="jeolla"><span>전라도</span><small>시·군 선택</small></button>
-          <button class="region-button" type="button" data-region="gyeongsang"><span>경상도</span><small>시·군 선택</small></button>
-          <button class="region-button" type="button" data-region="sido_50"><span>제주</span><small>시·동 선택</small></button>
-        </div>
-      </section>
-
-      <section id="regionCategorySection" class="home-section region-category-section" hidden>
-        <div class="home-section-heading">
-          <div>
-            <p class="home-kicker">Choose Category</p>
-            <h2 id="regionCategoryTitle">서울에서 무엇을 찾을까요?</h2>
-          </div>
-        </div>
-        <div class="category-grid">
-          <button class="category-button" type="button" data-category="전체"><b>01</b><span>전체</span><small>한 번에 둘러보기</small></button>
-          <button class="category-button" type="button" data-category="음식점"><b>02</b><span>음식점</span><small>맛있는 한 끼</small></button>
-          <button class="category-button" type="button" data-category="카페"><b>03</b><span>카페</span><small>커피와 디저트</small></button>
-          <button class="category-button" type="button" data-category="야외 액티비티"><b>04</b><span>야외 액티비티</span><small>바다와 산책, 야외 체험</small></button>
-          <button class="category-button" type="button" data-category="실내 액티비티"><b>05</b><span>실내 액티비티</span><small>날씨 걱정 없이 즐기기</small></button>
-          <button class="category-button" type="button" data-category="문화/전시"><b>06</b><span>문화/전시</span><small>관람과 전시를 천천히</small></button>
-          <button class="category-button" type="button" data-category="마무리/산책"><b>07</b><span>마무리/산책</span><small>하루 끝에 걷기 좋은 곳</small></button>
-          <button class="category-button" type="button" data-category="술집"><b>08</b><span>술집</span><small>데이트 끝의 한 잔</small></button>
-        </div>
-      </section>
-    
-      <section class="home-section" id="homeCommunitySection">
-        <div class="home-section-heading">
-          <div>
-            <p class="home-kicker">Community Feed</p>
-            <h2>요즘 올라온 코스와 이야기</h2>
-          </div>
-          <button class="home-feed-more" type="button" data-show-view="community">전체 보기 ›</button>
-        </div>
-        <div id="homeCommunityFeed"><p class="browse-loading">피드를 불러오는 중...</p></div>
-      </section>
-    </main>
-
-    <main id="communityView" class="portal-view browse-view" hidden>
-      <button class="back-home-button" type="button" data-show-view="home">← 메인 화면으로 돌아가기</button>
-      <header class="browse-heading">
-        <p class="home-kicker">Community</p>
-        <h1>커뮤니티</h1>
-        <p>다른 커플들이 만든 코스를 구경하고, 내 코스를 공유해 보세요.</p>
-      </header>
-      <div class="community-seg" role="tablist">
-        <button id="communityTabFriends" class="community-seg-btn" type="button" data-community-tab="friends">팔로우</button>
-        <button id="communityTabFeed" class="community-seg-btn active" type="button" data-community-tab="feed">피드</button>
       </div>
-      <div id="communityFriendsPanel" hidden>
-        <div class="friend-search-row">
-          <input id="friendSearchInput" type="text" maxlength="30" placeholder="닉네임으로 사용자 찾기" />
-          <button id="friendSearchButton" class="secondary-button" type="button">검색</button>
+      <!-- 한국 유명 관광지 자동 슬라이드 캐러셀 -->
+      <div class="hero-slideshow" aria-label="한국 유명 관광지 슬라이드쇼" aria-live="off">
+        <div class="hero-slideshow-track">
+          <div class="hero-slide active">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/5/5d/Gyeonghoeru_%28Royal_Banquet_Hall%29_at_Gyeongbokgung_Palace%2C_Seoul.jpg"
+              alt="경복궁 · 서울"
+              loading="eager"
+            />
+            <div class="hero-slide-caption">
+              <span class="hero-slide-place">경복궁</span>
+              <span class="hero-slide-city">서울</span>
+            </div>
+          </div>
+          <div class="hero-slide">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Busan_City_Haeundae_Beach.jpg"
+              alt="해운대 해수욕장 · 부산"
+              loading="lazy"
+            />
+            <div class="hero-slide-caption">
+              <span class="hero-slide-place">해운대 해수욕장</span>
+              <span class="hero-slide-city">부산</span>
+            </div>
+          </div>
+          <div class="hero-slide">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/5/56/Wooden_staircase_steps_in_the_forest_of_Hallasan_Park_Eorimok_Trail_at_dusk_on_Jeju_Island_in_South_Korea.jpg"
+              alt="한라산 · 제주"
+              loading="lazy"
+            />
+            <div class="hero-slide-caption">
+              <span class="hero-slide-place">한라산</span>
+              <span class="hero-slide-city">제주</span>
+            </div>
+          </div>
+          <div class="hero-slide">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Seoul_at_N_Seoul_Tower.jpg"
+              alt="N서울타워 · 서울"
+              loading="lazy"
+            />
+            <div class="hero-slide-caption">
+              <span class="hero-slide-place">N서울타워</span>
+              <span class="hero-slide-city">서울</span>
+            </div>
+          </div>
+          <div class="hero-slide">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Courtyard_of_colorful_paper_lanterns_and_shadow_patterns_at_Bulguksa_temple_Gyeongju_South_Korea.jpg"
+              alt="불국사 · 경주"
+              loading="lazy"
+            />
+            <div class="hero-slide-caption">
+              <span class="hero-slide-place">불국사</span>
+              <span class="hero-slide-city">경주</span>
+            </div>
+          </div>
         </div>
-        <div id="friendSearchResults"></div>
-        <div class="follow-subtabs" role="tablist">
-          <button id="followTabFollowing" class="follow-subtab active" type="button" data-follow-tab="following">팔로잉 <b id="followingCount">0</b></button>
-          <button id="followTabFollowers" class="follow-subtab" type="button" data-follow-tab="followers">팔로워 <b id="followerCount">0</b></button>
-          <button id="followTabFriends" class="follow-subtab" type="button" data-follow-tab="friends">친구 <b id="friendCount">0</b></button>
-        </div>
-        <div id="communityFriendTabList"><p class="browse-loading">불러오는 중...</p></div>
-        <div id="communityRecommendSection" class="community-recommend-section" hidden>
-          <p class="friend-section-label recommend-title">추천 친구 <small>내 친구의 친구</small></p>
-          <div id="communityRecommendList"></div>
+        <div class="hero-slideshow-dots" aria-hidden="true">
+          <span class="hero-dot active"></span>
+          <span class="hero-dot"></span>
+          <span class="hero-dot"></span>
+          <span class="hero-dot"></span>
+          <span class="hero-dot"></span>
         </div>
       </div>
-      <div id="communityFeedPanel">
-        <button id="communityComposeButton" class="community-compose-button" type="button">+ 글·사진 올리기</button>
-        <div class="community-filters">
-          <div class="community-filter-group">
-            <button class="community-filter active" type="button" data-feed-scope="all">전체</button>
-            <button class="community-filter" type="button" data-feed-scope="friends">친구</button>
-          </div>
-          <span class="community-filter-divider" aria-hidden="true"></span>
-          <div class="community-filter-group">
-            <button class="community-filter active" type="button" data-feed-sort="recent">최신순</button>
-            <button class="community-filter" type="button" data-feed-sort="popular">인기순</button>
-          </div>
-        </div>
-        <div id="communityFeedList"><p class="browse-loading">코스를 불러오는 중입니다...</p></div>
-      </div>
-    </main>
+    </section>
 
-    <main id="triptiView" class="portal-view tripti-view" hidden>
-      <button class="back-home-button tripti-back-button" type="button" data-show-view="home">← 메인 화면으로 돌아가기</button>
-      <div class="tripti-progress">
-        <span id="triptiProgressText">0 / 15</span>
-        <div><b id="triptiProgressBar"></b></div>
-      </div>
-      <section class="tripti-hero">
+    <section class="home-tripti-card">
+      <div>
         <p class="home-kicker">TripTI</p>
-        <h1>나의 여행 취향 테스트</h1>
-        <p>15개 질문으로 데이트와 여행 취향을 5개 축으로 나눠보고, 결과에 맞는 RecoDate 추천 조건까지 이어볼 수 있어요.</p>
-      </section>
-      <section class="tripti-board">
-        <form id="triptiForm" class="tripti-question-list" aria-live="polite"></form>
-        <section id="triptiResultCard" class="tripti-result-card" hidden></section>
-      </section>
-    </main>
-
-    <main id="mapExploreView" class="portal-view browse-view map-explore-view" hidden>
-      <button class="back-home-button" type="button" data-show-view="home">← 메인 화면으로 돌아가기</button>
-      <header class="map-explore-title">
-        <p class="home-kicker">Map Explore</p>
-        <h1>지도로 둘러보기</h1>
-      </header>
-      <section class="map-explore-stage" aria-label="지도로 둘러보기">
-        <div id="mapExploreMapCanvas" class="map-explore-live-map" aria-label="서울 주변 지도"></div>
-        <div class="map-explore-legend" aria-label="지도 핀 카테고리 안내">
-          <span class="map-explore-legend-item is-center"><b>★</b> 검색한 곳</span>
-          <span class="map-explore-legend-item is-food"><b>F</b> 음식점</span>
-          <span class="map-explore-legend-item is-cafe"><b>C</b> 카페</span>
-          <span class="map-explore-legend-item is-activity"><b>A</b> 액티비티</span>
-          <span class="map-explore-legend-item is-culture"><b>M</b> 문화·전시</span>
-          <span class="map-explore-legend-item is-tourist"><b>T</b> 관광지</span>
-        </div>
-        <section id="mapExploreSheet" class="map-explore-sheet" data-state="collapsed" aria-label="지도 검색과 필터 설정">
-          <button id="mapExploreSheetHandle" class="map-explore-sheet-handle" type="button" aria-label="검색·필터 열기">
-            <span></span>
-          </button>
-          <button type="button" id="mapExploreFilterToggle" class="map-explore-sheet-summary-btn" aria-label="장소 검색과 필터 열기">
-            <strong>🔍 장소 검색 · 카테고리 필터</strong>
-            <small>탭하면 펼쳐져요 — 가고 싶은 장소를 검색해 보세요</small>
-          </button>
-          <section class="map-explore-panel">
-            <form id="mapExploreForm" class="map-explore-form">
-              <label class="sr-only" for="mapExploreKeyword">장소 검색</label>
-              <input id="mapExploreKeyword" type="search" autocomplete="off" placeholder="장소 검색 (예: 캐리비안베이)" />
-              <button class="primary-button" type="submit">검색</button>
-            </form>
-            <div class="map-explore-filters" aria-label="장소 필터">
-              <label><input type="checkbox" name="mapExploreCategory" value="food" checked /> <span>음식점</span></label>
-              <label><input type="checkbox" name="mapExploreCategory" value="cafe" checked /> <span>카페</span></label>
-              <label><input type="checkbox" name="mapExploreCategory" value="activity" checked /> <span>액티비티</span></label>
-              <label><input type="checkbox" name="mapExploreCategory" value="culture" checked /> <span>문화/전시</span></label>
-              <label><input type="checkbox" name="mapExploreCategory" value="tourist" checked /> <span>관광지</span></label>
-            </div>
-            <p id="mapExploreStatus" class="map-explore-status">서울 지도를 먼저 보여드리고 있어요. 설정을 올려 원하는 장소를 검색해보세요.</p>
-          </section>
-          <section id="mapExploreResults" class="map-explore-results" aria-live="polite"></section>
-        </section>
-      </section>
-    </main>
-
-    <main id="browseView" class="portal-view browse-view" hidden>
-      <button class="back-home-button" type="button" data-show-view="home">← 메인 화면으로 돌아가기</button>
-      <section class="browse-heading">
-        <p class="home-kicker">Explore Korea</p>
-        <h1 id="browseTitle">여행지 장소 둘러보기</h1>
-        <p>데이트 코스를 만들기 전에 선택한 도시의 장소를 가볍게 살펴보세요.</p>
-        <button class="primary-button browse-recodate-button" type="button" data-show-view="recommendation">RecoDate 코스 추천받기</button>
-      </section>
-      <section id="bookmarkTray" class="bookmark-tray" hidden>
-        <div><strong>찜한 장소</strong><small id="bookmarkSummary">0개 선택</small></div>
-        <div id="bookmarkList" class="bookmark-list"></div>
-        <button id="recommendBookmarksButton" class="primary-button" type="button">선택한 장소로 코스 추천받기</button>
-      </section>
-      <section id="browsePlaceList" class="browse-place-grid" aria-live="polite"></section>
-    </main>
-
-    <main id="bookmarksView" class="portal-view browse-view" hidden>
-      <button class="back-home-button" type="button" data-show-view="home">← 메인 화면으로 돌아가기</button>
-      <section class="browse-heading">
-        <p class="home-kicker">My Favorites</p>
-        <h1>찜한 장소</h1>
-        <p>저장한 장소를 모아보고 원하는 장소로 코스를 만들어 보세요.</p>
-        <button id="recommendSavedBookmarksButton" class="primary-button browse-recodate-button" type="button">장소를 선택해 주세요</button>
-      </section>
-      <section id="savedBookmarkList" class="browse-place-grid" aria-live="polite"></section>
-    </main>
-
-    <main id="myCoursesView" class="portal-view browse-view" hidden>
-      <button class="back-home-button" type="button" data-show-view="home">← 메인 화면으로 돌아가기</button>
-      <section class="browse-heading">
-        <p class="home-kicker">Saved Courses</p>
-        <h1>내 코스</h1>
-        <p>마음에 든 데이트 코스를 저장하고 다시 확인하세요.</p>
-      </section>
-      <section id="savedCourseList" class="saved-course-list" aria-live="polite"></section>
-    </main>
-
-    <main id="profileView" class="portal-view browse-view" hidden>
-      <button id="profileMoreButton" class="profile-more-button" type="button" aria-label="계정 메뉴 열기">
-        <span></span>
-        <span></span>
-        <span></span>
+        <h2>여행 유형 확인하기</h2>
+        <p>15개 질문으로 힐링/관광, 여유/액티브, 계획/즉흥, 실속/감성, 핫플/로컬 취향을 확인해보세요.</p>
+      </div>
+      <button class="tripti-home-button" type="button" data-show-view="tripti">
+        <span>TripTI</span>
+        <small>여행 취향 테스트</small>
       </button>
-      <button class="back-home-button" type="button" data-show-view="home">← 메인 화면으로 돌아가기</button>
-      <section class="browse-heading">
-        <p class="home-kicker">My RecoDate</p>
-        <h1>마이페이지</h1>
-        <p>프로필과 커뮤니티 활동을 한 곳에서 관리하세요.</p>
-      </section>
-      <section class="profile-card">
-        <div class="profile-hero-row">
-          <button id="profileAvatarButton" class="profile-avatar-button" type="button" aria-label="프로필 사진 변경">
-            <span id="profileAvatarInitial">?</span>
-            <img id="profileAvatarImage" alt="내 프로필 사진" hidden />
-            <small aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-            </small>
-          </button>
-          <input id="profileAvatarInput" type="file" accept="image/*" hidden />
-          <div class="profile-title-block">
-            <p class="home-kicker">Profile</p>
-            <div id="profileNicknameView" class="profile-nickname-view">
-              <h2 id="profileNickname">로그인이 필요합니다</h2>
-              <button id="editNicknameButton" class="profile-pencil-button" type="button" aria-label="닉네임 변경">
-                <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-              </button>
-            </div>
-            <form id="profileNicknameForm" class="profile-nickname-form" hidden>
-              <input id="profileNicknameInput" type="text" maxlength="30" autocomplete="nickname" placeholder="닉네임" />
-              <button class="primary-button compact-button" type="submit">저장</button>
-              <button id="cancelNicknameEditButton" class="secondary-button compact-button" type="button">취소</button>
-            </form>
-            <p id="profilePartnerLine" class="profile-partner-line" hidden></p>
-            <p id="profileEditMessage" class="profile-edit-message" aria-live="polite"></p>
-          </div>
-        </div>
-        <div id="profileCoupleCard" class="profile-couple-card" hidden></div>
-        <div id="profileCommunityStats" class="profile-community-stats profile-main-stats"></div>
-        <div class="profile-quick-actions">
-          <button id="profileLikedPostsButton" class="profile-liked-feed-button" type="button">좋아요 누른 피드</button>
-          <button id="manageBlockedButton" class="blocked-manage-button" type="button">차단한 사용자 관리 ›</button>
-        </div>
-      </section>
-      <section class="profile-community-section">
-        <p class="home-kicker">My Feed</p>
-        <h2>내가 올린 피드</h2>
-        <div id="profileFeedList"><p class="browse-loading">불러오는 중...</p></div>
-      </section>
-    </main>
+    </section>
 
-    <button id="savedCourseFloatingButton" class="saved-course-floating-button" type="button" data-show-view="myCourses">
-      <span>내 코스</span>
-      <b id="savedCourseFloatingCount">0</b>
-    </button>
+    <section class="home-map-explore-card">
+      <div>
+        <p class="home-kicker">Map Explore</p>
+        <h2>지도에서 주변 장소 둘러보기</h2>
+        <p>가고 싶은 장소를 검색하고 주변 음식점, 카페, 액티비티, 문화/전시, 관광지를 한눈에 확인해보세요.</p>
+      </div>
+      <button id="openMapExploreButton" class="map-explore-open-button" type="button" data-show-view="mapExplore">
+        지도 열기
+      </button>
+    </section>
 
-    <main id="loginView" class="portal-view login-view" hidden>
-      <section class="auth-card">
-        <div class="auth-logo" aria-label="RecoDate">
-          <span>Rec</span><span class="brand-heart auth-logo-heart" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" /></svg></span><span>Date</span>
-        </div>
-        <p class="home-kicker">Welcome to RecoDate</p>
-        <h1>로그인</h1>
-        <p>취향에 맞는 데이트 코스를 이어서 관리해 보세요.</p>
-        <form id="loginForm" class="auth-form">
-          <input id="loginEmail" type="email" placeholder="이메일" autocomplete="email" required />
-          <div class="password-field">
-            <input id="loginPassword" type="password" placeholder="비밀번호" autocomplete="current-password" required />
-            <button class="password-visibility-button" type="button" data-toggle-password="loginPassword" aria-label="비밀번호 보기" aria-pressed="false" title="비밀번호 보기">&#128065;</button>
-          </div>
-          <label class="remember-login-option">
-            <input id="rememberLogin" type="checkbox" />
-            <span>로그인 상태 유지하기</span>
-          </label>
-          <button class="primary-button" type="submit">로그인</button>
-        </form>
-        <div class="auth-links">
-          <button id="showSignupButton" type="button">회원가입</button>
-          <button id="showResetPasswordButton" type="button">비밀번호 찾기</button>
-        </div>
-        <p id="authMessage" class="auth-message"></p>
-      </section>
-
-      <section id="resetPasswordCard" class="auth-card secondary-auth-card" hidden>
-        <h2>비밀번호 찾기</h2>
-        <p class="reset-password-hint">가입한 이메일과 전화번호가 일치하면 새 비밀번호로 바꿀 수 있어요.</p>
-        <form id="resetPasswordForm" class="auth-form">
-          <input id="resetEmail" type="email" placeholder="가입 이메일" autocomplete="email" required />
-          <input id="resetPhone" type="tel" placeholder="가입 시 등록한 전화번호" inputmode="numeric" required />
-          <div class="password-field">
-            <input id="resetNewPassword" type="password" placeholder="새 비밀번호 (8자 이상, 특수문자 포함)" autocomplete="new-password" required />
-            <button class="password-visibility-button" type="button" data-toggle-password="resetNewPassword" aria-label="비밀번호 보기" aria-pressed="false" title="비밀번호 보기">&#128065;</button>
-          </div>
-          <div class="password-field">
-            <input id="resetNewPasswordConfirm" type="password" placeholder="새 비밀번호 확인" autocomplete="new-password" required />
-            <button class="password-visibility-button" type="button" data-toggle-password="resetNewPasswordConfirm" aria-label="비밀번호 보기" aria-pressed="false" title="비밀번호 보기">&#128065;</button>
-          </div>
-          <button class="primary-button" type="submit">비밀번호 재설정</button>
-        </form>
-      </section>
-
-      <section id="signupCard" class="auth-card secondary-auth-card" hidden>
-        <h2>회원가입</h2>
-        <form id="signupForm" class="auth-form">
-          <input id="signupEmail" type="email" placeholder="이메일" required />
-          <div class="password-field">
-            <input id="signupPassword" type="password" placeholder="비밀번호 (8자 이상, 특수문자 포함)" autocomplete="new-password" required />
-            <button class="password-visibility-button" type="button" data-toggle-password="signupPassword" aria-label="비밀번호 보기" aria-pressed="false" title="비밀번호 보기">&#128065;</button>
-          </div>
-          <div class="password-field">
-            <input id="signupPasswordConfirm" type="password" placeholder="비밀번호 확인" autocomplete="new-password" required />
-            <button class="password-visibility-button" type="button" data-toggle-password="signupPasswordConfirm" aria-label="비밀번호 보기" aria-pressed="false" title="비밀번호 보기">&#128065;</button>
-          </div>
-          <input id="signupNickname" type="text" placeholder="닉네임" required />
-          <input id="signupPhone" type="tel" placeholder="전화번호" autocomplete="tel" inputmode="numeric" required />
-          <div class="signup-agreements" aria-label="필수 동의">
-            <label><input id="agreeAll" type="checkbox" /><span><b>전체 동의</b></span></label>
-            <label><input id="agreeTerms" type="checkbox" required /><span>서비스 이용약관 동의 (필수)</span><button class="policy-view-button" type="button" data-policy="terms">보기</button></label>
-            <label><input id="agreePrivacy" type="checkbox" required /><span>개인정보 수집·이용 동의 (필수)</span><button class="policy-view-button" type="button" data-policy="privacy">보기</button></label>
-            <label><input id="agreeLocation" type="checkbox" required /><span>위치기반서비스 이용약관 동의 (필수)</span><button class="policy-view-button" type="button" data-policy="location">보기</button></label>
-            <label><input id="agreeContent" type="checkbox" required /><span>작성한 리뷰·게시물의 서비스 운영·개선·통계 목적 활용 동의 (필수)</span><button class="policy-view-button" type="button" data-policy="terms">보기</button></label>
-            <label><input id="agreeAge" type="checkbox" required /><span>만 14세 이상입니다 (필수)</span></label>
-            <p class="signup-permission-note">
-              사진 첨부 시 카메라·갤러리, 추후 내 주변 추천 시 위치(GPS) 권한을 기기 팝업으로 요청합니다. 모두 선택 권한이며 거부해도 기본 기능을 쓸 수 있어요.
-              <button class="policy-view-button" type="button" data-policy="permissions">접근권한 안내</button>
-              <button class="policy-view-button" type="button" data-policy="community">운영정책</button>
-            </p>
-          </div>
-          <button class="primary-button" type="submit">가입하기</button>
-        </form>
-      </section>
-
-    </main>
-
-    <div id="recommendationView" class="app-shell portal-view" hidden>
-      <button class="back-home-button" type="button" data-show-view="home">← 메인 화면으로 돌아가기</button>
-      <header class="topbar">
+    <section class="home-section">
+      <div class="home-section-heading">
         <div>
-          <p class="eyebrow">RecoDate</p>
-          <h1>전국 데이트 코스 추천</h1>
+          <p class="home-kicker">Explore City</p>
+          <h2>어느 도시를 둘러볼까요?</h2>
         </div>
-      </header>
+      </div>
+      <div class="region-grid">
+        <button class="region-button selected" type="button" data-region="national"><span>전국</span><small>대한민국 Top
+            100</small></button>
+        <button class="region-button" type="button" data-region="sido_11"><span>서울</span><small>구·동 선택</small></button>
+        <button class="region-button" type="button" data-region="sido_26"><span>부산</span><small>구·동 선택</small></button>
+        <button class="region-button" type="button" data-region="sido_27"><span>대구</span><small>구·동 선택</small></button>
+        <button class="region-button" type="button" data-region="sido_28"><span>인천</span><small>구·동 선택</small></button>
+        <button class="region-button" type="button" data-region="sido_29"><span>광주</span><small>구·동 선택</small></button>
+        <button class="region-button" type="button" data-region="sido_30"><span>대전</span><small>구·동 선택</small></button>
+        <button class="region-button" type="button" data-region="sido_31"><span>울산</span><small>구·동 선택</small></button>
+        <button class="region-button" type="button" data-region="sido_36"><span>세종</span><small>동 선택</small></button>
+        <button class="region-button" type="button" data-region="sido_41"><span>경기</span><small>시·동 선택</small></button>
+        <button class="region-button" type="button" data-region="sido_51"><span>강원</span><small>시·군 선택</small></button>
+        <button class="region-button" type="button" data-region="chungcheong"><span>충청도</span><small>시·군
+            선택</small></button>
+        <button class="region-button" type="button" data-region="jeolla"><span>전라도</span><small>시·군 선택</small></button>
+        <button class="region-button" type="button" data-region="gyeongsang"><span>경상도</span><small>시·군
+            선택</small></button>
+        <button class="region-button" type="button" data-region="sido_50"><span>제주</span><small>시·동 선택</small></button>
+      </div>
+    </section>
 
-      <main class="layout">
-        <section class="panel controls-panel" aria-label="추천 조건">
-          <div class="section-title">
-            <h2>추천 조건</h2>
-            <p>추천 목록은 예상 거리로 만들고, 실제 경로는 코스 선택 후 계산합니다.</p>
+    <section id="regionCategorySection" class="home-section region-category-section" hidden>
+      <div class="home-section-heading">
+        <div>
+          <p class="home-kicker">Choose Category</p>
+          <h2 id="regionCategoryTitle">서울에서 무엇을 찾을까요?</h2>
+        </div>
+      </div>
+      <div class="category-grid">
+        <button class="category-button" type="button" data-category="전체"><b>01</b><span>전체</span><small>한 번에
+            둘러보기</small></button>
+        <button class="category-button" type="button" data-category="음식점"><b>02</b><span>음식점</span><small>맛있는 한
+            끼</small></button>
+        <button class="category-button" type="button" data-category="카페"><b>03</b><span>카페</span><small>커피와
+            디저트</small></button>
+        <button class="category-button" type="button" data-category="야외 액티비티"><b>04</b><span>야외 액티비티</span><small>바다와
+            산책, 야외 체험</small></button>
+        <button class="category-button" type="button" data-category="실내 액티비티"><b>05</b><span>실내 액티비티</span><small>날씨 걱정
+            없이 즐기기</small></button>
+        <button class="category-button" type="button" data-category="문화/전시"><b>06</b><span>문화/전시</span><small>관람과 전시를
+            천천히</small></button>
+        <button class="category-button" type="button" data-category="마무리/산책"><b>07</b><span>마무리/산책</span><small>하루 끝에 걷기
+            좋은 곳</small></button>
+        <button class="category-button" type="button" data-category="술집"><b>08</b><span>술집</span><small>데이트 끝의 한
+            잔</small></button>
+      </div>
+    </section>
+
+    <section class="home-section" id="homeCommunitySection">
+      <div class="home-section-heading">
+        <div>
+          <p class="home-kicker">Community Feed</p>
+          <h2>요즘 올라온 코스와 이야기</h2>
+        </div>
+        <button class="home-feed-more" type="button" data-show-view="community">전체 보기 ›</button>
+      </div>
+      <div id="homeCommunityFeed">
+        <p class="browse-loading">피드를 불러오는 중...</p>
+      </div>
+    </section>
+  </main>
+
+  <main id="communityView" class="portal-view browse-view" hidden>
+    <button class="back-home-button" type="button" data-show-view="home">← 메인 화면으로 돌아가기</button>
+    <header class="browse-heading">
+      <p class="home-kicker">Community</p>
+      <h1>커뮤니티</h1>
+      <p>다른 커플들이 만든 코스를 구경하고, 내 코스를 공유해 보세요.</p>
+    </header>
+    <div class="community-seg" role="tablist">
+      <button id="communityTabFriends" class="community-seg-btn" type="button" data-community-tab="friends">팔로우</button>
+      <button id="communityTabFeed" class="community-seg-btn active" type="button" data-community-tab="feed">피드</button>
+    </div>
+    <div id="communityFriendsPanel" hidden>
+      <div class="friend-search-row">
+        <input id="friendSearchInput" type="text" maxlength="30" placeholder="닉네임으로 사용자 찾기" />
+        <button id="friendSearchButton" class="secondary-button" type="button">검색</button>
+      </div>
+      <div id="friendSearchResults"></div>
+      <div class="follow-subtabs" role="tablist">
+        <button id="followTabFollowing" class="follow-subtab active" type="button" data-follow-tab="following">팔로잉 <b
+            id="followingCount">0</b></button>
+        <button id="followTabFollowers" class="follow-subtab" type="button" data-follow-tab="followers">팔로워 <b
+            id="followerCount">0</b></button>
+        <button id="followTabFriends" class="follow-subtab" type="button" data-follow-tab="friends">친구 <b
+            id="friendCount">0</b></button>
+      </div>
+      <div id="communityFriendTabList">
+        <p class="browse-loading">불러오는 중...</p>
+      </div>
+      <div id="communityRecommendSection" class="community-recommend-section" hidden>
+        <p class="friend-section-label recommend-title">추천 친구 <small>내 친구의 친구</small></p>
+        <div id="communityRecommendList"></div>
+      </div>
+    </div>
+    <div id="communityFeedPanel">
+      <button id="communityComposeButton" class="community-compose-button" type="button">+ 글·사진 올리기</button>
+      <div class="community-filters">
+        <div class="community-filter-group">
+          <button class="community-filter active" type="button" data-feed-scope="all">전체</button>
+          <button class="community-filter" type="button" data-feed-scope="friends">친구</button>
+        </div>
+        <span class="community-filter-divider" aria-hidden="true"></span>
+        <div class="community-filter-group">
+          <button class="community-filter active" type="button" data-feed-sort="recent">최신순</button>
+          <button class="community-filter" type="button" data-feed-sort="popular">인기순</button>
+        </div>
+      </div>
+      <div id="communityFeedList">
+        <p class="browse-loading">코스를 불러오는 중입니다...</p>
+      </div>
+    </div>
+  </main>
+
+  <main id="triptiView" class="portal-view tripti-view" hidden>
+    <button class="back-home-button tripti-back-button" type="button" data-show-view="home">← 메인 화면으로 돌아가기</button>
+    <div class="tripti-progress">
+      <span id="triptiProgressText">0 / 15</span>
+      <div><b id="triptiProgressBar"></b></div>
+    </div>
+    <section class="tripti-hero">
+      <p class="home-kicker">TripTI</p>
+      <h1>나의 여행 취향 테스트</h1>
+      <p>15개 질문으로 데이트와 여행 취향을 5개 축으로 나눠보고, 결과에 맞는 RecoDate 추천 조건까지 이어볼 수 있어요.</p>
+    </section>
+    <section class="tripti-board">
+      <form id="triptiForm" class="tripti-question-list" aria-live="polite"></form>
+      <section id="triptiResultCard" class="tripti-result-card" hidden></section>
+    </section>
+  </main>
+
+  <main id="mapExploreView" class="portal-view browse-view map-explore-view" hidden>
+    <button class="back-home-button" type="button" data-show-view="home">← 메인 화면으로 돌아가기</button>
+    <header class="map-explore-title">
+      <p class="home-kicker">Map Explore</p>
+      <h1>지도로 둘러보기</h1>
+    </header>
+    <section class="map-explore-stage" aria-label="지도로 둘러보기">
+      <div id="mapExploreMapCanvas" class="map-explore-live-map" aria-label="서울 주변 지도"></div>
+      <div class="map-explore-legend" aria-label="지도 핀 카테고리 안내">
+        <span class="map-explore-legend-item is-center"><b>★</b> 검색한 곳</span>
+        <span class="map-explore-legend-item is-food"><b>F</b> 음식점</span>
+        <span class="map-explore-legend-item is-cafe"><b>C</b> 카페</span>
+        <span class="map-explore-legend-item is-activity"><b>A</b> 액티비티</span>
+        <span class="map-explore-legend-item is-culture"><b>M</b> 문화·전시</span>
+        <span class="map-explore-legend-item is-tourist"><b>T</b> 관광지</span>
+      </div>
+      <section id="mapExploreSheet" class="map-explore-sheet" data-state="collapsed" aria-label="지도 검색과 필터 설정">
+        <button id="mapExploreSheetHandle" class="map-explore-sheet-handle" type="button" aria-label="검색·필터 열기">
+          <span></span>
+        </button>
+        <button type="button" id="mapExploreFilterToggle" class="map-explore-sheet-summary-btn"
+          aria-label="장소 검색과 필터 열기">
+          <strong>🔍 장소 검색 · 카테고리 필터</strong>
+          <small>탭하면 펼쳐져요 — 가고 싶은 장소를 검색해 보세요</small>
+        </button>
+        <section class="map-explore-panel">
+          <form id="mapExploreForm" class="map-explore-form">
+            <label class="sr-only" for="mapExploreKeyword">장소 검색</label>
+            <input id="mapExploreKeyword" type="search" autocomplete="off" placeholder="장소 검색 (예: 캐리비안베이)" />
+            <button class="primary-button" type="submit">검색</button>
+          </form>
+          <div class="map-explore-filters" aria-label="장소 필터">
+            <label><input type="checkbox" name="mapExploreCategory" value="food" checked /> <span>음식점</span></label>
+            <label><input type="checkbox" name="mapExploreCategory" value="cafe" checked /> <span>카페</span></label>
+            <label><input type="checkbox" name="mapExploreCategory" value="activity" checked />
+              <span>액티비티</span></label>
+            <label><input type="checkbox" name="mapExploreCategory" value="culture" checked />
+              <span>문화/전시</span></label>
+            <label><input type="checkbox" name="mapExploreCategory" value="tourist" checked /> <span>관광지</span></label>
+          </div>
+          <p id="mapExploreStatus" class="map-explore-status">서울 지도를 먼저 보여드리고 있어요. 설정을 올려 원하는 장소를 검색해보세요.</p>
+        </section>
+        <section id="mapExploreResults" class="map-explore-results" aria-live="polite"></section>
+      </section>
+    </section>
+  </main>
+
+  <main id="browseView" class="portal-view browse-view" hidden>
+    <button class="back-home-button" type="button" data-show-view="home">← 메인 화면으로 돌아가기</button>
+    <section class="browse-heading">
+      <p class="home-kicker">Explore Korea</p>
+      <h1 id="browseTitle">여행지 장소 둘러보기</h1>
+      <p>데이트 코스를 만들기 전에 선택한 도시의 장소를 가볍게 살펴보세요.</p>
+      <button class="primary-button browse-recodate-button" type="button" data-show-view="recommendation">RecoDate 코스
+        추천받기</button>
+    </section>
+    <section id="bookmarkTray" class="bookmark-tray" hidden>
+      <div><strong>찜한 장소</strong><small id="bookmarkSummary">0개 선택</small></div>
+      <div id="bookmarkList" class="bookmark-list"></div>
+      <button id="recommendBookmarksButton" class="primary-button" type="button">선택한 장소로 코스 추천받기</button>
+    </section>
+    <section id="browsePlaceList" class="browse-place-grid" aria-live="polite"></section>
+  </main>
+
+  <main id="bookmarksView" class="portal-view browse-view" hidden>
+    <button class="back-home-button" type="button" data-show-view="home">← 메인 화면으로 돌아가기</button>
+    <section class="browse-heading">
+      <p class="home-kicker">My Favorites</p>
+      <h1>찜한 장소</h1>
+      <p>저장한 장소를 모아보고 원하는 장소로 코스를 만들어 보세요.</p>
+      <button id="recommendSavedBookmarksButton" class="primary-button browse-recodate-button" type="button">장소를 선택해
+        주세요</button>
+    </section>
+    <section id="savedBookmarkList" class="browse-place-grid" aria-live="polite"></section>
+  </main>
+
+  <main id="myCoursesView" class="portal-view browse-view" hidden>
+    <button class="back-home-button" type="button" data-show-view="home">← 메인 화면으로 돌아가기</button>
+    <section class="browse-heading">
+      <p class="home-kicker">Saved Courses</p>
+      <h1>내 코스</h1>
+      <p>마음에 든 데이트 코스를 저장하고 다시 확인하세요.</p>
+    </section>
+    <section id="savedCourseList" class="saved-course-list" aria-live="polite"></section>
+  </main>
+
+  <main id="profileView" class="portal-view browse-view" hidden>
+    <button id="profileMoreButton" class="profile-more-button" type="button" aria-label="계정 메뉴 열기">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <button class="back-home-button" type="button" data-show-view="home">← 메인 화면으로 돌아가기</button>
+    <section class="browse-heading">
+      <p class="home-kicker">My RecoDate</p>
+      <h1>마이페이지</h1>
+      <p>프로필과 커뮤니티 활동을 한 곳에서 관리하세요.</p>
+    </section>
+    <section class="profile-card">
+      <div class="profile-hero-row">
+        <button id="profileAvatarButton" class="profile-avatar-button" type="button" aria-label="프로필 사진 변경">
+          <span id="profileAvatarInitial">?</span>
+          <img id="profileAvatarImage" alt="내 프로필 사진" hidden />
+          <small aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9" />
+              <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+            </svg>
+          </small>
+        </button>
+        <input id="profileAvatarInput" type="file" accept="image/*" hidden />
+        <div class="profile-title-block">
+          <p class="home-kicker">Profile</p>
+          <div id="profileNicknameView" class="profile-nickname-view">
+            <h2 id="profileNickname">로그인이 필요합니다</h2>
+            <button id="editNicknameButton" class="profile-pencil-button" type="button" aria-label="닉네임 변경">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+              </svg>
+            </button>
+          </div>
+          <form id="profileNicknameForm" class="profile-nickname-form" hidden>
+            <input id="profileNicknameInput" type="text" maxlength="30" autocomplete="nickname" placeholder="닉네임" />
+            <button class="primary-button compact-button" type="submit">저장</button>
+            <button id="cancelNicknameEditButton" class="secondary-button compact-button" type="button">취소</button>
+          </form>
+          <p id="profilePartnerLine" class="profile-partner-line" hidden></p>
+          <p id="profileEditMessage" class="profile-edit-message" aria-live="polite"></p>
+        </div>
+      </div>
+      <div id="profileCoupleCard" class="profile-couple-card" hidden></div>
+      <div id="profileCommunityStats" class="profile-community-stats profile-main-stats"></div>
+      <div class="profile-quick-actions">
+        <button id="profileLikedPostsButton" class="profile-liked-feed-button" type="button">좋아요 누른 피드</button>
+        <button id="manageBlockedButton" class="blocked-manage-button" type="button">차단한 사용자 관리 ›</button>
+      </div>
+    </section>
+    <section class="profile-community-section">
+      <p class="home-kicker">My Feed</p>
+      <h2>내가 올린 피드</h2>
+      <div id="profileFeedList">
+        <p class="browse-loading">불러오는 중...</p>
+      </div>
+    </section>
+  </main>
+
+  <button id="savedCourseFloatingButton" class="saved-course-floating-button" type="button" data-show-view="myCourses">
+    <span>내 코스</span>
+    <b id="savedCourseFloatingCount">0</b>
+  </button>
+
+  <main id="loginView" class="portal-view login-view" hidden>
+    <section class="auth-card">
+      <div class="auth-logo" aria-label="RecoDate">
+        <span>Rec</span><span class="brand-heart auth-logo-heart" aria-hidden="true"><svg viewBox="0 0 24 24">
+            <path
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+          </svg></span><span>Date</span>
+      </div>
+      <p class="home-kicker">Welcome to RecoDate</p>
+      <h1>로그인</h1>
+      <p>취향에 맞는 데이트 코스를 이어서 관리해 보세요.</p>
+      <form id="loginForm" class="auth-form">
+        <input id="loginEmail" type="email" placeholder="이메일" autocomplete="email" required />
+        <div class="password-field">
+          <input id="loginPassword" type="password" placeholder="비밀번호" autocomplete="current-password" required />
+          <button class="password-visibility-button" type="button" data-toggle-password="loginPassword"
+            aria-label="비밀번호 보기" aria-pressed="false" title="비밀번호 보기">&#128065;</button>
+        </div>
+        <label class="remember-login-option">
+          <input id="rememberLogin" type="checkbox" />
+          <span>로그인 상태 유지하기</span>
+        </label>
+        <button class="primary-button" type="submit">로그인</button>
+      </form>
+      <div class="auth-links">
+        <button id="showSignupButton" type="button">회원가입</button>
+        <button id="showResetPasswordButton" type="button">비밀번호 찾기</button>
+      </div>
+      <p id="authMessage" class="auth-message"></p>
+    </section>
+
+    <section id="resetPasswordCard" class="auth-card secondary-auth-card" hidden>
+      <h2>비밀번호 찾기</h2>
+      <p class="reset-password-hint">가입한 이메일과 전화번호가 일치하면 새 비밀번호로 바꿀 수 있어요.</p>
+      <form id="resetPasswordForm" class="auth-form">
+        <input id="resetEmail" type="email" placeholder="가입 이메일" autocomplete="email" required />
+        <input id="resetPhone" type="tel" placeholder="가입 시 등록한 전화번호" inputmode="numeric" required />
+        <div class="password-field">
+          <input id="resetNewPassword" type="password" placeholder="새 비밀번호 (8자 이상, 특수문자 포함)" autocomplete="new-password"
+            required />
+          <button class="password-visibility-button" type="button" data-toggle-password="resetNewPassword"
+            aria-label="비밀번호 보기" aria-pressed="false" title="비밀번호 보기">&#128065;</button>
+        </div>
+        <div class="password-field">
+          <input id="resetNewPasswordConfirm" type="password" placeholder="새 비밀번호 확인" autocomplete="new-password"
+            required />
+          <button class="password-visibility-button" type="button" data-toggle-password="resetNewPasswordConfirm"
+            aria-label="비밀번호 보기" aria-pressed="false" title="비밀번호 보기">&#128065;</button>
+        </div>
+        <button class="primary-button" type="submit">비밀번호 재설정</button>
+      </form>
+    </section>
+
+    <section id="signupCard" class="auth-card secondary-auth-card" hidden>
+      <h2>회원가입</h2>
+      <form id="signupForm" class="auth-form">
+        <input id="signupEmail" type="email" placeholder="이메일" required />
+        <div class="password-field">
+          <input id="signupPassword" type="password" placeholder="비밀번호 (8자 이상, 특수문자 포함)" autocomplete="new-password"
+            required />
+          <button class="password-visibility-button" type="button" data-toggle-password="signupPassword"
+            aria-label="비밀번호 보기" aria-pressed="false" title="비밀번호 보기">&#128065;</button>
+        </div>
+        <div class="password-field">
+          <input id="signupPasswordConfirm" type="password" placeholder="비밀번호 확인" autocomplete="new-password"
+            required />
+          <button class="password-visibility-button" type="button" data-toggle-password="signupPasswordConfirm"
+            aria-label="비밀번호 보기" aria-pressed="false" title="비밀번호 보기">&#128065;</button>
+        </div>
+        <input id="signupNickname" type="text" placeholder="닉네임" required />
+        <input id="signupPhone" type="tel" placeholder="전화번호" autocomplete="tel" inputmode="numeric" required />
+        <div class="signup-agreements" aria-label="필수 동의">
+          <label><input id="agreeAll" type="checkbox" /><span><b>전체 동의</b></span></label>
+          <label><input id="agreeTerms" type="checkbox" required /><span>서비스 이용약관 동의 (필수)</span><button
+              class="policy-view-button" type="button" data-policy="terms">보기</button></label>
+          <label><input id="agreePrivacy" type="checkbox" required /><span>개인정보 수집·이용 동의 (필수)</span><button
+              class="policy-view-button" type="button" data-policy="privacy">보기</button></label>
+          <label><input id="agreeLocation" type="checkbox" required /><span>위치기반서비스 이용약관 동의 (필수)</span><button
+              class="policy-view-button" type="button" data-policy="location">보기</button></label>
+          <label><input id="agreeContent" type="checkbox" required /><span>작성한 리뷰·게시물의 서비스 운영·개선·통계 목적 활용 동의
+              (필수)</span><button class="policy-view-button" type="button" data-policy="terms">보기</button></label>
+          <label><input id="agreeAge" type="checkbox" required /><span>만 14세 이상입니다 (필수)</span></label>
+          <p class="signup-permission-note">
+            사진 첨부 시 카메라·갤러리, 추후 내 주변 추천 시 위치(GPS) 권한을 기기 팝업으로 요청합니다. 모두 선택 권한이며 거부해도 기본 기능을 쓸 수 있어요.
+            <button class="policy-view-button" type="button" data-policy="permissions">접근권한 안내</button>
+            <button class="policy-view-button" type="button" data-policy="community">운영정책</button>
+          </p>
+        </div>
+        <button class="primary-button" type="submit">가입하기</button>
+      </form>
+    </section>
+
+  </main>
+
+  <div id="recommendationView" class="app-shell portal-view" hidden>
+    <button class="back-home-button" type="button" data-show-view="home">← 메인 화면으로 돌아가기</button>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">RecoDate</p>
+        <h1>전국 데이트 코스 추천</h1>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel controls-panel" aria-label="추천 조건">
+        <div class="section-title">
+          <h2>추천 조건</h2>
+          <p>추천 목록은 예상 거리로 만들고, 실제 경로는 코스 선택 후 계산합니다.</p>
+        </div>
+
+        <form id="recommendForm" class="form">
+          <label class="field">
+            <span>시작 장소 <small class="optional-label">비워 두면 선택한 도시 중심을 기준으로 추천합니다.</small></span>
+            <div class="search-row">
+              <input id="placeKeyword" type="text" placeholder="예: 서울역, 해운대, 제주공항" autocomplete="off" readonly
+                aria-haspopup="dialog" />
+              <button id="searchPlaceButton" type="button">검색</button>
+            </div>
+          </label>
+
+          <div id="placeResults" class="place-results" aria-live="polite"></div>
+          <button id="clearStartPlaceButton" class="secondary-button" type="button">시작 장소 없이 추천받기</button>
+
+          <label class="field recommend-region-field">
+            <span>추천 지역 <small class="required-label">필수</small></span>
+            <button id="openRecommendRegionModalButton" class="region-select-button" type="button"
+              aria-haspopup="dialog">
+              서울 전체
+            </button>
+            <select id="recommendRegion" required hidden>
+              <option value="seoul" selected>서울 전체</option>
+            </select>
+          </label>
+
+          <div class="field">
+            <span>이동수단</span>
+            <div class="segmented transport-segmented">
+              <label>
+                <input type="radio" name="transport" value="walk" checked />
+                <span>도보</span>
+              </label>
+              <label>
+                <input type="radio" name="transport" value="transit" />
+                <span>대중교통</span>
+              </label>
+              <label>
+                <input type="radio" name="transport" value="car" />
+                <span>자차</span>
+              </label>
+            </div>
           </div>
 
-          <form id="recommendForm" class="form">
+          <label id="triptiApplyOption" class="check-row tripti-apply-option">
+            <input id="applyTriptiPreference" type="checkbox" />
+            <span>TripTI 결과 적용 <small id="triptiApplyHint" class="optional-label">TripTI 결과가 있으면 추천 조건에
+                반영됩니다.</small></span>
+          </label>
+
+          <label class="check-row open-now-option">
+            <input id="onlyOpenNow" type="checkbox" />
+            <span>현재 운영 중인 장소만 추천받기 <small class="optional-label">운영시간이 확인된 장소 중 지금 영업 중인 곳만 추천합니다.</small></span>
+          </label>
+
+          <label id="includeNearbyAdminRegionsOption" class="check-row" hidden>
+            <input id="includeNearbyAdminRegions" type="checkbox" checked />
+            <span>근처 동까지 코스에 포함시키기 <small class="optional-label">동 단위 선택 시 주변 동 장소도 후보에 포함합니다.</small></span>
+          </label>
+
+          <div class="field">
+            <span>추천 방식</span>
+            <div class="segmented">
+              <label>
+                <input type="radio" name="mode" value="quick" checked />
+                <span>빠른 추천</span>
+              </label>
+              <label>
+                <input type="radio" name="mode" value="detail" />
+                <span>상세 설정</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="detailOptions" class="detail-options" hidden>
+            <div class="field travel-date-field">
+              <span>여행 날짜 <small class="optional-label">선택 사항 · 해당 날짜 기준으로 추천</small></span>
+              <button id="travelDateButton" class="travel-date-button" type="button" aria-expanded="false">날짜
+                선택</button>
+              <div id="travelDateCalendar" class="travel-date-calendar" hidden></div>
+              <label class="check-row apply-weather-row">
+                <input id="applyWeather" type="checkbox" disabled />
+                <span>날씨 추천코스에 반영하기 <small class="optional-label" id="applyWeatherHint">날짜를 선택하면 사용할 수
+                    있어요</small></span>
+              </label>
+            </div>
+
+            <label class="check-row">
+              <input id="overnight" type="checkbox" />
+              <span>선택한 도시에서 숙박함</span>
+            </label>
+
+            <div class="meal-options">
+              <label class="check-row"><input id="includeLunch" type="checkbox" checked /><span>점심 추천</span></label>
+              <label class="check-row"><input id="includeCafe" type="checkbox" checked /><span>카페 추천</span></label>
+              <label class="check-row"><input id="includeDinner" type="checkbox" /><span>저녁 추천</span></label>
+              <label class="check-row"><input id="includeBar" type="checkbox" /><span>술집 추천</span></label>
+              <label class="check-row"><input id="excludeFranchiseFood" type="checkbox" /><span>프랜차이즈 제외</span></label>
+            </div>
+
             <label class="field">
-              <span>시작 장소 <small class="optional-label">비워 두면 선택한 도시 중심을 기준으로 추천합니다.</small></span>
-              <div class="search-row">
-                <input id="placeKeyword" type="text" placeholder="예: 서울역, 해운대, 제주공항" autocomplete="off" readonly aria-haspopup="dialog" />
-                <button id="searchPlaceButton" type="button">검색</button>
+              <span>여행 시작 시간 <small class="optional-label">오전 11시 이전이면 긴 하루 코스로 확장</small></span>
+              <div class="time-option-row">
+                <input id="startTime" type="time" value="12:00" />
+                <button id="startTimeAnyButton" class="inline-option-button" type="button"
+                  aria-pressed="false">무관</button>
               </div>
             </label>
 
-            <div id="placeResults" class="place-results" aria-live="polite"></div>
-            <button id="clearStartPlaceButton" class="secondary-button" type="button">시작 장소 없이 추천받기</button>
+            <label class="field">
+              <span>꼭 들를 장소 <small class="optional-label">선택 사항</small></span>
+              <div class="search-row">
+                <input id="requiredPlaceKeyword" type="text" placeholder="예: 오죽헌, 이마트, 초당순두부" autocomplete="off" />
+                <button id="searchRequiredPlaceButton" type="button">검색</button>
+              </div>
+            </label>
 
-            <label class="field recommend-region-field">
-              <span>추천 지역 <small class="required-label">필수</small></span>
-              <button id="openRecommendRegionModalButton" class="region-select-button" type="button" aria-haspopup="dialog">
-                서울 전체
-              </button>
-              <select id="recommendRegion" required hidden>
-                <option value="seoul" selected>서울 전체</option>
+            <small class="optional-label">검색 결과에서 장소를 누르면 여러 개를 계속 추가할 수 있습니다.</small>
+            <div id="requiredPlaceResults" class="place-results" aria-live="polite"></div>
+
+            <label class="field">
+              <span>묵는 숙소 <small class="optional-label">선택 사항 · 최종 목적지</small></span>
+              <div class="search-row">
+                <input id="accommodationKeyword" type="text" placeholder="예: 시그니엘, 해운대 호텔, 제주 숙소" autocomplete="off" />
+                <button id="searchAccommodationButton" type="button">검색</button>
+              </div>
+            </label>
+
+            <div id="accommodationResults" class="place-results" aria-live="polite"></div>
+
+            <label id="lunchFoodField" class="field">
+              <span>점심 음식 종류</span>
+              <select id="foodCategory">
+                <option value="음식">전체</option>
+                <option value="한식">한식</option>
+                <option value="중식">중식</option>
+                <option value="일식">일식</option>
+                <option value="양식">양식</option>
+                <option value="패스트푸드">패스트푸드</option>
+                <option value="기타">기타(쌀국수, 인도음식 등)</option>
               </select>
             </label>
 
-            <div class="field">
-              <span>이동수단</span>
-              <div class="segmented transport-segmented">
-                <label>
-                  <input type="radio" name="transport" value="walk" checked />
-                  <span>도보</span>
-                </label>
-                <label>
-                  <input type="radio" name="transport" value="transit" />
-                  <span>대중교통</span>
-                </label>
-                <label>
-                  <input type="radio" name="transport" value="car" />
-                  <span>자차</span>
-                </label>
-              </div>
-            </div>
-
-            <label id="triptiApplyOption" class="check-row tripti-apply-option">
-              <input id="applyTriptiPreference" type="checkbox" />
-              <span>TripTI 결과 적용 <small id="triptiApplyHint" class="optional-label">TripTI 결과가 있으면 추천 조건에 반영됩니다.</small></span>
+            <label id="dinnerFoodField" class="field" hidden>
+              <span>저녁 음식 종류 <small class="optional-label">저녁 추천 시 선택</small></span>
+              <select id="dinnerFoodCategory">
+                <option value="음식">전체</option>
+                <option value="한식">한식</option>
+                <option value="중식">중식</option>
+                <option value="일식">일식</option>
+                <option value="양식">양식</option>
+                <option value="패스트푸드">패스트푸드</option>
+                <option value="기타">기타(쌀국수, 인도음식 등)</option>
+              </select>
             </label>
 
-            <label class="check-row open-now-option">
-              <input id="onlyOpenNow" type="checkbox" />
-              <span>현재 운영 중인 장소만 추천받기 <small class="optional-label">운영시간이 확인된 장소 중 지금 영업 중인 곳만 추천합니다.</small></span>
+            <label class="field">
+              <span>이동 반경: <b id="radiusValue">2km</b></span>
+              <input id="radiusKm" type="range" min="1" max="12" value="2" />
             </label>
 
-            <label id="includeNearbyAdminRegionsOption" class="check-row" hidden>
-              <input id="includeNearbyAdminRegions" type="checkbox" checked />
-              <span>근처 동까지 코스에 포함시키기 <small class="optional-label">동 단위 선택 시 주변 동 장소도 후보에 포함합니다.</small></span>
+            <label class="field">
+              <span>경유지 개수</span>
+              <select id="waypointCount">
+                <option value="2">2개</option>
+                <option value="3">3개</option>
+                <option value="4">4개</option>
+                <option value="5" selected>5개</option>
+                <option value="6">6개</option>
+                <option value="7">7개</option>
+              </select>
             </label>
 
-            <div class="field">
-              <span>추천 방식</span>
-              <div class="segmented">
-                <label>
-                  <input type="radio" name="mode" value="quick" checked />
-                  <span>빠른 추천</span>
-                </label>
-                <label>
-                  <input type="radio" name="mode" value="detail" />
-                  <span>상세 설정</span>
-                </label>
-              </div>
-            </div>
-
-            <div id="detailOptions" class="detail-options" hidden>
-              <div class="field travel-date-field">
-                <span>여행 날짜 <small class="optional-label">선택 사항 · 해당 날짜 기준으로 추천</small></span>
-                <button id="travelDateButton" class="travel-date-button" type="button" aria-expanded="false">날짜 선택</button>
-                <div id="travelDateCalendar" class="travel-date-calendar" hidden></div>
-                <label class="check-row apply-weather-row">
-                  <input id="applyWeather" type="checkbox" disabled />
-                  <span>날씨 추천코스에 반영하기 <small class="optional-label" id="applyWeatherHint">날짜를 선택하면 사용할 수 있어요</small></span>
-                </label>
-              </div>
-
-              <label class="check-row">
-                <input id="overnight" type="checkbox" />
-                <span>선택한 도시에서 숙박함</span>
-              </label>
-
-              <div class="meal-options">
-                <label class="check-row"><input id="includeLunch" type="checkbox" checked /><span>점심 추천</span></label>
-                <label class="check-row"><input id="includeCafe" type="checkbox" checked /><span>카페 추천</span></label>
-                <label class="check-row"><input id="includeDinner" type="checkbox" /><span>저녁 추천</span></label>
-                <label class="check-row"><input id="includeBar" type="checkbox" /><span>술집 추천</span></label>
-                <label class="check-row"><input id="excludeFranchiseFood" type="checkbox" /><span>프랜차이즈 제외</span></label>
-              </div>
-
-              <label class="field">
-                <span>여행 시작 시간 <small class="optional-label">오전 11시 이전이면 긴 하루 코스로 확장</small></span>
-                <div class="time-option-row">
-                  <input id="startTime" type="time" value="12:00" />
-                  <button id="startTimeAnyButton" class="inline-option-button" type="button" aria-pressed="false">무관</button>
-                </div>
-              </label>
-
-              <label class="field">
-                <span>꼭 들를 장소 <small class="optional-label">선택 사항</small></span>
-                <div class="search-row">
-                  <input id="requiredPlaceKeyword" type="text" placeholder="예: 오죽헌, 이마트, 초당순두부" autocomplete="off" />
-                  <button id="searchRequiredPlaceButton" type="button">검색</button>
-                </div>
-              </label>
-
-              <small class="optional-label">검색 결과에서 장소를 누르면 여러 개를 계속 추가할 수 있습니다.</small>
-              <div id="requiredPlaceResults" class="place-results" aria-live="polite"></div>
-
-              <label class="field">
-                <span>묵는 숙소 <small class="optional-label">선택 사항 · 최종 목적지</small></span>
-                <div class="search-row">
-                  <input id="accommodationKeyword" type="text" placeholder="예: 시그니엘, 해운대 호텔, 제주 숙소" autocomplete="off" />
-                  <button id="searchAccommodationButton" type="button">검색</button>
-                </div>
-              </label>
-
-              <div id="accommodationResults" class="place-results" aria-live="polite"></div>
-
-              <label id="lunchFoodField" class="field">
-                <span>점심 음식 종류</span>
-                <select id="foodCategory">
-                  <option value="음식">전체</option>
-                  <option value="한식">한식</option>
-                  <option value="중식">중식</option>
-                  <option value="일식">일식</option>
-                  <option value="양식">양식</option>
-                  <option value="패스트푸드">패스트푸드</option>
-                  <option value="기타">기타(쌀국수, 인도음식 등)</option>
-                </select>
-              </label>
-
-              <label id="dinnerFoodField" class="field" hidden>
-                <span>저녁 음식 종류 <small class="optional-label">저녁 추천 시 선택</small></span>
-                <select id="dinnerFoodCategory">
-                  <option value="음식">전체</option>
-                  <option value="한식">한식</option>
-                  <option value="중식">중식</option>
-                  <option value="일식">일식</option>
-                  <option value="양식">양식</option>
-                  <option value="패스트푸드">패스트푸드</option>
-                  <option value="기타">기타(쌀국수, 인도음식 등)</option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span>이동 반경: <b id="radiusValue">2km</b></span>
-                <input id="radiusKm" type="range" min="1" max="12" value="2" />
-              </label>
-
-              <label class="field">
-                <span>경유지 개수</span>
-                <select id="waypointCount">
-                  <option value="2">2개</option>
-                  <option value="3">3개</option>
-                  <option value="4">4개</option>
-                  <option value="5" selected>5개</option>
-                  <option value="6">6개</option>
-                  <option value="7">7개</option>
-                </select>
-              </label>
-
-              <label id="includeFoodOption" class="check-row" hidden>
-                <input id="includeFood" type="checkbox" checked />
-                <span>식당 코스에 포함하기 <small class="optional-label">경유지 2~3개일 때 선택 가능</small></span>
-              </label>
-            </div>
-
-            <button class="primary-button" type="submit">추천 코스 만들기</button>
-          </form>
-        </section>
-
-        <section class="panel results-panel" aria-label="추천 결과">
-          <div class="section-title">
-            <h2>추천 결과</h2>
-            <p id="resultSummary">조건을 입력하고 추천 코스를 생성하세요.</p>
-            <button id="editConditionsButton" class="step-navigation-button" type="button">← 추천 조건 다시 설정</button>
+            <label id="includeFoodOption" class="check-row" hidden>
+              <input id="includeFood" type="checkbox" checked />
+              <span>식당 코스에 포함하기 <small class="optional-label">경유지 2~3개일 때 선택 가능</small></span>
+            </label>
           </div>
-          <div class="course-carousel-controls">
-            <button id="previousCourseButton" type="button" aria-label="이전 추천 코스" hidden>←</button>
-            <span id="courseCarouselStatus">0 / 0</span>
-            <small>카드를 좌우로 밀어보세요</small>
-            <button id="nextCourseButton" type="button" aria-label="다음 추천 코스" hidden>→</button>
-          </div>
-          <div id="courseList" class="course-list"></div>
-        </section>
 
-        <section class="panel map-panel" aria-label="코스 흐름">
-          <div class="section-title map-title">
-            <div>
-              <h2>코스 흐름</h2>
-              <p id="routeSummary">추천 카드를 선택하면 실제 경로를 확인할 수 있습니다.</p>
-            </div>
-            <div class="map-title-actions">
-              <button id="backToResultsButton" type="button">← 추천 결과</button>
-              <button id="saveFlowCourseButton" class="flow-save-course-button" type="button">코스 저장</button>
-            </div>
-          </div>
-          <div id="map"></div>
-        </section>
-      </main>
-    </div>
-
-    <main id="chatHubView" class="portal-view browse-view" hidden>
-      <button class="back-home-button" type="button" data-show-view="home">← 메인 화면으로 돌아가기</button>
-      <header class="browse-heading">
-        <p class="home-kicker">Chat</p>
-        <h1>채팅</h1>
-        <p>친구와 1:1로 대화하거나 단체방을 만들어 함께 이야기해요.</p>
-      </header>
-      <div class="chat-hub-wrap">
-        <div class="chat-hub-top">
-          <div class="chat-hub-segments" role="tablist">
-            <button class="chat-hub-seg active" type="button" data-chathub-seg="chats">채팅</button>
-            <button class="chat-hub-seg" type="button" data-chathub-seg="friends">친구</button>
-          </div>
-          <button id="createRoomButton" class="create-room-button" type="button" aria-label="단체 채팅방 만들기" title="단체 채팅방 만들기">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-        </div>
-        <div id="chatHubChats" class="chat-hub-panel">
-          <div id="chatListContainer" class="chat-list"><p class="browse-loading">불러오는 중...</p></div>
-        </div>
-        <div id="chatHubFriends" class="chat-hub-panel" hidden>
-          <div id="chatHubFriendList" class="community-friend-list"><p class="browse-loading">불러오는 중...</p></div>
-        </div>
-      </div>
-    </main>
-
-    <div id="userProfileModal" class="modal-backdrop" hidden>
-      <section class="quick-condition-card community-share-card user-profile-card" role="dialog" aria-modal="true" aria-labelledby="userProfileNickname">
-        <p class="home-kicker">Profile</p>
-        <div class="user-profile-head">
-          <span id="userProfileAvatar" class="community-avatar user-profile-avatar"></span>
-          <div class="user-profile-headtext">
-            <h2 id="userProfileNickname"></h2>
-            <small id="userProfilePartner" class="profile-partner-line" hidden></small>
-            <small id="userProfileTripti"></small>
-          </div>
-        </div>
-        <div id="userProfileStats" class="profile-community-stats"></div>
-        <p id="userProfileMutual" class="mutual-connections" hidden></p>
-        <div id="userProfileActions" class="user-profile-actions"></div>
-        <p class="friend-section-label">공유한 피드</p>
-        <div id="userProfilePosts" class="user-profile-posts"></div>
-        <button class="modal-close-button" type="button" data-close-user-profile aria-label="닫기">&times;</button>
-      </section>
-    </div>
-
-    <div id="communityFriendsModal" class="modal-backdrop" hidden>
-      <section class="quick-condition-card community-share-card" role="dialog" aria-modal="true" aria-labelledby="communityFriendsTitle">
-        <p class="home-kicker">Follow</p>
-        <h2 id="communityFriendsTitle">팔로우</h2>
-        <div id="communityFriendsList" class="community-friends-list"><p class="browse-loading">불러오는 중...</p></div>
-        <button class="modal-close-button" type="button" data-close-community-friends aria-label="닫기">&times;</button>
-      </section>
-    </div>
-
-    <div id="friendCourseShareModal" class="modal-backdrop" hidden>
-      <section class="quick-condition-card community-share-card" role="dialog" aria-modal="true" aria-labelledby="friendCourseShareTitle">
-        <p class="home-kicker">Share to Friend</p>
-        <h2 id="friendCourseShareTitle">친구에게 코스 공유</h2>
-        <p id="friendCourseShareName" class="community-share-course-name"></p>
-        <div id="friendCourseShareList" class="community-friends-list"><p class="browse-loading">불러오는 중...</p></div>
-        <p id="friendCourseShareMessage" class="community-share-message" hidden></p>
-        <div class="community-share-actions">
-          <button id="friendCourseShareCancel" class="secondary-button" type="button">취소</button>
-        </div>
-        <button class="modal-close-button" type="button" data-close-friend-course-share aria-label="닫기">&times;</button>
-      </section>
-    </div>
-
-    <div id="likedPostsModal" class="modal-backdrop" hidden>
-      <section class="quick-condition-card community-share-card liked-posts-card" role="dialog" aria-modal="true" aria-labelledby="likedPostsTitle">
-        <p class="home-kicker">Liked Feed</p>
-        <h2 id="likedPostsTitle">좋아요 누른 피드</h2>
-        <div id="likedPostsList" class="liked-posts-list"><p class="browse-loading">불러오는 중...</p></div>
-        <button class="modal-close-button" type="button" data-close-liked-posts aria-label="닫기">&times;</button>
-      </section>
-    </div>
-
-    <div id="profileAccountModal" class="modal-backdrop" hidden>
-      <section class="quick-condition-card community-share-card profile-account-card" role="dialog" aria-modal="true" aria-labelledby="profileAccountTitle">
-        <p class="home-kicker">Account</p>
-        <h2 id="profileAccountTitle">계정 정보</h2>
-        <dl class="profile-account-list">
-          <div>
-            <dt>아이디</dt>
-            <dd id="profileAccountLoginId">-</dd>
-          </div>
-          <div>
-            <dt>이메일</dt>
-            <dd id="profileAccountEmail">-</dd>
-          </div>
-          <div>
-            <dt>전화번호</dt>
-            <dd id="profileAccountPhone">등록된 전화번호 없음</dd>
-          </div>
-        </dl>
-        <button id="profileAccountLogoutButton" class="profile-account-logout-button" type="button">로그아웃</button>
-        <button class="modal-close-button" type="button" data-close-profile-account aria-label="닫기">&times;</button>
-      </section>
-    </div>
-
-    <div id="communityCommentsSheet" class="comments-sheet-backdrop" hidden>
-      <section class="comments-sheet" role="dialog" aria-modal="true" aria-labelledby="commentsSheetTitle">
-        <button class="comments-sheet-grip" type="button" data-close-comments-sheet aria-label="댓글 닫기"></button>
-        <header class="comments-sheet-head">
-          <h2 id="commentsSheetTitle">댓글</h2>
-          <button class="comments-sheet-close" type="button" data-close-comments-sheet aria-label="댓글 닫기">&times;</button>
-        </header>
-        <div id="commentsSheetList" class="comments-sheet-list" aria-live="polite">
-          <p class="browse-loading">댓글을 불러오는 중...</p>
-        </div>
-        <div class="comments-reaction-bar" aria-label="빠른 반응">
-          <button type="button" data-comment-emoji="💗">💗</button>
-          <button type="button" data-comment-emoji="🙌">🙌</button>
-          <button type="button" data-comment-emoji="🔥">🔥</button>
-          <button type="button" data-comment-emoji="👏">👏</button>
-          <button type="button" data-comment-emoji="🥹">🥹</button>
-          <button type="button" data-comment-emoji="😍">😍</button>
-          <button type="button" data-comment-emoji="😮">😮</button>
-          <button type="button" data-comment-emoji="😂">😂</button>
-        </div>
-        <form id="commentsSheetForm" class="comments-sheet-form">
-          <span id="commentsSheetAvatar" class="community-avatar comments-sheet-avatar" aria-hidden="true"></span>
-          <input id="commentsSheetInput" type="text" maxlength="300" placeholder="댓글 추가" autocomplete="off" />
-          <button id="commentsSheetSubmit" type="submit" aria-label="댓글 등록">
-            <svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4 20-7Z"/></svg>
-          </button>
+          <button class="primary-button" type="submit">추천 코스 만들기</button>
         </form>
       </section>
-    </div>
 
-    <div id="policyModal" class="modal-backdrop" hidden>
-      <section class="quick-condition-card community-share-card policy-card" role="dialog" aria-modal="true" aria-labelledby="policyModalTitle">
-        <p class="home-kicker">Policy</p>
-        <h2 id="policyModalTitle">약관</h2>
-        <div id="policyModalBody" class="policy-body"></div>
-        <button class="modal-close-button" type="button" data-close-policy aria-label="닫기">&times;</button>
-      </section>
-    </div>
-
-    <div id="postMoreSheet" class="modal-backdrop" hidden>
-      <section class="post-more-card" role="dialog" aria-modal="true" aria-label="게시물 메뉴">
-        <button class="post-more-grip" type="button" data-close-post-more aria-label="닫기"></button>
-        <div id="postMoreActions" class="post-more-actions"></div>
-      </section>
-    </div>
-
-    <div id="avatarCropModal" class="modal-backdrop" hidden>
-      <section class="quick-condition-card community-share-card avatar-crop-card" role="dialog" aria-modal="true" aria-labelledby="avatarCropTitle">
-        <p class="home-kicker">Profile Photo</p>
-        <h2 id="avatarCropTitle">사진 범위 설정</h2>
-        <p class="community-share-course-name">원 안에 보일 부분을 끌어서 맞추고, 슬라이더로 확대하세요.</p>
-        <div id="avatarCropArea" class="avatar-crop-area">
-          <img id="avatarCropImage" alt="프로필 사진 미리보기" draggable="false" />
-          <div class="avatar-crop-mask" aria-hidden="true"></div>
+      <section class="panel results-panel" aria-label="추천 결과">
+        <div class="section-title">
+          <h2>추천 결과</h2>
+          <p id="resultSummary">조건을 입력하고 추천 코스를 생성하세요.</p>
+          <button id="editConditionsButton" class="step-navigation-button" type="button">← 추천 조건 다시 설정</button>
         </div>
-        <label class="avatar-crop-zoom"><span>확대</span><input id="avatarCropZoom" type="range" min="100" max="300" value="100" /></label>
-        <div class="community-share-actions">
-          <button id="avatarCropCancel" class="secondary-button" type="button">취소</button>
-          <button id="avatarCropConfirm" class="primary-button" type="button">완료</button>
+        <div class="course-carousel-controls">
+          <button id="previousCourseButton" type="button" aria-label="이전 추천 코스" hidden>←</button>
+          <span id="courseCarouselStatus">0 / 0</span>
+          <small>카드를 좌우로 밀어보세요</small>
+          <button id="nextCourseButton" type="button" aria-label="다음 추천 코스" hidden>→</button>
         </div>
-        <button class="modal-close-button" type="button" data-close-avatar-crop aria-label="닫기">&times;</button>
+        <div id="courseList" class="course-list"></div>
       </section>
-    </div>
 
-    <div id="notificationsModal" class="modal-backdrop" hidden>
-      <section class="quick-condition-card community-share-card notif-card" role="dialog" aria-modal="true" aria-labelledby="notificationsTitle">
-        <p class="home-kicker">Notifications</p>
-        <h2 id="notificationsTitle">알림</h2>
-        <button id="enablePushButton" class="enable-push-button" type="button" hidden>🔔 휴대폰으로 알림 받기</button>
-        <div id="notificationsList" class="notif-list"><p class="browse-loading">불러오는 중...</p></div>
-        <button class="modal-close-button" type="button" data-close-notifications aria-label="닫기">&times;</button>
+      <section class="panel map-panel" aria-label="코스 흐름">
+        <div class="section-title map-title">
+          <div>
+            <h2>코스 흐름</h2>
+            <p id="routeSummary">추천 카드를 선택하면 실제 경로를 확인할 수 있습니다.</p>
+          </div>
+          <div class="map-title-actions">
+            <button id="backToResultsButton" type="button">← 추천 결과</button>
+            <button id="saveFlowCourseButton" class="flow-save-course-button" type="button">코스 저장</button>
+          </div>
+        </div>
+        <div id="map"></div>
       </section>
-    </div>
+    </main>
+  </div>
 
-    <div id="pushOptInModal" class="modal-backdrop" hidden>
-      <section class="quick-condition-card push-optin-card" role="dialog" aria-modal="true" aria-labelledby="pushOptInTitle">
-        <div class="push-optin-icon">🔔</div>
-        <h2 id="pushOptInTitle">알림을 받으시겠어요?</h2>
-        <p class="push-optin-desc">좋아요 ♥, 댓글, 채팅(미리보기), 팔로우 소식을 휴대폰으로 바로 받아볼 수 있어요. 언제든 알림 종에서 끌 수 있어요.</p>
-        <div class="push-optin-actions">
-          <button id="pushOptInDeny" class="push-optin-deny" type="button">허용 안 함</button>
-          <button id="pushOptInAllow" class="push-optin-allow" type="button">알림 허용</button>
+  <main id="chatHubView" class="portal-view browse-view" hidden>
+    <button class="back-home-button" type="button" data-show-view="home">← 메인 화면으로 돌아가기</button>
+    <header class="browse-heading">
+      <p class="home-kicker">Chat</p>
+      <h1>채팅</h1>
+      <p>친구와 1:1로 대화하거나 단체방을 만들어 함께 이야기해요.</p>
+    </header>
+    <div class="chat-hub-wrap">
+      <div class="chat-hub-top">
+        <div class="chat-hub-segments" role="tablist">
+          <button class="chat-hub-seg active" type="button" data-chathub-seg="chats">채팅</button>
+          <button class="chat-hub-seg" type="button" data-chathub-seg="friends">친구</button>
         </div>
-      </section>
-    </div>
-
-    <div id="reportModal" class="modal-backdrop" hidden>
-      <section class="quick-condition-card community-share-card" role="dialog" aria-modal="true" aria-labelledby="reportModalTitle">
-        <p class="home-kicker">Report</p>
-        <h2 id="reportModalTitle">신고하기</h2>
-        <p id="reportTargetLabel" class="community-share-course-name"></p>
-        <div class="report-reasons">
-          <label><input type="radio" name="reportReason" value="스팸·홍보" checked /><span>스팸·홍보</span></label>
-          <label><input type="radio" name="reportReason" value="욕설·혐오" /><span>욕설·혐오</span></label>
-          <label><input type="radio" name="reportReason" value="음란물" /><span>음란물</span></label>
-          <label><input type="radio" name="reportReason" value="기타" /><span>기타</span></label>
-        </div>
-        <p id="reportMessage" class="community-share-message" hidden></p>
-        <div class="community-share-actions">
-          <button id="reportCancel" class="secondary-button" type="button">취소</button>
-          <button id="reportSubmit" class="primary-button" type="button">신고하기</button>
-        </div>
-        <button class="modal-close-button" type="button" data-close-report aria-label="닫기">&times;</button>
-      </section>
-    </div>
-
-    <div id="blockedUsersModal" class="modal-backdrop" hidden>
-      <section class="quick-condition-card community-share-card" role="dialog" aria-modal="true" aria-labelledby="blockedUsersTitle">
-        <p class="home-kicker">Blocked</p>
-        <h2 id="blockedUsersTitle">차단한 사용자</h2>
-        <div id="blockedUsersList" class="community-friends-list"><p class="browse-loading">불러오는 중...</p></div>
-        <button class="modal-close-button" type="button" data-close-blocked aria-label="닫기">&times;</button>
-      </section>
-    </div>
-
-    <div id="chatModal" class="modal-backdrop" hidden>
-      <section class="quick-condition-card community-share-card chat-card" role="dialog" aria-modal="true" aria-labelledby="chatFriendNickname">
-        <div class="chat-head">
-          <button id="chatFriendAvatar" class="community-avatar chat-avatar-button" type="button" title="프로필 보기" aria-label="프로필 보기"></button>
-          <h2 id="chatFriendNickname"></h2>
-        </div>
-        <div id="chatMessages" class="chat-messages"><p class="browse-loading">불러오는 중...</p></div>
-        <div id="chatCoursePicker" class="chat-course-picker" hidden></div>
-        <div id="chatPhotoMenu" class="chat-photo-menu" hidden>
-          <button id="chatTakePhotoButton" type="button">
-            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-            사진 찍기
-          </button>
-          <button id="chatPickPhotoButton" type="button">
-            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-            사진 보내기
-          </button>
-        </div>
-        <div id="chatAttachedPreview" class="chat-attached-preview" hidden></div>
-        <div id="chatReplyPreview" class="chat-reply-preview" hidden></div>
-        <div class="chat-input-row">
-          <button id="chatAttachButton" class="chat-attach-button" type="button" title="내 코스 첨부" aria-label="내 코스 첨부">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          </button>
-          <button id="chatCameraButton" class="chat-attach-button" type="button" title="사진 보내기" aria-label="사진 보내기">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          </button>
-          <input id="chatCameraInput" type="file" accept="image/*" capture="environment" hidden />
-          <input id="chatGalleryInput" type="file" accept="image/*" multiple hidden />
-          <input id="chatInput" type="text" maxlength="500" placeholder="메시지 보내기" autocomplete="off" />
-          <button id="chatSendButton" class="primary-button chat-send-button" type="button">전송</button>
-        </div>
-        <button class="modal-close-button" type="button" data-close-chat aria-label="닫기">&times;</button>
-      </section>
-    </div>
-
-    <div id="roomChatModal" class="modal-backdrop" hidden>
-      <section class="quick-condition-card community-share-card chat-card" role="dialog" aria-modal="true" aria-labelledby="roomChatName">
-        <button id="roomChatInfoButton" class="room-chat-head" type="button" title="방 정보" aria-label="방 정보">
-          <span class="room-chat-avatar" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </span>
-          <span class="room-chat-titles">
-            <h2 id="roomChatName"></h2>
-            <small id="roomChatMembers"></small>
-          </span>
+        <button id="createRoomButton" class="create-room-button" type="button" aria-label="단체 채팅방 만들기"
+          title="단체 채팅방 만들기">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4"
+            stroke-linecap="round" aria-hidden="true">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
         </button>
-        <div id="roomChatMessages" class="chat-messages"><p class="browse-loading">불러오는 중...</p></div>
-        <div id="roomChatCoursePicker" class="chat-course-picker" hidden></div>
-        <div id="roomChatPhotoMenu" class="chat-photo-menu" hidden>
-          <button id="roomChatTakePhotoButton" type="button">
-            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-            사진 찍기
+      </div>
+      <div id="chatHubChats" class="chat-hub-panel">
+        <div id="chatListContainer" class="chat-list">
+          <p class="browse-loading">불러오는 중...</p>
+        </div>
+      </div>
+      <div id="chatHubFriends" class="chat-hub-panel" hidden>
+        <div id="chatHubFriendList" class="community-friend-list">
+          <p class="browse-loading">불러오는 중...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="userProfileModal" class="modal-backdrop" hidden>
+    <section class="quick-condition-card community-share-card user-profile-card" role="dialog" aria-modal="true"
+      aria-labelledby="userProfileNickname">
+      <p class="home-kicker">Profile</p>
+      <div class="user-profile-head">
+        <span id="userProfileAvatar" class="community-avatar user-profile-avatar"></span>
+        <div class="user-profile-headtext">
+          <h2 id="userProfileNickname"></h2>
+          <small id="userProfilePartner" class="profile-partner-line" hidden></small>
+          <small id="userProfileTripti"></small>
+        </div>
+      </div>
+      <div id="userProfileStats" class="profile-community-stats"></div>
+      <p id="userProfileMutual" class="mutual-connections" hidden></p>
+      <div id="userProfileActions" class="user-profile-actions"></div>
+      <p class="friend-section-label">공유한 피드</p>
+      <div id="userProfilePosts" class="user-profile-posts"></div>
+      <button class="modal-close-button" type="button" data-close-user-profile aria-label="닫기">&times;</button>
+    </section>
+  </div>
+
+  <div id="communityFriendsModal" class="modal-backdrop" hidden>
+    <section class="quick-condition-card community-share-card" role="dialog" aria-modal="true"
+      aria-labelledby="communityFriendsTitle">
+      <p class="home-kicker">Follow</p>
+      <h2 id="communityFriendsTitle">팔로우</h2>
+      <div id="communityFriendsList" class="community-friends-list">
+        <p class="browse-loading">불러오는 중...</p>
+      </div>
+      <button class="modal-close-button" type="button" data-close-community-friends aria-label="닫기">&times;</button>
+    </section>
+  </div>
+
+  <div id="friendCourseShareModal" class="modal-backdrop" hidden>
+    <section class="quick-condition-card community-share-card" role="dialog" aria-modal="true"
+      aria-labelledby="friendCourseShareTitle">
+      <p class="home-kicker">Share to Friend</p>
+      <h2 id="friendCourseShareTitle">친구에게 코스 공유</h2>
+      <p id="friendCourseShareName" class="community-share-course-name"></p>
+      <div id="friendCourseShareList" class="community-friends-list">
+        <p class="browse-loading">불러오는 중...</p>
+      </div>
+      <p id="friendCourseShareMessage" class="community-share-message" hidden></p>
+      <div class="community-share-actions">
+        <button id="friendCourseShareCancel" class="secondary-button" type="button">취소</button>
+      </div>
+      <button class="modal-close-button" type="button" data-close-friend-course-share aria-label="닫기">&times;</button>
+    </section>
+  </div>
+
+  <div id="likedPostsModal" class="modal-backdrop" hidden>
+    <section class="quick-condition-card community-share-card liked-posts-card" role="dialog" aria-modal="true"
+      aria-labelledby="likedPostsTitle">
+      <p class="home-kicker">Liked Feed</p>
+      <h2 id="likedPostsTitle">좋아요 누른 피드</h2>
+      <div id="likedPostsList" class="liked-posts-list">
+        <p class="browse-loading">불러오는 중...</p>
+      </div>
+      <button class="modal-close-button" type="button" data-close-liked-posts aria-label="닫기">&times;</button>
+    </section>
+  </div>
+
+  <div id="profileAccountModal" class="modal-backdrop" hidden>
+    <section class="quick-condition-card community-share-card profile-account-card" role="dialog" aria-modal="true"
+      aria-labelledby="profileAccountTitle">
+      <p class="home-kicker">Account</p>
+      <h2 id="profileAccountTitle">계정 정보</h2>
+      <dl class="profile-account-list">
+        <div>
+          <dt>아이디</dt>
+          <dd id="profileAccountLoginId">-</dd>
+        </div>
+        <div>
+          <dt>이메일</dt>
+          <dd id="profileAccountEmail">-</dd>
+        </div>
+        <div>
+          <dt>전화번호</dt>
+          <dd id="profileAccountPhone">등록된 전화번호 없음</dd>
+        </div>
+      </dl>
+      <button id="profileAccountLogoutButton" class="profile-account-logout-button" type="button">로그아웃</button>
+      <button class="modal-close-button" type="button" data-close-profile-account aria-label="닫기">&times;</button>
+    </section>
+  </div>
+
+  <div id="communityCommentsSheet" class="comments-sheet-backdrop" hidden>
+    <section class="comments-sheet" role="dialog" aria-modal="true" aria-labelledby="commentsSheetTitle">
+      <button class="comments-sheet-grip" type="button" data-close-comments-sheet aria-label="댓글 닫기"></button>
+      <header class="comments-sheet-head">
+        <h2 id="commentsSheetTitle">댓글</h2>
+        <button class="comments-sheet-close" type="button" data-close-comments-sheet aria-label="댓글 닫기">&times;</button>
+      </header>
+      <div id="commentsSheetList" class="comments-sheet-list" aria-live="polite">
+        <p class="browse-loading">댓글을 불러오는 중...</p>
+      </div>
+      <div class="comments-reaction-bar" aria-label="빠른 반응">
+        <button type="button" data-comment-emoji="💗">💗</button>
+        <button type="button" data-comment-emoji="🙌">🙌</button>
+        <button type="button" data-comment-emoji="🔥">🔥</button>
+        <button type="button" data-comment-emoji="👏">👏</button>
+        <button type="button" data-comment-emoji="🥹">🥹</button>
+        <button type="button" data-comment-emoji="😍">😍</button>
+        <button type="button" data-comment-emoji="😮">😮</button>
+        <button type="button" data-comment-emoji="😂">😂</button>
+      </div>
+      <form id="commentsSheetForm" class="comments-sheet-form">
+        <span id="commentsSheetAvatar" class="community-avatar comments-sheet-avatar" aria-hidden="true"></span>
+        <input id="commentsSheetInput" type="text" maxlength="300" placeholder="댓글 추가" autocomplete="off" />
+        <button id="commentsSheetSubmit" type="submit" aria-label="댓글 등록">
+          <svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 2 11 13" />
+            <path d="m22 2-7 20-4-9-9-4 20-7Z" />
+          </svg>
+        </button>
+      </form>
+    </section>
+  </div>
+
+  <div id="policyModal" class="modal-backdrop" hidden>
+    <section class="quick-condition-card community-share-card policy-card" role="dialog" aria-modal="true"
+      aria-labelledby="policyModalTitle">
+      <p class="home-kicker">Policy</p>
+      <h2 id="policyModalTitle">약관</h2>
+      <div id="policyModalBody" class="policy-body"></div>
+      <button class="modal-close-button" type="button" data-close-policy aria-label="닫기">&times;</button>
+    </section>
+  </div>
+
+  <div id="postMoreSheet" class="modal-backdrop" hidden>
+    <section class="post-more-card" role="dialog" aria-modal="true" aria-label="게시물 메뉴">
+      <button class="post-more-grip" type="button" data-close-post-more aria-label="닫기"></button>
+      <div id="postMoreActions" class="post-more-actions"></div>
+    </section>
+  </div>
+
+  <div id="avatarCropModal" class="modal-backdrop" hidden>
+    <section class="quick-condition-card community-share-card avatar-crop-card" role="dialog" aria-modal="true"
+      aria-labelledby="avatarCropTitle">
+      <p class="home-kicker">Profile Photo</p>
+      <h2 id="avatarCropTitle">사진 범위 설정</h2>
+      <p class="community-share-course-name">원 안에 보일 부분을 끌어서 맞추고, 슬라이더로 확대하세요.</p>
+      <div id="avatarCropArea" class="avatar-crop-area">
+        <img id="avatarCropImage" alt="프로필 사진 미리보기" draggable="false" />
+        <div class="avatar-crop-mask" aria-hidden="true"></div>
+      </div>
+      <label class="avatar-crop-zoom"><span>확대</span><input id="avatarCropZoom" type="range" min="100" max="300"
+          value="100" /></label>
+      <div class="community-share-actions">
+        <button id="avatarCropCancel" class="secondary-button" type="button">취소</button>
+        <button id="avatarCropConfirm" class="primary-button" type="button">완료</button>
+      </div>
+      <button class="modal-close-button" type="button" data-close-avatar-crop aria-label="닫기">&times;</button>
+    </section>
+  </div>
+
+  <div id="notificationsModal" class="modal-backdrop" hidden>
+    <section class="quick-condition-card community-share-card notif-card" role="dialog" aria-modal="true"
+      aria-labelledby="notificationsTitle">
+      <p class="home-kicker">Notifications</p>
+      <h2 id="notificationsTitle">알림</h2>
+      <button id="enablePushButton" class="enable-push-button" type="button" hidden>🔔 휴대폰으로 알림 받기</button>
+      <div id="notificationsList" class="notif-list">
+        <p class="browse-loading">불러오는 중...</p>
+      </div>
+      <button class="modal-close-button" type="button" data-close-notifications aria-label="닫기">&times;</button>
+    </section>
+  </div>
+
+  <div id="pushOptInModal" class="modal-backdrop" hidden>
+    <section class="quick-condition-card push-optin-card" role="dialog" aria-modal="true"
+      aria-labelledby="pushOptInTitle">
+      <div class="push-optin-icon">🔔</div>
+      <h2 id="pushOptInTitle">알림을 받으시겠어요?</h2>
+      <p class="push-optin-desc">좋아요 ♥, 댓글, 채팅(미리보기), 팔로우 소식을 휴대폰으로 바로 받아볼 수 있어요. 언제든 알림 종에서 끌 수 있어요.</p>
+      <div class="push-optin-actions">
+        <button id="pushOptInDeny" class="push-optin-deny" type="button">허용 안 함</button>
+        <button id="pushOptInAllow" class="push-optin-allow" type="button">알림 허용</button>
+      </div>
+    </section>
+  </div>
+
+  <div id="reportModal" class="modal-backdrop" hidden>
+    <section class="quick-condition-card community-share-card" role="dialog" aria-modal="true"
+      aria-labelledby="reportModalTitle">
+      <p class="home-kicker">Report</p>
+      <h2 id="reportModalTitle">신고하기</h2>
+      <p id="reportTargetLabel" class="community-share-course-name"></p>
+      <div class="report-reasons">
+        <label><input type="radio" name="reportReason" value="스팸·홍보" checked /><span>스팸·홍보</span></label>
+        <label><input type="radio" name="reportReason" value="욕설·혐오" /><span>욕설·혐오</span></label>
+        <label><input type="radio" name="reportReason" value="음란물" /><span>음란물</span></label>
+        <label><input type="radio" name="reportReason" value="기타" /><span>기타</span></label>
+      </div>
+      <p id="reportMessage" class="community-share-message" hidden></p>
+      <div class="community-share-actions">
+        <button id="reportCancel" class="secondary-button" type="button">취소</button>
+        <button id="reportSubmit" class="primary-button" type="button">신고하기</button>
+      </div>
+      <button class="modal-close-button" type="button" data-close-report aria-label="닫기">&times;</button>
+    </section>
+  </div>
+
+  <div id="blockedUsersModal" class="modal-backdrop" hidden>
+    <section class="quick-condition-card community-share-card" role="dialog" aria-modal="true"
+      aria-labelledby="blockedUsersTitle">
+      <p class="home-kicker">Blocked</p>
+      <h2 id="blockedUsersTitle">차단한 사용자</h2>
+      <div id="blockedUsersList" class="community-friends-list">
+        <p class="browse-loading">불러오는 중...</p>
+      </div>
+      <button class="modal-close-button" type="button" data-close-blocked aria-label="닫기">&times;</button>
+    </section>
+  </div>
+
+  <div id="chatModal" class="modal-backdrop" hidden>
+    <section class="quick-condition-card community-share-card chat-card" role="dialog" aria-modal="true"
+      aria-labelledby="chatFriendNickname">
+      <div class="chat-head">
+        <button id="chatFriendAvatar" class="community-avatar chat-avatar-button" type="button" title="프로필 보기"
+          aria-label="프로필 보기"></button>
+        <h2 id="chatFriendNickname"></h2>
+      </div>
+      <div id="chatMessages" class="chat-messages">
+        <p class="browse-loading">불러오는 중...</p>
+      </div>
+      <div id="chatCoursePicker" class="chat-course-picker" hidden></div>
+      <div id="chatPhotoMenu" class="chat-photo-menu" hidden>
+        <button id="chatTakePhotoButton" type="button">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+            <circle cx="12" cy="13" r="4" />
+          </svg>
+          사진 찍기
+        </button>
+        <button id="chatPickPhotoButton" type="button">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <path d="m21 15-5-5L5 21" />
+          </svg>
+          사진 보내기
+        </button>
+      </div>
+      <div id="chatAttachedPreview" class="chat-attached-preview" hidden></div>
+      <div id="chatReplyPreview" class="chat-reply-preview" hidden></div>
+      <div class="chat-input-row">
+        <button id="chatAttachButton" class="chat-attach-button" type="button" title="내 코스 첨부" aria-label="내 코스 첨부">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+        </button>
+        <button id="chatCameraButton" class="chat-attach-button" type="button" title="사진 보내기" aria-label="사진 보내기">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+            <circle cx="12" cy="13" r="4" />
+          </svg>
+        </button>
+        <input id="chatCameraInput" type="file" accept="image/*" capture="environment" hidden />
+        <input id="chatGalleryInput" type="file" accept="image/*" multiple hidden />
+        <input id="chatInput" type="text" maxlength="500" placeholder="메시지 보내기" autocomplete="off" />
+        <button id="chatSendButton" class="primary-button chat-send-button" type="button">전송</button>
+      </div>
+      <button class="modal-close-button" type="button" data-close-chat aria-label="닫기">&times;</button>
+    </section>
+  </div>
+
+  <div id="roomChatModal" class="modal-backdrop" hidden>
+    <section class="quick-condition-card community-share-card chat-card" role="dialog" aria-modal="true"
+      aria-labelledby="roomChatName">
+      <button id="roomChatInfoButton" class="room-chat-head" type="button" title="방 정보" aria-label="방 정보">
+        <span class="room-chat-avatar" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+        </span>
+        <span class="room-chat-titles">
+          <h2 id="roomChatName"></h2>
+          <small id="roomChatMembers"></small>
+        </span>
+      </button>
+      <div id="roomChatMessages" class="chat-messages">
+        <p class="browse-loading">불러오는 중...</p>
+      </div>
+      <div id="roomChatCoursePicker" class="chat-course-picker" hidden></div>
+      <div id="roomChatPhotoMenu" class="chat-photo-menu" hidden>
+        <button id="roomChatTakePhotoButton" type="button">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+            <circle cx="12" cy="13" r="4" />
+          </svg>
+          사진 찍기
+        </button>
+        <button id="roomChatPickPhotoButton" type="button">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <path d="m21 15-5-5L5 21" />
+          </svg>
+          사진 보내기
+        </button>
+      </div>
+      <div id="roomChatAttachedPreview" class="chat-attached-preview" hidden></div>
+      <div class="chat-input-row">
+        <button id="roomChatAttachButton" class="chat-attach-button" type="button" title="내 코스 첨부" aria-label="내 코스 첨부">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+        </button>
+        <button id="roomChatCameraButton" class="chat-attach-button" type="button" title="사진 보내기" aria-label="사진 보내기">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+            <circle cx="12" cy="13" r="4" />
+          </svg>
+        </button>
+        <input id="roomChatCameraInput" type="file" accept="image/*" capture="environment" hidden />
+        <input id="roomChatGalleryInput" type="file" accept="image/*" multiple hidden />
+        <input id="roomChatInput" type="text" maxlength="500" placeholder="메시지 보내기" autocomplete="off" />
+        <button id="roomChatSendButton" class="primary-button chat-send-button" type="button">전송</button>
+      </div>
+      <button class="modal-close-button" type="button" data-close-room-chat aria-label="닫기">&times;</button>
+    </section>
+  </div>
+
+  <div id="createRoomModal" class="modal-backdrop" hidden>
+    <section class="quick-condition-card community-share-card" role="dialog" aria-modal="true"
+      aria-labelledby="createRoomTitle">
+      <p class="home-kicker">New Group</p>
+      <h2 id="createRoomTitle">단체 채팅방 만들기</h2>
+      <label class="field">
+        <span>방 이름 <small class="optional-label">비우면 자동</small></span>
+        <input id="createRoomName" type="text" maxlength="40" placeholder="예: 강릉 여행팟" autocomplete="off" />
+      </label>
+      <p class="friend-section-label">친구 선택 <small id="createRoomCount">0명 선택</small></p>
+      <div id="createRoomFriendList" class="create-room-friend-list">
+        <p class="browse-loading">불러오는 중...</p>
+      </div>
+      <div class="create-room-actions">
+        <button id="createRoomCancel" class="secondary-button" type="button">취소</button>
+        <button id="createRoomConfirm" class="primary-button" type="button">만들기</button>
+      </div>
+      <button class="modal-close-button" type="button" data-close-create-room aria-label="닫기">&times;</button>
+    </section>
+  </div>
+
+  <div id="communityComposeModal" class="modal-backdrop" hidden>
+    <section class="quick-condition-card community-share-card" role="dialog" aria-modal="true"
+      aria-labelledby="communityComposeTitle">
+      <p class="home-kicker">New Post</p>
+      <h2 id="communityComposeTitle">글·사진 올리기</h2>
+      <label class="field">
+        <span>내용</span>
+        <textarea id="communityComposeText" rows="4" maxlength="500"
+          placeholder="데이트 후기, 꿀팁, 가고 싶은 곳... 자유롭게 적어보세요"></textarea>
+      </label>
+      <div class="field">
+        <span>사진 <small class="optional-label">최대 4장</small></span>
+        <div class="compose-photo-buttons">
+          <button id="composeCameraButton" class="compose-photo-button" type="button">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+              <circle cx="12" cy="13" r="4" />
+            </svg>
+            <span>사진 찍기</span>
           </button>
-          <button id="roomChatPickPhotoButton" type="button">
-            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-            사진 보내기
+          <button id="composeGalleryButton" class="compose-photo-button" type="button">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <circle cx="8.5" cy="8.5" r="1.5" />
+              <path d="m21 15-5-5L5 21" />
+            </svg>
+            <span>갤러리에서 선택</span>
           </button>
         </div>
-        <div id="roomChatAttachedPreview" class="chat-attached-preview" hidden></div>
-        <div class="chat-input-row">
-          <button id="roomChatAttachButton" class="chat-attach-button" type="button" title="내 코스 첨부" aria-label="내 코스 첨부">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          </button>
-          <button id="roomChatCameraButton" class="chat-attach-button" type="button" title="사진 보내기" aria-label="사진 보내기">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          </button>
-          <input id="roomChatCameraInput" type="file" accept="image/*" capture="environment" hidden />
-          <input id="roomChatGalleryInput" type="file" accept="image/*" multiple hidden />
-          <input id="roomChatInput" type="text" maxlength="500" placeholder="메시지 보내기" autocomplete="off" />
-          <button id="roomChatSendButton" class="primary-button chat-send-button" type="button">전송</button>
+        <input id="communityComposeCamera" type="file" accept="image/*" capture="environment" hidden />
+        <input id="communityComposeImages" type="file" accept="image/*" multiple hidden />
+        <div id="communityComposePreview" class="community-compose-preview"></div>
+      </div>
+      <div class="field">
+        <span>공개 범위</span>
+        <div class="segmented">
+          <label><input type="radio" name="communityComposeVisibility" value="public" checked /><span>전체
+              공개</span></label>
+          <label><input type="radio" name="communityComposeVisibility" value="friends" /><span>친구만</span></label>
         </div>
-        <button class="modal-close-button" type="button" data-close-room-chat aria-label="닫기">&times;</button>
-      </section>
-    </div>
+      </div>
+      <label id="composeCoupleRow" class="compose-couple-row" hidden>
+        <input type="checkbox" id="composeAsCouple" />
+        <span class="compose-couple-text">💑 커플로 올리기 <small id="composeCoupleHint"></small></span>
+      </label>
+      <p id="communityComposeMessage" class="community-share-message" hidden></p>
+      <div class="community-share-actions">
+        <button id="communityComposeCancel" class="secondary-button" type="button">취소</button>
+        <button id="communityComposeSubmit" class="primary-button" type="button">올리기</button>
+      </div>
+      <button class="modal-close-button" type="button" data-close-community-compose aria-label="닫기">&times;</button>
+    </section>
+  </div>
 
-    <div id="createRoomModal" class="modal-backdrop" hidden>
-      <section class="quick-condition-card community-share-card" role="dialog" aria-modal="true" aria-labelledby="createRoomTitle">
-        <p class="home-kicker">New Group</p>
-        <h2 id="createRoomTitle">단체 채팅방 만들기</h2>
-        <label class="field">
-          <span>방 이름 <small class="optional-label">비우면 자동</small></span>
-          <input id="createRoomName" type="text" maxlength="40" placeholder="예: 강릉 여행팟" autocomplete="off" />
-        </label>
-        <p class="friend-section-label">친구 선택 <small id="createRoomCount">0명 선택</small></p>
-        <div id="createRoomFriendList" class="create-room-friend-list"><p class="browse-loading">불러오는 중...</p></div>
-        <div class="create-room-actions">
-          <button id="createRoomCancel" class="secondary-button" type="button">취소</button>
-          <button id="createRoomConfirm" class="primary-button" type="button">만들기</button>
+  <div id="communityShareModal" class="modal-backdrop" hidden>
+    <section class="quick-condition-card community-share-card" role="dialog" aria-modal="true"
+      aria-labelledby="communityShareTitle">
+      <p class="home-kicker">Share Course</p>
+      <h2 id="communityShareTitle">커뮤니티에 코스 공유</h2>
+      <p id="communityShareCourseName" class="community-share-course-name"></p>
+      <label class="field">
+        <span>제목</span>
+        <input id="communityShareTitleInput" type="text" maxlength="60" placeholder="예: 비 오는 날 명동 실내 데이트" />
+      </label>
+      <label class="field">
+        <span>한 줄 소개 <small class="optional-label">선택 사항</small></span>
+        <input id="communityShareComment" type="text" maxlength="200" placeholder="이 코스의 꿀팁이나 후기를 남겨보세요" />
+      </label>
+      <div class="field">
+        <span>공개 범위</span>
+        <div class="segmented">
+          <label><input type="radio" name="communityShareVisibility" value="public" checked /><span>전체 공개</span></label>
+          <label><input type="radio" name="communityShareVisibility" value="friends" /><span>친구만</span></label>
         </div>
-        <button class="modal-close-button" type="button" data-close-create-room aria-label="닫기">&times;</button>
-      </section>
-    </div>
+      </div>
+      <p id="communityShareMessage" class="community-share-message" hidden></p>
+      <div class="community-share-actions">
+        <button id="communityShareCancel" class="secondary-button" type="button">취소</button>
+        <button id="communityShareSubmit" class="primary-button" type="button">공유하기</button>
+      </div>
+      <button class="modal-close-button" type="button" data-close-community-share aria-label="닫기">&times;</button>
+    </section>
+  </div>
 
-    <div id="communityComposeModal" class="modal-backdrop" hidden>
-      <section class="quick-condition-card community-share-card" role="dialog" aria-modal="true" aria-labelledby="communityComposeTitle">
-        <p class="home-kicker">New Post</p>
-        <h2 id="communityComposeTitle">글·사진 올리기</h2>
-        <label class="field">
-          <span>내용</span>
-          <textarea id="communityComposeText" rows="4" maxlength="500" placeholder="데이트 후기, 꿀팁, 가고 싶은 곳... 자유롭게 적어보세요"></textarea>
-        </label>
-        <div class="field">
-          <span>사진 <small class="optional-label">최대 4장</small></span>
-          <div class="compose-photo-buttons">
-            <button id="composeCameraButton" class="compose-photo-button" type="button">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-              <span>사진 찍기</span>
-            </button>
-            <button id="composeGalleryButton" class="compose-photo-button" type="button">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-              <span>갤러리에서 선택</span>
-            </button>
-          </div>
-          <input id="communityComposeCamera" type="file" accept="image/*" capture="environment" hidden />
-          <input id="communityComposeImages" type="file" accept="image/*" multiple hidden />
-          <div id="communityComposePreview" class="community-compose-preview"></div>
+  <div id="quickConditionModal" class="modal-backdrop" hidden>
+    <section class="quick-condition-card" role="dialog" aria-modal="true" aria-labelledby="quickConditionTitle">
+      <p class="home-kicker">One More Step</p>
+      <h2 id="quickConditionTitle">코스 조건을 골라주세요</h2>
+      <p id="quickConditionDescription">선택한 장소를 기반으로 코스를 만들게요.</p>
+      <div class="field">
+        <span>이동수단</span>
+        <div class="segmented transport-segmented">
+          <label><input type="radio" name="quickTransport" value="walk" checked /><span>도보</span></label>
+          <label><input type="radio" name="quickTransport" value="transit" /><span>대중교통</span></label>
+          <label><input type="radio" name="quickTransport" value="car" /><span>자차</span></label>
         </div>
-        <div class="field">
-          <span>공개 범위</span>
-          <div class="segmented">
-            <label><input type="radio" name="communityComposeVisibility" value="public" checked /><span>전체 공개</span></label>
-            <label><input type="radio" name="communityComposeVisibility" value="friends" /><span>친구만</span></label>
-          </div>
-        </div>
-        <label id="composeCoupleRow" class="compose-couple-row" hidden>
-          <input type="checkbox" id="composeAsCouple" />
-          <span class="compose-couple-text">💑 커플로 올리기 <small id="composeCoupleHint"></small></span>
-        </label>
-        <p id="communityComposeMessage" class="community-share-message" hidden></p>
-        <div class="community-share-actions">
-          <button id="communityComposeCancel" class="secondary-button" type="button">취소</button>
-          <button id="communityComposeSubmit" class="primary-button" type="button">올리기</button>
-        </div>
-        <button class="modal-close-button" type="button" data-close-community-compose aria-label="닫기">&times;</button>
-      </section>
-    </div>
+      </div>
+      <div class="meal-options">
+        <label class="check-row"><input id="quickOvernight" type="checkbox" /><span>숙박함</span></label>
+        <label class="check-row"><input id="quickLunch" type="checkbox" checked /><span>점심 추천</span></label>
+        <label class="check-row"><input id="quickCafe" type="checkbox" checked /><span>카페 추천</span></label>
+        <label class="check-row"><input id="quickDinner" type="checkbox" /><span>저녁 추천</span></label>
+        <label class="check-row"><input id="quickBar" type="checkbox" disabled /><span>술집 추천</span></label>
+      </div>
+      <div class="modal-actions">
+        <button id="cancelQuickConditionButton" class="secondary-button" type="button">취소</button>
+        <button id="confirmQuickConditionButton" class="primary-button" type="button">이 조건으로 추천</button>
+      </div>
+    </section>
+  </div>
 
-    <div id="communityShareModal" class="modal-backdrop" hidden>
-      <section class="quick-condition-card community-share-card" role="dialog" aria-modal="true" aria-labelledby="communityShareTitle">
-        <p class="home-kicker">Share Course</p>
-        <h2 id="communityShareTitle">커뮤니티에 코스 공유</h2>
-        <p id="communityShareCourseName" class="community-share-course-name"></p>
-        <label class="field">
-          <span>제목</span>
-          <input id="communityShareTitleInput" type="text" maxlength="60" placeholder="예: 비 오는 날 명동 실내 데이트" />
-        </label>
-        <label class="field">
-          <span>한 줄 소개 <small class="optional-label">선택 사항</small></span>
-          <input id="communityShareComment" type="text" maxlength="200" placeholder="이 코스의 꿀팁이나 후기를 남겨보세요" />
-        </label>
-        <div class="field">
-          <span>공개 범위</span>
-          <div class="segmented">
-            <label><input type="radio" name="communityShareVisibility" value="public" checked /><span>전체 공개</span></label>
-            <label><input type="radio" name="communityShareVisibility" value="friends" /><span>친구만</span></label>
-          </div>
-        </div>
-        <p id="communityShareMessage" class="community-share-message" hidden></p>
-        <div class="community-share-actions">
-          <button id="communityShareCancel" class="secondary-button" type="button">취소</button>
-          <button id="communityShareSubmit" class="primary-button" type="button">공유하기</button>
-        </div>
-        <button class="modal-close-button" type="button" data-close-community-share aria-label="닫기">&times;</button>
-      </section>
-    </div>
+  <div id="regionPickerModal" class="modal-backdrop" hidden>
+    <section class="region-picker-card" role="dialog" aria-modal="true" aria-labelledby="regionPickerTitle">
+      <div class="region-picker-header">
+        <button id="closeRegionPickerButton" class="region-picker-close-button" type="button"
+          aria-label="지역 선택 닫기">×</button>
+        <h2 id="regionPickerTitle">지역 선택</h2>
+      </div>
+      <div class="region-picker-layout">
+        <nav id="regionProvinceList" class="region-province-list" aria-label="시도 선택"></nav>
+        <section class="region-district-panel" aria-label="상세 지역 선택">
+          <button id="regionWholeButton" class="region-whole-button" type="button">서울 전체</button>
+          <div id="regionDistrictList" class="region-district-list"></div>
+        </section>
+      </div>
+    </section>
+  </div>
 
-    <div id="quickConditionModal" class="modal-backdrop" hidden>
-      <section class="quick-condition-card" role="dialog" aria-modal="true" aria-labelledby="quickConditionTitle">
-        <p class="home-kicker">One More Step</p>
-        <h2 id="quickConditionTitle">코스 조건을 골라주세요</h2>
-        <p id="quickConditionDescription">선택한 장소를 기반으로 코스를 만들게요.</p>
-        <div class="field">
-          <span>이동수단</span>
-          <div class="segmented transport-segmented">
-            <label><input type="radio" name="quickTransport" value="walk" checked /><span>도보</span></label>
-            <label><input type="radio" name="quickTransport" value="transit" /><span>대중교통</span></label>
-            <label><input type="radio" name="quickTransport" value="car" /><span>자차</span></label>
+  <div id="startPlaceModal" class="modal-backdrop" hidden>
+    <section class="start-place-modal-card" role="dialog" aria-modal="true" aria-labelledby="startPlaceModalTitle">
+      <div class="start-place-modal-header">
+        <div>
+          <p class="home-kicker">Start Place</p>
+          <h2 id="startPlaceModalTitle">시작 장소 선택</h2>
+          <p>검색어를 입력하면 후보 장소와 위치 흐름을 함께 보여드릴게요.</p>
+        </div>
+        <button id="closeStartPlaceModalButton" class="modal-close-button" type="button"
+          aria-label="시작 장소 선택 닫기">×</button>
+      </div>
+      <div class="start-place-modal-search">
+        <input id="startPlaceModalKeyword" type="text" placeholder="예: 서울역, 해운대, 제주공항" autocomplete="off" />
+        <button id="startPlaceModalSearchButton" class="primary-button" type="button">검색</button>
+      </div>
+      <div class="start-place-modal-layout">
+        <div id="startPlaceCandidateMap" class="start-place-candidate-map" aria-label="검색 후보 지도">
+          <div class="candidate-map-empty">검색하면 후보 위치가 지도처럼 표시됩니다.</div>
+        </div>
+        <div class="start-place-candidate-panel">
+          <strong>후보 장소</strong>
+          <div id="startPlaceModalResults" class="start-place-modal-results" aria-live="polite">
+            <small>장소명을 검색해 주세요.</small>
           </div>
         </div>
-        <div class="meal-options">
-          <label class="check-row"><input id="quickOvernight" type="checkbox" /><span>숙박함</span></label>
-          <label class="check-row"><input id="quickLunch" type="checkbox" checked /><span>점심 추천</span></label>
-          <label class="check-row"><input id="quickCafe" type="checkbox" checked /><span>카페 추천</span></label>
-          <label class="check-row"><input id="quickDinner" type="checkbox" /><span>저녁 추천</span></label>
-          <label class="check-row"><input id="quickBar" type="checkbox" disabled /><span>술집 추천</span></label>
-        </div>
-        <div class="modal-actions">
-          <button id="cancelQuickConditionButton" class="secondary-button" type="button">취소</button>
-          <button id="confirmQuickConditionButton" class="primary-button" type="button">이 조건으로 추천</button>
-        </div>
-      </section>
-    </div>
+      </div>
+    </section>
+  </div>
 
-    <div id="regionPickerModal" class="modal-backdrop" hidden>
-      <section class="region-picker-card" role="dialog" aria-modal="true" aria-labelledby="regionPickerTitle">
-        <div class="region-picker-header">
-          <button id="closeRegionPickerButton" class="region-picker-close-button" type="button" aria-label="지역 선택 닫기">×</button>
-          <h2 id="regionPickerTitle">지역 선택</h2>
+  <div id="browsePlaceDetailModal" class="modal-backdrop" hidden>
+    <section class="browse-detail-card" role="dialog" aria-modal="true" aria-labelledby="browsePlaceDetailTitle">
+      <div class="start-place-modal-header">
+        <div>
+          <p class="home-kicker">Place Detail</p>
+          <h2 id="browsePlaceDetailTitle">장소 상세</h2>
+          <p id="browsePlaceDetailSummary">장소 정보와 위치를 확인해보세요.</p>
         </div>
-        <div class="region-picker-layout">
-          <nav id="regionProvinceList" class="region-province-list" aria-label="시도 선택"></nav>
-          <section class="region-district-panel" aria-label="상세 지역 선택">
-            <button id="regionWholeButton" class="region-whole-button" type="button">서울 전체</button>
-            <div id="regionDistrictList" class="region-district-list"></div>
-          </section>
-        </div>
-      </section>
-    </div>
-
-    <div id="startPlaceModal" class="modal-backdrop" hidden>
-      <section class="start-place-modal-card" role="dialog" aria-modal="true" aria-labelledby="startPlaceModalTitle">
-        <div class="start-place-modal-header">
-          <div>
-            <p class="home-kicker">Start Place</p>
-            <h2 id="startPlaceModalTitle">시작 장소 선택</h2>
-            <p>검색어를 입력하면 후보 장소와 위치 흐름을 함께 보여드릴게요.</p>
-          </div>
-          <button id="closeStartPlaceModalButton" class="modal-close-button" type="button" aria-label="시작 장소 선택 닫기">×</button>
-        </div>
-        <div class="start-place-modal-search">
-          <input id="startPlaceModalKeyword" type="text" placeholder="예: 서울역, 해운대, 제주공항" autocomplete="off" />
-          <button id="startPlaceModalSearchButton" class="primary-button" type="button">검색</button>
-        </div>
-        <div class="start-place-modal-layout">
-          <div id="startPlaceCandidateMap" class="start-place-candidate-map" aria-label="검색 후보 지도">
-            <div class="candidate-map-empty">검색하면 후보 위치가 지도처럼 표시됩니다.</div>
-          </div>
-          <div class="start-place-candidate-panel">
-            <strong>후보 장소</strong>
-            <div id="startPlaceModalResults" class="start-place-modal-results" aria-live="polite">
-              <small>장소명을 검색해 주세요.</small>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <div id="browsePlaceDetailModal" class="modal-backdrop" hidden>
-      <section class="browse-detail-card" role="dialog" aria-modal="true" aria-labelledby="browsePlaceDetailTitle">
-        <div class="start-place-modal-header">
-          <div>
-            <p class="home-kicker">Place Detail</p>
-            <h2 id="browsePlaceDetailTitle">장소 상세</h2>
-            <p id="browsePlaceDetailSummary">장소 정보와 위치를 확인해보세요.</p>
-          </div>
-          <button id="closeBrowsePlaceDetailButton" class="modal-close-button" type="button" aria-label="장소 상세 닫기">×</button>
-        </div>
-        <div id="browsePlaceDetailBody" class="browse-detail-body"></div>
-      </section>
-    </div>
+        <button id="closeBrowsePlaceDetailButton" class="modal-close-button" type="button"
+          aria-label="장소 상세 닫기">×</button>
+      </div>
+      <div id="browsePlaceDetailBody" class="browse-detail-body"></div>
+    </section>
+  </div>
 
   <script src="./runtime-config.js?v=recodate-logo-lock-1"></script>
-    <div id="pwaInstallBanner" class="pwa-install-banner" hidden>
-      <span class="pwa-install-icon" aria-hidden="true"><img src="./icons/icon-192.webp" alt="" /></span>
-      <div class="pwa-install-text">
-        <b>RecoDate 앱으로 설치</b>
-        <small id="pwaInstallHint">홈 화면에 추가하면 앱처럼 빠르게 열려요.</small>
-      </div>
-      <button id="pwaInstallButton" class="pwa-install-cta" type="button">설치</button>
-      <button id="pwaInstallClose" class="pwa-install-close" type="button" aria-label="닫기">&times;</button>
+  <div id="pwaInstallBanner" class="pwa-install-banner" hidden>
+    <span class="pwa-install-icon" aria-hidden="true"><img src="./icons/icon-192.webp" alt="" /></span>
+    <div class="pwa-install-text">
+      <b>RecoDate 앱으로 설치</b>
+      <small id="pwaInstallHint">홈 화면에 추가하면 앱처럼 빠르게 열려요.</small>
     </div>
+    <button id="pwaInstallButton" class="pwa-install-cta" type="button">설치</button>
+    <button id="pwaInstallClose" class="pwa-install-close" type="button" aria-label="닫기">&times;</button>
+  </div>
   <script src="./policies.js?v=follow-1"></script>
   <script src="./app.js?v=design-polish-v55"></script>
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./sw.js").catch(() => {});
+        navigator.serviceWorker.register("./sw.js").catch(() => { });
       });
     }
   </script>
-  </body>
+</body>
+
 </html>

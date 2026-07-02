@@ -150,12 +150,29 @@
     color: currentColor;
   }
 
-  .portal-nav button[data-show-view="home"]::before { content: "⌂"; }
-  .portal-nav button[data-show-view="community"]::before { content: "✦"; }
-  .portal-nav button[data-show-view="bookmarks"]::before { content: "♡"; }
-  .portal-nav button[data-show-view="myCourses"]::before { content: "▣"; }
-  .portal-nav button[data-show-view="login"]::before { content: "♙"; }
-  .portal-nav button[data-show-view="profile"]::before { content: "♙"; }
+  .portal-nav button[data-show-view="home"]::before {
+    content: "⌂";
+  }
+
+  .portal-nav button[data-show-view="community"]::before {
+    content: "✦";
+  }
+
+  .portal-nav button[data-show-view="bookmarks"]::before {
+    content: "♡";
+  }
+
+  .portal-nav button[data-show-view="myCourses"]::before {
+    content: "▣";
+  }
+
+  .portal-nav button[data-show-view="login"]::before {
+    content: "♙";
+  }
+
+  .portal-nav button[data-show-view="profile"]::before {
+    content: "♙";
+  }
 
   .portal-nav button[data-show-view="login"],
   .portal-nav button[data-show-view="profile"] {
@@ -234,9 +251,9 @@
     box-shadow: 0 4px 12px rgba(24, 31, 45, 0.04) !important;
   }
 
-  .browse-view > .browse-heading,
-  .tripti-view > .tripti-hero,
-  #recommendationView > .topbar {
+  .browse-view>.browse-heading,
+  .tripti-view>.tripti-hero,
+  #recommendationView>.topbar {
     margin-top: 0 !important;
   }
 
@@ -341,7 +358,7 @@
     color: inherit;
   }
 
-  .home-hero > p:not(.home-kicker) {
+  .home-hero>p:not(.home-kicker) {
     max-width: 290px !important;
     margin: 0 !important;
     color: #6e7786 !important;
@@ -545,8 +562,8 @@
     min-width: 0 !important;
   }
 
-  .field > span,
-  .check-row > span {
+  .field>span,
+  .check-row>span {
     color: #242a35 !important;
     font-size: 13px !important;
     font-weight: 900 !important;
@@ -617,8 +634,8 @@
     font-weight: 900 !important;
   }
 
-  .segmented input:checked + span,
-  .transport-segmented input:checked + span {
+  .segmented input:checked+span,
+  .transport-segmented input:checked+span {
     border-color: rgba(228, 63, 123, 0.55) !important;
     background: var(--rd-primary-soft) !important;
     color: var(--rd-primary-dark) !important;
@@ -822,11 +839,11 @@
     font-weight: 950;
   }
 
-  .place-chain li > .drag-handle {
+  .place-chain li>.drag-handle {
     display: none !important;
   }
 
-  .place-chain li > span:not(.place-edit-buttons):not(.drag-handle) {
+  .place-chain li>span:not(.place-edit-buttons):not(.drag-handle) {
     min-width: 0 !important;
     display: block !important;
     color: var(--rd-text) !important;
@@ -1107,7 +1124,7 @@
     box-shadow: none !important;
   }
 
-  .browse-place-card:not(.saved-bookmark-card) > b {
+  .browse-place-card:not(.saved-bookmark-card)>b {
     grid-area: rank !important;
     color: var(--rd-primary) !important;
     font-size: 13px !important;
@@ -1125,8 +1142,8 @@
     text-overflow: ellipsis !important;
   }
 
-  .browse-place-card:not(.saved-bookmark-card) > p,
-  .browse-place-card:not(.saved-bookmark-card) > small {
+  .browse-place-card:not(.saved-bookmark-card)>p,
+  .browse-place-card:not(.saved-bookmark-card)>small {
     grid-column: auto !important;
     margin: 0 !important;
     color: #7a8391 !important;
@@ -1134,13 +1151,13 @@
     line-height: 1.35 !important;
   }
 
-  .browse-place-card:not(.saved-bookmark-card) > small {
+  .browse-place-card:not(.saved-bookmark-card)>small {
     grid-area: rank !important;
     justify-self: center !important;
     align-self: start !important;
   }
 
-  .browse-place-card:not(.saved-bookmark-card) > p {
+  .browse-place-card:not(.saved-bookmark-card)>p {
     grid-area: category !important;
   }
 
@@ -1220,8 +1237,8 @@
     background: linear-gradient(180deg, rgba(255, 255, 255, 0), #fff 30%) !important;
   }
 
-  .browse-detail-actions > *,
-  .browse-detail-bottom-actions > * {
+  .browse-detail-actions>*,
+  .browse-detail-bottom-actions>* {
     min-width: 0 !important;
     min-height: 38px !important;
     padding-left: 8px !important;
@@ -1605,7 +1622,7 @@
     text-align: left !important;
   }
 
-  .browse-place-card:not(.saved-bookmark-card) > small {
+  .browse-place-card:not(.saved-bookmark-card)>small {
     position: absolute !important;
     left: 12px !important;
     top: 16px !important;
@@ -1622,7 +1639,7 @@
   }
 
   .browse-place-card:not(.saved-bookmark-card) h3,
-  .browse-place-card:not(.saved-bookmark-card) > p {
+  .browse-place-card:not(.saved-bookmark-card)>p {
     display: block !important;
     width: 100% !important;
     max-width: 100% !important;
@@ -1635,7 +1652,7 @@
     line-height: 1.28 !important;
   }
 
-  .browse-place-card:not(.saved-bookmark-card) > p {
+  .browse-place-card:not(.saved-bookmark-card)>p {
     margin: 0 0 7px !important;
     color: #7a8391 !important;
     font-size: 12px !important;
@@ -1671,6 +1688,7 @@
 }
 
 @media (max-width: 390px) {
+
   .portal-view,
   .app-shell {
     padding-left: 12px !important;
@@ -1710,7 +1728,7 @@
     background: linear-gradient(180deg, #fff5fa 0%, #ffffff 46%, #f8fbff 100%) !important;
   }
 
-  .map-explore-view > .back-home-button {
+  .map-explore-view>.back-home-button {
     position: static !important;
     z-index: auto !important;
     width: fit-content !important;
@@ -1763,7 +1781,7 @@
     touch-action: pan-x pan-y pinch-zoom !important;
   }
 
-  .map-explore-live-map > div,
+  .map-explore-live-map>div,
   .map-explore-live-map .map-explore-map {
     width: 100% !important;
     height: 100% !important;
@@ -1865,7 +1883,7 @@
   }
 
   .browse-place-card:not(.saved-bookmark-card) .browse-place-rank,
-  .browse-place-card:not(.saved-bookmark-card) > small {
+  .browse-place-card:not(.saved-bookmark-card)>small {
     position: static !important;
     inset: auto !important;
     transform: none !important;
@@ -1932,7 +1950,7 @@
   }
 
   .browse-place-card:not(.saved-bookmark-card) .browse-place-content p,
-  .browse-place-card:not(.saved-bookmark-card) > p {
+  .browse-place-card:not(.saved-bookmark-card)>p {
     display: block !important;
     width: 100% !important;
     margin: 0 !important;
@@ -2018,7 +2036,7 @@
   }
 
   .browse-place-card:not(.saved-bookmark-card) .browse-place-rank,
-  .browse-place-card:not(.saved-bookmark-card) > small {
+  .browse-place-card:not(.saved-bookmark-card)>small {
     width: 66px !important;
     min-width: 66px !important;
     height: 32px !important;
@@ -2039,3 +2057,79 @@
     height: calc(100svh - var(--bottom-nav-height, 86px) - 196px) !important;
   }
 }
+
+
+/* ============================================================
+   HERO SLIDESHOW 패치 — 2열 레이아웃 (이 파일이 마지막에 로드됨)
+   ============================================================ */
+
+/* 데스크톱: hero를 텍스트 왼쪽 + 슬라이드 오른쪽 2열 */
+@media (min-width: 769px) {
+  .home-hero {
+    display: grid !important;
+    grid-template-columns: 1fr 1.6fr !important;
+    align-items: center !important;
+    gap: 200px !important;
+    overflow: visible !important;
+  }
+
+  .hero-slideshow {
+    aspect-ratio: 3 / 2 !important;
+    min-height: 320px !important;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 32px rgba(25, 31, 40, 0.12) !important;
+  }
+}
+
+/* 모바일: 슬라이드가 위, 텍스트가 아래 1열 */
+@media (max-width: 768px) {
+  .home-hero {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+    overflow: hidden !important;
+  }
+
+  .hero-slideshow {
+    order: -1;
+    border-radius: 14px !important;
+    aspect-ratio: 16 / 9 !important;
+    box-shadow: none !important;
+  }
+}
+
+/* 슬라이드쇼 공통 — 반드시 보이게 */
+.hero-slideshow {
+  display: block !important;
+  position: relative !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+}
+
+.hero-slideshow-track {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.hero-slide {
+  position: absolute !important;
+  inset: 0 !important;
+  opacity: 0 !important;
+  transition: opacity 0.8s ease !important;
+  pointer-events: none !important;
+}
+
+.hero-slide.active {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+.hero-slide img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+/* === END HERO SLIDESHOW 패치 === */

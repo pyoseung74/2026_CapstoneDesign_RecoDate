@@ -11023,3 +11023,45 @@ function shortenText(value, maxLength) {
 }
 
 init();
+
+/* ============================================================
+   HERO SLIDESHOW — 한국 유명 관광지 자동 슬라이드 (3초 간격)
+   ============================================================ */
+(function initHeroSlideshow() {
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots   = document.querySelectorAll('.hero-dot');
+  if (!slides.length) return;
+
+  let current = 0;
+  let timer   = null;
+
+  function goTo(idx) {
+    slides[current].classList.remove('active');
+    dots[current]?.classList.remove('active');
+    current = (idx + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    dots[current]?.classList.add('active');
+  }
+
+  function start() {
+    timer = setInterval(() => goTo(current + 1), 3500);
+  }
+
+  function stop() {
+    clearInterval(timer);
+  }
+
+  // dot 클릭으로 수동 이동
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => { stop(); goTo(i); start(); });
+  });
+
+  // 슬라이드쇼 hover 시 잠시 멈춤
+  const container = document.querySelector('.hero-slideshow');
+  if (container) {
+    container.addEventListener('mouseenter', stop);
+    container.addEventListener('mouseleave', start);
+  }
+
+  start();
+})();
