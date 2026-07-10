@@ -16679,3 +16679,18 @@ body.comments-sheet-open {
 }
 
 /* === END HERO SLIDESHOW === */
+/* === A-DESIGN v52 (모달 열림 시 배경 스크롤 잠금) === */
+/* 보조창(모달)을 스크롤하면 보조창이 아니라 뒤 메인 화면이 스크롤되던 문제:
+   모달이 떠 있는 동안 html/body 배경 스크롤을 잠그고, 카드 내부 스크롤이
+   끝에 닿아도 배경으로 넘어가지 않도록(overscroll chaining) 가둔다.
+   (:has는 이 코드베이스에서 이미 탭바 숨김에 쓰고 있어 지원 확인됨) */
+html:has(.modal-backdrop:not([hidden])),
+body:has(.modal-backdrop:not([hidden])) {
+  overflow: hidden !important;
+}
+.browse-detail-card,
+.start-place-modal-card,
+.quick-condition-card {
+  overscroll-behavior: contain !important;
+}
+/* === END A-DESIGN v52 === */
